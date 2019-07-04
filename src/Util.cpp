@@ -27,7 +27,7 @@ std::function<double(double)> UF::Phi(double nu, double epsilon, double x)
 {
     return [&,nu,epsilon,x](double a) mutable -> double
     {
-        return boost::math::cyl_bessel_i(nu-(8*x)/(epsilon*epsilon),x)/boost::math::cyl_bessel_i(nu,x);
+        return boost::math::cyl_bessel_i(std::sqrt(nu*nu-(8*a)/(epsilon*epsilon)),x)/boost::math::cyl_bessel_i(nu,x);
     };
 }
 
