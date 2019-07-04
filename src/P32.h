@@ -17,6 +17,9 @@ class P32:public Process{
         double kappa_;
         double theta_;
         double epsilon_;
+        double delta_;
+        double ektT1_;
+        double zp_;
 
         bool loaded_;
 
@@ -27,7 +30,6 @@ class P32:public Process{
         double p_;
         double v_;
         double Delta_;
-        double delta_;
         double lambda_;
 
         double X0_;
