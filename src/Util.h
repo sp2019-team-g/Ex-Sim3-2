@@ -16,12 +16,14 @@
 #include<iostream>
 
 namespace UtilFunc{
-    double numericalDiff(std::function<double(double)>f, double x, double dx);
-    double numericalDiff2(std::function<double(double)>f, double x, double dx);
-    std::function<double(double)> Phi(double nu, double epsilon, double x);
-    double sum(std::function<double(int)> f, int begin, int end);
-    double normalRnd(double mean, double std);
-    double ncChi2Rnd(double delta, double lambda);
+    double numericalDiff(std::function<double(double)>, double, double);
+    double numericalDiff2(std::function<double(double)>, double, double);
+    std::function<double(double)> Phi(double, double, double);
+    double sum(std::function<double(int)>, int, int);
+    double normalRnd(double, double);
+    double ncChi2Rnd(double, double);
+    double uniRnd(double , double);
+    double rvs(std::function<double(double)>,double);
 }
 namespace UF = UtilFunc;
 

@@ -56,7 +56,17 @@ double UF::ncChi2Rnd(double delta, double lambda)
     return boost::math::quantile(dist,p);
 }
 
+double UF::uniRnd(double a, double b){
+    re.seed(rd());
+    return U(re);
+}
 
+double UF::rvs(std::function<double(double)>,double){
+    /*TODO
+     * */
+    return 0;
+
+}
 
 
 
