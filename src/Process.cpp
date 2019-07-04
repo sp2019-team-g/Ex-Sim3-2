@@ -29,7 +29,7 @@ double Process::get_T()
     return T_;
 }
 
-double Process::get::dt()
+double Process::get_dt()
 {
     return dt_;
 }

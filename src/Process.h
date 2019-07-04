@@ -12,14 +12,14 @@ class Process{
         double get_t();
         double get_T();
         double get_dt();
-        virtual double simulate() = 0;
+        virtual double simulate(){return 0.0;};
 
     private:
         double t_;
         double T_;
         double dt_;
 
-}
+};
 
 
 #endif
