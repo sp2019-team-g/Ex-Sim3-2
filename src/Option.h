@@ -12,7 +12,6 @@ class Option
 		virtual ~Option(){};
 		double get_T();
 		double get_K();
-		virtual double price(){return 0.0;};
 		double payoff(Arguments);
 	private:
 		double K_;
