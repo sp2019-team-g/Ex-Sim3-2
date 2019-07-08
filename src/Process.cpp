@@ -7,6 +7,12 @@ Process::Process(double t, double T)
     dt_ = T-t;
 }
 
+Process::Process(Arguments paras){
+    t_ = __ARG_VAL(std::string("t"), double, paras);
+    T_ = __ARG_VAL(std::string("T"), double, paras);
+    dt_ = T_ - t_;
+}
+
 void Process::set_t(double t)
 {
     t_ = t;

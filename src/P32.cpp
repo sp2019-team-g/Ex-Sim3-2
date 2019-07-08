@@ -18,6 +18,24 @@ P32::P32(
     post_update();
 }
 
+P32::P32(Arguments paras):Process(paras)
+{
+    // Process(0.0, __ARG_VAL("T", double, paras));
+    r_ = __ARG_VAL("r", double, paras);
+    rho_ = __ARG_VAL("rho", double, paras);
+    kappa_ = __ARG_VAL("kappa", double, paras);
+    theta_ = __ARG_VAL("theta", double, paras);
+    epsilon_ = __ARG_VAL("epsilon", double, paras);
+    try{
+        S0_ = __ARG_VAL("S0", double, paras);
+        V0_ = __ARG_VAL("V0", double, paras);
+        loaded_ = true;
+    }catch(...){
+        loaded_ = false;
+    }
+    post_update();
+}
+
 void P32::post_update()
 {
 /*
@@ -39,9 +57,9 @@ void P32::post_update()
 
 }
 
-void P32::para_load(double S0,double V0){
-    S0_ = S0;
-    V0_ = V0;
+void P32::para_load(Arguments paras){
+    S0_ = __ARG_VAL("S0", double, paras);
+    V0_ = __ARG_VAL("V0", double, paras);
     loaded_ = true;
     post_update();
 }
