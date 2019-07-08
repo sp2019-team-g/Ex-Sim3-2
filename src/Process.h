@@ -7,6 +7,7 @@ class Process
 {
     public:
         Process(double, double);
+        Process(Arguments);
         virtual ~Process(){};
         void set_t(double);
         void set_T(double);

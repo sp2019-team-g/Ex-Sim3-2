@@ -18,9 +18,9 @@ P32::P32(
     post_update();
 }
 
-P32::P32(Arguments paras)
+P32::P32(Arguments paras):Process(paras)
 {
-    Process(0.0, __ARG_VAL("T", double, paras));
+    // Process(0.0, __ARG_VAL("T", double, paras));
     r_ = __ARG_VAL("r", double, paras);
     rho_ = __ARG_VAL("rho", double, paras);
     kappa_ = __ARG_VAL("kappa", double, paras);

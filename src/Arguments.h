@@ -1,9 +1,9 @@
 #ifndef ARGUMENTS_EX32_H
 #define ARGUMENTS_EX32_H
-#import <map>
-#import <string>
-#define __ARG_VAL(key,type,obj) (*(*type)(obj[key]))
-#define __ARG_PTR(key,type,obj) ((*type)(obj[key]))
+#include <map>
+#include <string>
+#define __ARG_VAL(key,type,obj) (*(type*)(obj.get(key)))
+#define __ARG_PTR(key,type,obj) ((type*)(obj.get(key)))
 class Arguments{
 	public:
 		Arguments();
