@@ -2,7 +2,7 @@
 #define PSS_EX32_H
 
 #include "Util.h"
-
+#include "Arguments.h"
 class Process
 {
     public:
@@ -15,6 +15,7 @@ class Process
         double get_dt();
         virtual double simulate(){return -1.0;};
         virtual double closeForm(){return -1.0;};
+        virtual void para_load(Arguments){};
 
     private:
         double t_;
