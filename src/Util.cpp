@@ -5,6 +5,8 @@ std::random_device rd;
 std::default_random_engine re;
 std::uniform_real_distribution<double> U(0.0,1.0);
 
+
+
 double UF::numericalDiff(
         std::function<double(double)>f,
         double x,

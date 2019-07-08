@@ -1,16 +1,17 @@
 CPPFLAGS=-std=c++11 -Wall -pedantic
 TESTFLAG=-Isrc -o
 CC=g++
-TSTS=tmp/testarg tmp/testp32 tmp/testproc tmp/testutl
+TSTS=tmp/testarg tmp/testp32 tmp/testproc tmp/testutl tmp/testopt
 OBJS=obj/Arguments.o obj/Util.o obj/Process.o obj/P32.o obj/Option.o obj/OptionSim.o obj/OptionClo.o
-
 test : $(TSTS)
 clean :
 	rm obj/*.o
 	rm tmp/*
+tmp/testopt : test/OPTtest.cpp src/Option.h $(OBJS)
+	$(CC) $(CPPFLAGS) $(TESTFLAG) tmp/testopt $(OBJS) test/OPTtest.cpp
 
 tmp/testarg : test/ARGtest.cpp src/Arguments.h $(OBJS)
-	$(CC) $(CPPFLAGS) $(TESTFLAG) tmp/ARGtest $(OBJS) test/ARGtest.cpp
+	$(CC) $(CPPFLAGS) $(TESTFLAG) tmp/testarg $(OBJS) test/ARGtest.cpp
 
 tmp/testp32 : test/P32test.cpp $(OBJS)
 	$(CC) $(CPPFLAGS) $(TESTFLAG) tmp/testp32 $(OBJS) test/P32test.cpp
