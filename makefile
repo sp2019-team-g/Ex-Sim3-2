@@ -2,7 +2,7 @@ CPPFLAGS=-std=c++11 -Wall -pedantic
 TESTFLAG=-Isrc -o
 CC=g++
 TSTS=tmp/testarg tmp/testp32 tmp/testproc tmp/testutl tmp/testopt
-OBJS=obj/Arguments.o obj/Util.o obj/Process.o obj/P32.o obj/Option.o obj/OptionSim.o obj/OptionClo.o
+OBJS=obj/Arguments.o obj/Util.o obj/Process.o obj/P32.o obj/Option.o
 test : $(TSTS)
 clean :
 	rm obj/*.o
@@ -37,8 +37,3 @@ obj/P32.o : src/P32.cpp src/P32.h
 obj/Option.o : src/Option.cpp src/Option.h
 	$(CC) $(CPPFLAGS) -c -o obj/Option.o src/Option.cpp
 
-obj/OptionSim.o : src/OptionSim.cpp src/OptionSim.h
-	$(CC) $(CPPFLAGS) -c -o obj/OptionSim.o src/OptionSim.cpp
-
-obj/OptionClo.o : src/OptionClo.cpp src/OptionClo.h
-	$(CC) $(CPPFLAGS) -c -o obj/OptionClo.o src/OptionClo.cpp 
