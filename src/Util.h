@@ -15,7 +15,8 @@
 #include<functional>
 #include<iostream>
 
-namespace UtilFunc{
+namespace UtilFunc
+{
     double numericalDiff(std::function<double(double)>, double, double);
     double numericalDiff2(std::function<double(double)>, double, double);
     std::function<double(double)> Phi(double, double, double);

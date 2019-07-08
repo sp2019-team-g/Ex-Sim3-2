@@ -3,7 +3,8 @@
 
 #include "Util.h"
 
-class Process{
+class Process
+{
     public:
         Process(double, double);
         virtual ~Process(){};
@@ -12,7 +13,8 @@ class Process{
         double get_t();
         double get_T();
         double get_dt();
-        virtual double simulate(){return 0.0;};
+        virtual double simulate(){return -1.0;};
+        virtual double closeForm(){return -1.0;};
 
     private:
         double t_;

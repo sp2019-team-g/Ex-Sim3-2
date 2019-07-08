@@ -3,7 +3,8 @@
 
 #include "Process.h"
 
-class P32:public Process{
+class P32:public Process
+{
     public:
         P32(double, double, double, double, double, double);
         ~P32(){};
