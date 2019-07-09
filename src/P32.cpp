@@ -96,7 +96,8 @@ double P32::simulate(Arguments paras)
     double s = (1-rho_*rho_)*K;
     double ZZ = UF::normalRnd(m,s);
     double* ST = new double(std::exp(ZZ));
-    paras.set("ST",(void*)ST);
+    __ARG_SET("ST",ST,paras);
+    // paras.set("ST",(void*)ST);
     return *ST;
 }
 
