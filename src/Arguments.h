@@ -9,6 +9,7 @@
 #define __ARG_VAL(key,type,obj) (*(type*)(obj.get(key)))
 #define __ARG_PTR(key,type,obj) ((type*)(obj.get(key)))
 #define __ARG_SET(key,value,obj) (obj.set(key,(void*)value, [&,value](void)->void{delete value;}))
+
 class Arguments{
 	public:
 		Arguments();

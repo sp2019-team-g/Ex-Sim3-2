@@ -8,13 +8,16 @@
 
 class Path{
 	public:
-		Path();
-		Path(double, double, Process*);
+		Path(double, double, double, std::vector<double> );
 		Path(Arguments);
+		void add(double);
 	private:
-		std::vector<double> path_;
+		
+		double t_;
 		double dt_;
-		double t0_;
+		double T_;
+		std::vector<double> path_;
+		
 
 
 };
