@@ -2,7 +2,7 @@
 #define P32_H
 
 #include "Process.h"
-
+#include <vector>
 class P32:public Process
 {
     public:
@@ -11,7 +11,7 @@ class P32:public Process
         ~P32(){};
         void post_update();
         void para_load(Arguments);
-        double simulate();
+        double simulate(Arguments);
 
     private:
         double r_;
@@ -22,8 +22,6 @@ class P32:public Process
         double delta_;
         double ektT1_;
         double zp_;
-
-        bool loaded_;
 
         double S0_;
         double V0_;

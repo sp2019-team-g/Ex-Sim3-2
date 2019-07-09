@@ -25,6 +25,11 @@ void Process::set_T(double T)
     dt_ = T_-t_;
 }
 
+void Process::set_loaded(bool ldd)
+{
+    loaded_ = ldd;
+}
+
 double Process::get_t()
 {
     return t_;
@@ -40,6 +45,9 @@ double Process::get_dt()
     return dt_;
 }
 
-
+bool Process::check_loaded()
+{
+    return loaded_;
+}
 
 

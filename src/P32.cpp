@@ -14,7 +14,7 @@ P32::P32(
     kappa_ = kappa;
     theta_ = theta;
     epsilon_ = epsilon;
-    loaded_ = false;
+    set_loaded(false);
     post_update();
 }
 
@@ -29,9 +29,9 @@ P32::P32(Arguments paras):Process(paras)
     try{
         S0_ = __ARG_VAL("S0", double, paras);
         V0_ = __ARG_VAL("V0", double, paras);
-        loaded_ = true;
+        set_loaded(true);
     }catch(...){
-        loaded_ = false;
+        set_loaded(false);
     }
     post_update();
 }
@@ -49,7 +49,7 @@ void P32::post_update()
     delta_ = 4.0*(eps2_+kappa_)/eps2_;
     ektT1_ = std::exp((kappa_*theta_*T)-1.0);
     zp_ = eps2_*ektT1_/(4.0*kappa_*theta_ * (ektT1_/M_E));
-    if(loaded_){
+    if(check_loaded()){
         X0_ = 1.0/V0_;
         lambda_ = (X0_*4.0*kappa_*theta_)/(eps2_*ektT1_);
 
@@ -60,11 +60,12 @@ void P32::post_update()
 void P32::para_load(Arguments paras){
     S0_ = __ARG_VAL("S0", double, paras);
     V0_ = __ARG_VAL("V0", double, paras);
-    loaded_ = true;
+    set_loaded(true);
+    // loaded_ = true;
     post_update();
 }
 
-double P32::simulate()
+double P32::simulate(Arguments paras)
 {
     /*Assert loaded
      * */
@@ -94,6 +95,8 @@ double P32::simulate()
     double m = std::log(S0_) + r_*T-L/2+rho_*K;
     double s = (1-rho_*rho_)*K;
     double ZZ = UF::normalRnd(m,s);
-    return std::exp(ZZ);
+    double* ST = new double(std::exp(ZZ));
+    paras.set("ST",(void*)ST);
+    return *ST;
 }
 
