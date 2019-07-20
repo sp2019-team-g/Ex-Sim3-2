@@ -6,6 +6,17 @@ Arguments::Arguments()
 	desreg_ = std::map<std::string, std::function<void(void)> >();
 }
 
+Arguments::~Arguments()
+{
+	for(
+		std::map<std::string,std::function<void(void)> >::iterator it = desreg_.begin();
+		it != desreg_.end();
+		it++
+		)
+		(it->second)();
+
+}
+
 void Arguments::set(std::string key, void* value, std::function<void(void)>des)
 {
 	if(args_.find(key) == args_.end())

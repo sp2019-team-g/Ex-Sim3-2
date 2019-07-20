@@ -13,6 +13,7 @@
 class Arguments{
 	public:
 		Arguments();
+		~Arguments();
 		void set(std::string, void*,std::function<void(void)>);
 		void* get(std::string);
 		void del(std::string);

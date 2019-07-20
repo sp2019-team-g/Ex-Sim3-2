@@ -7,9 +7,10 @@
 #include "Option.h"
 #include "OptionSim.h"
 #include "OptionClo.h"
-
+template<class P,class O>
 class Factory{
 	public:
+		Factory(Arguments);
 		void buildArgument();
 		void buildPayoff();
 		void buildProcess();

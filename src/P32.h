@@ -11,6 +11,7 @@ class P32:public Process
         ~P32(){};
         void post_update();
         void para_load(Arguments);
+        double simulate();
         double simulate(Arguments);
 
     private:
