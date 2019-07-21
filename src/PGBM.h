@@ -21,7 +21,7 @@ class PGBM: public Process
 		double S0_;
 
 
-}
+};
 
 
 #endif

@@ -11,7 +11,7 @@ PGBM::PGBM(double dt,double mu,double sigma):Process(dt)
 PGBM::PGBM(Arguments paras):Process(paras)
 {
 	mu_ = __ARG_VAL("mu", double, paras);
-	sigma_ = __ARG_VAL("sigma_", double, paras);
+	sigma_ = __ARG_VAL("sigma", double, paras);
 	try
 	{
 		S0_ = __ARG_VAL("S0",double,paras);
