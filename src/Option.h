@@ -7,6 +7,7 @@
 class Option
 {
 	public:
+		Option(double);
 		Option(double, std::function<double(Arguments)>*);
 		Option(Arguments);
 		virtual ~Option(){};

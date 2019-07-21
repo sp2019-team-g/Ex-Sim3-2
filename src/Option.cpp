@@ -1,5 +1,10 @@
 #include "Option.h"
 
+Option::Option(double T)
+{
+	T_ = T;
+}
+
 Option::Option(double T, std::function<double(Arguments)>* pf)
 {
 	T_ = T;

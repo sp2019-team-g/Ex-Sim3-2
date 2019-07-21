@@ -3,18 +3,14 @@
 
 #include "Arguments.h"
 #include "Process.h"
-#include "P32.h"
+#include "PricingEng.h"
 #include "Option.h"
-#include "OptionSim.h"
-#include "OptionClo.h"
-template<class P,class O>
+template<class PS,class PE,class OP>
 class Factory{
 	public:
-		Factory(Arguments);
-		void buildArgument();
-		void buildPayoff();
-		void buildProcess();
-		void buildOption();
+		Factory();
+		void buildArg();
+		PricingEng* build();
 	private:
 		Arguments arg;
 };

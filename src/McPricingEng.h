@@ -11,7 +11,7 @@ class McPricingEng:public PricingEng{
 		double price(Arguments);
 	private:
 		Process*pro_;
-}
+};
 
 
 #endif

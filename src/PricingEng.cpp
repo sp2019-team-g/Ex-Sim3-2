@@ -2,7 +2,8 @@
 
 #include "PricingEng.h"
 
-PricingEng::PricingEng(Option*opt){
+PricingEng::PricingEng(Option*opt)
+{
 	opt_ = opt;
 }
 
