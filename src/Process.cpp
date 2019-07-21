@@ -6,7 +6,7 @@ Process::Process(double dt)
 }
 
 Process::Process(Arguments paras){
-    dt_ = __ARG_VAL(std::string("dt"), double, paras);
+    dt_ = paras.g_VAL<double>("dt");
 }
 
 void Process::set_loaded(bool ldd)

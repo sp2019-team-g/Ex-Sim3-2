@@ -21,15 +21,15 @@ P32::P32(
 P32::P32(Arguments paras):Process(paras)
 {
     // Process(0.0, __ARG_VAL("T", double, paras));
-    r_ = __ARG_VAL("r", double, paras);
-    rho_ = __ARG_VAL("rho", double, paras);
-    kappa_ = __ARG_VAL("kappa", double, paras);
-    theta_ = __ARG_VAL("theta", double, paras);
-    epsilon_ = __ARG_VAL("epsilon", double, paras);
+    r_ = paras.g_VAL<double>("r");
+    rho_ = paras.g_VAL<double>("rho");
+    kappa_ = paras.g_VAL<double>("kappa");
+    theta_ = paras.g_VAL<double>("theta");
+    epsilon_ = paras.g_VAL<double>("epsilon");
     try
     {
-        S0_ = __ARG_VAL("S0", double, paras);
-        V0_ = __ARG_VAL("V0", double, paras);
+        S0_ = paras.g_VAL<double>("S0");
+        V0_ = paras.g_VAL<double>("V0");
         set_loaded(true);
     }
     catch(...)
@@ -62,8 +62,8 @@ void P32::post_update()
 
 void P32::para_load(Arguments paras)
 {
-    S0_ = __ARG_VAL("S0", double, paras);
-    V0_ = __ARG_VAL("V0", double, paras);
+    S0_ = paras.g_VAL<double>("S0");
+    V0_ = paras.g_VAL<double>("V0");
     set_loaded(true);
     post_update();
 }
@@ -104,8 +104,7 @@ double P32::simulate(Arguments paras)
     /*Assert loaded
      * */
     para_load(paras);
-    double* ST = new double(simulate());
-    __ARG_SET("ST",ST,paras);
-    return *ST;
+    paras.g_SET<double>("ST",new double(simulate()));
+    return 0.0;
 }
 
