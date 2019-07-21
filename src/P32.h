@@ -8,7 +8,6 @@ class P32:public Process
     public:
         P32(double, double, double, double, double, double);
         P32(Arguments);
-        ~P32(){};
         void post_update();
         void para_load(Arguments);
         double simulate();

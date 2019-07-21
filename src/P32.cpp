@@ -26,11 +26,14 @@ P32::P32(Arguments paras):Process(paras)
     kappa_ = __ARG_VAL("kappa", double, paras);
     theta_ = __ARG_VAL("theta", double, paras);
     epsilon_ = __ARG_VAL("epsilon", double, paras);
-    try{
+    try
+    {
         S0_ = __ARG_VAL("S0", double, paras);
         V0_ = __ARG_VAL("V0", double, paras);
         set_loaded(true);
-    }catch(...){
+    }
+    catch(...)
+    {
         set_loaded(false);
     }
     post_update();
@@ -57,7 +60,8 @@ void P32::post_update()
 
 }
 
-void P32::para_load(Arguments paras){
+void P32::para_load(Arguments paras)
+{
     S0_ = __ARG_VAL("S0", double, paras);
     V0_ = __ARG_VAL("V0", double, paras);
     set_loaded(true);
@@ -66,7 +70,7 @@ void P32::para_load(Arguments paras){
 
 double P32::simulate()
 {
-    double T = get_T();
+    double T = get_dt();
     double Z = UF::ncChi2Rnd(delta_,lambda_);
     double XT = Z*zp_;
     double x = p_*std::sqrt(XT*X0_);
@@ -99,7 +103,7 @@ double P32::simulate(Arguments paras)
 {
     /*Assert loaded
      * */
-
+    para_load(paras);
     double* ST = new double(simulate());
     __ARG_SET("ST",ST,paras);
     return *ST;

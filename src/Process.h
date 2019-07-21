@@ -13,7 +13,6 @@ class Process
         bool check_loaded();
         virtual double simulate(){return -1.0;}
         virtual double simulate(Arguments){return -1.0;};
-        virtual double closeForm(Arguments){return -1.0;};
         virtual void para_load(Arguments){};
 
     private:
