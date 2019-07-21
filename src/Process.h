@@ -7,13 +7,13 @@ class Process
 {
     public:
         Process(double);
-        Process(Arguments);
+        Process(Arguments&);
         void set_loaded(bool);
         double get_dt();
         bool check_loaded();
         virtual double simulate(){return -1.0;}
-        virtual double simulate(Arguments){return -1.0;};
-        virtual void para_load(Arguments){};
+        virtual double simulate(Arguments&){return -1.0;};
+        virtual void para_load(Arguments&){};
 
     private:
         double dt_;

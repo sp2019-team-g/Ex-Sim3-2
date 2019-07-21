@@ -1,12 +1,12 @@
 
 #include "McPricingEng.h"
 
-McPricingEng::McPricingEng(Option*opt,Process*pro):PricingEng(opt)
+McPricingEng::McPricingEng(Option*opt, Process*pro):PricingEng(opt)
 {
 	pro_ = pro;
 }
 
-McPricingEng::McPricingEng(Arguments &paras):PricingEng(paras)
+McPricingEng::McPricingEng(Arguments& paras):PricingEng(paras)
 {
 	pro_ = __ARG_PTR("process", Process, paras);
 }
@@ -16,7 +16,7 @@ double McPricingEng::price()
 	throw std::runtime_error("error");
 }
 
-double McPricingEng::price(Arguments &paras)
+double McPricingEng::price(Arguments& paras)
 {
 	double bsize = (double)__ARG_VAL("batch_size",size_t,paras);
 	double T = __ARG_VAL("T",double,paras);

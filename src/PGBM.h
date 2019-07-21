@@ -9,11 +9,11 @@ class PGBM: public Process
 {
 	public:
 		PGBM(double,double,double);
-		PGBM(Arguments);
+		PGBM(Arguments&);
 		void post_update()
-		void para_load(Arguments);
+		void para_load(Arguments&);
 		double simulate();
-		double simulate(Arguments);
+		double simulate(Arguments&);
 
 	private:
 		double mu_;

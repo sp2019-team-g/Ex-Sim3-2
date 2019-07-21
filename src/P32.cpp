@@ -18,7 +18,7 @@ P32::P32(
     post_update();
 }
 
-P32::P32(Arguments paras):Process(paras)
+P32::P32(Arguments& paras):Process(paras)
 {
     // Process(0.0, __ARG_VAL("T", double, paras));
     r_ = paras.g_VAL<double>("r");
@@ -60,7 +60,7 @@ void P32::post_update()
 
 }
 
-void P32::para_load(Arguments paras)
+void P32::para_load(Arguments& paras)
 {
     S0_ = paras.g_VAL<double>("S0");
     V0_ = paras.g_VAL<double>("V0");
@@ -99,7 +99,7 @@ double P32::simulate()
     return std::exp(ZZ);
 }
 
-double P32::simulate(Arguments paras)
+double P32::simulate(Arguments& paras)
 {
     /*Assert loaded
      * */

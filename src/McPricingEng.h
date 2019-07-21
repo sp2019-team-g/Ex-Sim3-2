@@ -6,9 +6,9 @@
 class McPricingEng:public PricingEng{
 	public:
 		McPricingEng(Option*,Process*);
-		McPricingEng(Arguments);
+		McPricingEng(Arguments&);
 		double price();
-		double price(Arguments);
+		double price(Arguments&);
 	private:
 		Process*pro_;
 };

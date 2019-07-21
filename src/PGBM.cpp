@@ -8,13 +8,13 @@ PGBM::PGBM(double dt,double mu,double sigma):Process(dt)
 	set_loaded(false);
 }
 
-PGBM::PGBM(Arguments paras):Process(paras)
+PGBM::PGBM(Arguments& paras):Process(paras)
 {
-	mu_ = __ARG_VAL("mu", double, paras);
-	sigma_ = __ARG_VAL("sigma", double, paras);
+	mu_ = paras.g_VAL<double>("mu");
+	sigma_ = paras.g_VAL<double>("sigma");
 	try
 	{
-		S0_ = __ARG_VAL("S0",double,paras);
+		S0_ = paras.g_VAL<double>("S0");
 		set_loaded(true);
 	}
 	catch(...)
@@ -26,9 +26,9 @@ PGBM::PGBM(Arguments paras):Process(paras)
 
 void PGBM::post_update(){}
 
-void PGBM::para_load(Arguments paras)
+void PGBM::para_load(Arguments& paras)
 {
-	S0_ = __ARG_VAL("S0", double, paras);
+	S0_ = paras.g_VAL<double>("S0");
 	set_loaded(true);
 	post_update();
 }
@@ -39,7 +39,7 @@ double PGBM::simulate()
 	return S0_*std::exp((mu_-sigma_*sigma_/2.0)*T + sigma_*UF::normalRng(0,T));
 }
 
-double PGBM::simulate(Arguments paras)
+double PGBM::simulate(Arguments& paras)
 {
 	para_load(paras);
 	double* res = new double(simulate());

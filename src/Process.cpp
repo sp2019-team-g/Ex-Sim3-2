@@ -5,7 +5,7 @@ Process::Process(double dt)
     dt_ = dt;
 }
 
-Process::Process(Arguments paras){
+Process::Process(Arguments& paras){
     dt_ = paras.g_VAL<double>("dt");
 }
 
