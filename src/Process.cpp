@@ -2,8 +2,6 @@
 
 Process::Process(double dt)
 {
-    t_ = t;
-    T_ = T;
     dt_ = dt;
 }
 
