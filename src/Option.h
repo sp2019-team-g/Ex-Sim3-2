@@ -3,7 +3,7 @@
 
 #include "Util.h"
 #include "Process.h"
-
+#include 
 class Option
 {
 	public:
@@ -13,6 +13,7 @@ class Option
 		virtual ~Option(){};
 		double get_T();
 		double payoff(Arguments&);
+
 	private:
 		double T_;
 		std::function<double(Arguments&)>* payoff_;

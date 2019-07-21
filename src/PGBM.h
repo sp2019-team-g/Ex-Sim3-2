@@ -14,7 +14,14 @@ class PGBM: public Process
 		void para_load(Arguments&);
 		double simulate();
 		double simulate(Arguments&);
-
+		static std::vector<std::function<void(Arguments&)> >plist()
+		{
+			std::vector<std::function<void(Arguments)> > res();
+			res.push_back(g_ASK<double>("mu"));
+			res.push_back(g_ASK<double>("sigma"));
+			res.push_back(g_ASK<double>("S0"));
+			return res;
+		}
 	private:
 		double mu_;
 		double sigma_;

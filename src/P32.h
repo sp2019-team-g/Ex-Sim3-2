@@ -2,7 +2,9 @@
 #define P32_H
 
 #include "Process.h"
+#include "Arguments.h"
 #include <vector>
+#include <functional>
 class P32:public Process
 {
     public:
@@ -12,6 +14,19 @@ class P32:public Process
         void para_load(Arguments&);
         double simulate();
         double simulate(Arguments&);
+        static std::vector<std::function<void(Arguments&)> >plist()
+        {
+            std::vector<std::function<void(Arguments)> > res();
+            res.push_back(g_ASK<double>("r"));
+            res.push_back(g_ASK<double>("rho"));
+            res.push_back(g_ASK<double>("kappa"));
+            res.push_back(g_ASK<double>("theta"));
+            res.push_back(g_ASK<double>("epsilon"));
+            res.push_back(g_ASK<double>("dt"));
+            res.push_back(g_ASK<double>("S0"));
+            res.push_back(g_ASK<double>("V0"));
+            return res;
+        }
 
     private:
         double r_;

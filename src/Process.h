@@ -18,7 +18,6 @@ class Process
     private:
         double dt_;
         bool loaded_;
-
 };
 
 
