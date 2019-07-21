@@ -1,17 +1,20 @@
 #include "Option.h"
 
-Option::Option(double K, double T, std::function<double(Arguments)>* pf)
+Option::Option(double T)
 {
-	K_ = K;
+	T_ = T;
+}
+
+Option::Option(double T, std::function<double(Arguments&)>* pf)
+{
 	T_ = T;
 	payoff_ = pf;
 }
 
-Option::Option(Arguments paras)
+Option::Option(Arguments& paras)
 {
-	K_ = __ARG_VAL("K", double, paras);
-	T_ = __ARG_VAL("T", double, paras);
-	payoff_ = __ARG_PTR("payoff", std::function<double(Arguments)>, paras);
+	T_ = paras.g_VAL<double>("T");
+	payoff_ = paras.g_PTR<std::function<double(Arguments&)> >("payoff");
 }
 
 double Option::get_T()
@@ -19,10 +22,7 @@ double Option::get_T()
 	return T_;
 }
 
-double Option::get_K(){
-	return K_;
-}
-
-double Option::payoff(Arguments paras){
+double Option::payoff(Arguments& paras){
 	return payoff_->operator()(paras);
 }
+

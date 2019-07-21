@@ -7,11 +7,11 @@ class P32:public Process
 {
     public:
         P32(double, double, double, double, double, double);
-        P32(Arguments);
-        ~P32(){};
+        P32(Arguments&);
         void post_update();
-        void para_load(Arguments);
-        double simulate(Arguments);
+        void para_load(Arguments&);
+        double simulate();
+        double simulate(Arguments&);
 
     private:
         double r_;

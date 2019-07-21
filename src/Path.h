@@ -9,7 +9,7 @@
 class Path{
 	public:
 		Path(double, double, double, std::vector<double> );
-		Path(Arguments);
+		Path(Arguments&);
 		void add(double);
 	private:
 		

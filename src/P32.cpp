@@ -6,8 +6,8 @@ P32::P32(
         double kappa,
         double theta,
         double epsilon,
-        double T
-        ): Process(0.0,T)
+        double dt
+        ): Process(dt)
 {
     r_ = r;
     rho_ = rho;
@@ -18,19 +18,22 @@ P32::P32(
     post_update();
 }
 
-P32::P32(Arguments paras):Process(paras)
+P32::P32(Arguments& paras):Process(paras)
 {
     // Process(0.0, __ARG_VAL("T", double, paras));
-    r_ = __ARG_VAL("r", double, paras);
-    rho_ = __ARG_VAL("rho", double, paras);
-    kappa_ = __ARG_VAL("kappa", double, paras);
-    theta_ = __ARG_VAL("theta", double, paras);
-    epsilon_ = __ARG_VAL("epsilon", double, paras);
-    try{
-        S0_ = __ARG_VAL("S0", double, paras);
-        V0_ = __ARG_VAL("V0", double, paras);
+    r_ = paras.g_VAL<double>("r");
+    rho_ = paras.g_VAL<double>("rho");
+    kappa_ = paras.g_VAL<double>("kappa");
+    theta_ = paras.g_VAL<double>("theta");
+    epsilon_ = paras.g_VAL<double>("epsilon");
+    try
+    {
+        S0_ = paras.g_VAL<double>("S0");
+        V0_ = paras.g_VAL<double>("V0");
         set_loaded(true);
-    }catch(...){
+    }
+    catch(...)
+    {
         set_loaded(false);
     }
     post_update();
@@ -41,9 +44,9 @@ void P32::post_update()
 /*
  * TODO: Validate Inputs
  * */
-    double T = get_T();
+    double T = get_dt();
     eps2_ = epsilon_*epsilon_;
-     p_ = - (2.0*kappa_*theta_)/eps2_;
+    p_ = - (2.0*kappa_*theta_)/eps2_;
     v_ = p_ * (kappa_+eps2_)/(kappa_*theta_) - 1.0;
     Delta_ = T*eps2_/4.0; 
     delta_ = 4.0*(eps2_+kappa_)/eps2_;
@@ -57,19 +60,17 @@ void P32::post_update()
 
 }
 
-void P32::para_load(Arguments paras){
-    S0_ = __ARG_VAL("S0", double, paras);
-    V0_ = __ARG_VAL("V0", double, paras);
+void P32::para_load(Arguments& paras)
+{
+    S0_ = paras.g_VAL<double>("S0");
+    V0_ = paras.g_VAL<double>("V0");
     set_loaded(true);
-    // loaded_ = true;
     post_update();
 }
 
-double P32::simulate(Arguments paras)
+double P32::simulate()
 {
-    /*Assert loaded
-     * */
-    double T = get_T();
+    double T = get_dt();
     double Z = UF::ncChi2Rnd(delta_,lambda_);
     double XT = Z*zp_;
     double x = p_*std::sqrt(XT*X0_);
@@ -95,9 +96,15 @@ double P32::simulate(Arguments paras)
     double m = std::log(S0_) + r_*T-L/2+rho_*K;
     double s = (1-rho_*rho_)*K;
     double ZZ = UF::normalRnd(m,s);
-    double* ST = new double(std::exp(ZZ));
-    __ARG_SET("ST",ST,paras);
-    // paras.set("ST",(void*)ST);
-    return *ST;
+    return std::exp(ZZ);
+}
+
+double P32::simulate(Arguments& paras)
+{
+    /*Assert loaded
+     * */
+    para_load(paras);
+    paras.g_SET<double>("ST",new double(simulate()));
+    return 0.0;
 }
 
