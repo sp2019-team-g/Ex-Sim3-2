@@ -1,7 +1,7 @@
 CPPFLAGS=-std=c++11 -Wall -pedantic
 TESTFLAG=-Isrc -o
 CC=g++
-TSTS=tmp/testarg tmp/testp32 tmp/testproc tmp/testutl tmp/testopt
+TSTS=tmp/testarg tmp/testp32 tmp/testproc tmp/testutl tmp/testopt tmp/testeuc
 OBJS1=obj/Arguments.o obj/Util.o obj/Process.o obj/P32.o obj/Option.o
 OBJS2=obj/PGBM.o obj/PricingEng.o obj/McPricingEng.o obj/EUCallOpt.o obj/EUPutOpt.o
 OBJS=$(OBJS1) $(OBJS2)
@@ -24,6 +24,9 @@ tmp/testproc : test/PStest.cpp $(OBJS)
 
 tmp/testutl : test/UFtest.cpp src/Util.h $(OBJS)
 	$(CC) $(CPPFLAGS) $(TESTFLAG) tmp/testutl $(OBJS) test/UFtest.cpp
+
+tmp/testeuc : test/EUOtest.cpp src/EUCallOpt.h src/EUPutOpt.h $(OBJS)
+	$(CC) $(CPPFLAGS) $(TESTFLAG) tmp/testeuc $(OBJS) test/EUOtest.cpp
 
 obj/Arguments.o : src/Arguments.cpp src/Arguments.h
 	$(CC) $(CPPFLAGS) -c -o obj/Arguments.o src/Arguments.cpp
