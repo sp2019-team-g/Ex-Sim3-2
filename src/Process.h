@@ -7,6 +7,7 @@ class Process
 {
     public:
         Process(double);
+        virtual ~Process(){};
         Process(Arguments&);
         void set_loaded(bool);
         double get_dt();

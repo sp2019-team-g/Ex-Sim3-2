@@ -1,8 +1,8 @@
 CPPFLAGS=-std=c++11 -Wall -pedantic
 TESTFLAG=-Isrc -o
 CC=g++
-TSTS=tmp/testarg tmp/testp32 tmp/testproc tmp/testutl tmp/testopt tmp/testeuc tmp/testinp
-OBJS1=obj/Arguments.o obj/Util.o obj/Process.o obj/P32.o obj/Option.o obj/Input.o
+TSTS=tmp/testarg tmp/testp32 tmp/testproc tmp/testutl tmp/testopt tmp/testeuc tmp/testinp tmp/testfac
+OBJS1=obj/Arguments.o obj/Util.o obj/Process.o obj/P32.o obj/Option.o obj/Input.o obj/Factory.o
 OBJS2=obj/PGBM.o obj/PricingEng.o obj/McPricingEng.o obj/EUCallOpt.o obj/EUPutOpt.o
 OBJS=$(OBJS1) $(OBJS2)
 test : $(TSTS)
@@ -30,6 +30,9 @@ tmp/testeuc : test/EUOtest.cpp src/EUCallOpt.h src/EUPutOpt.h $(OBJS)
 
 tmp/testinp : test/INPtest.cpp src/Input.h $(OBJS)
 	$(CC) $(CPPFLAGS) $(TESTFLAG) tmp/testinp $(OBJS) test/INPtest.cpp
+
+tmp/testfac : test/FACtest.cpp src/Factory.h src/PGBM.h src/EUCallOpt.h src/McPricingEng.h $(OBJS)
+	$(CC) $(CPPFLAGS) $(TESTFLAG) tmp/testfac $(OBJS) test/FACtest.cpp
 
 obj/Arguments.o : src/Arguments.cpp src/Arguments.h
 	$(CC) $(CPPFLAGS) -c -o obj/Arguments.o src/Arguments.cpp
@@ -64,5 +67,7 @@ obj/McPricingEng.o : src/McPricingEng.cpp src/McPricingEng.h
 obj/Input.o : src/Input.cpp src/Input.h
 	$(CC) $(CPPFLAGS) -c -o obj/Input.o src/Input.cpp
 
+obj/Factory.o : src/Factory.cpp src/Factory.h
+	$(CC) $(CPPFLAGS) -c -o obj/Factory.o src/Factory.cpp
 
 

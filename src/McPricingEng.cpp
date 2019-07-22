@@ -1,6 +1,7 @@
 
 #include "McPricingEng.h"
 
+
 McPricingEng::McPricingEng(Option*opt, Process*pro) : PricingEng(opt)
 {
 	pro_ = pro;
@@ -19,10 +20,14 @@ double McPricingEng::price()
 double McPricingEng::price(Arguments& paras)
 {
 	double bsize = (double)paras.g_VAL<size_t>("batch_size");
+
 	double T = paras.g_VAL<double>("T");
+
 	double res = 0.0;
+
 	for(double i = 0;i<bsize;i=i+1.0)
 	{
+
 		pro_->simulate(paras);
 		res += opt_->payoff(paras)*std::exp(-T)/T;
 	}

@@ -1,5 +1,6 @@
 #include "Option.h"
-
+// #include <iostream>
+// using namespace std;
 Option::Option(double T)
 {
 	T_ = T;
@@ -13,6 +14,7 @@ Option::Option(double T, std::function<double(Arguments&)>* pf)
 
 Option::Option(Arguments& paras)
 {
+	// cout<<"yyyy"<<endl;
 	T_ = paras.g_VAL<double>("T");
 	try
 	{

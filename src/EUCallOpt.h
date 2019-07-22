@@ -9,7 +9,7 @@ class EUCallOpt : public Option
 	public:
 		EUCallOpt(double, double);
 		EUCallOpt(Arguments&);
-		double payoff(Arguments&);
+		double payoff(Arguments&) override;
 		static PLIST plist()
 		{
             PLIST res;

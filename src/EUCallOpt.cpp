@@ -2,7 +2,6 @@
 #include "EUCallOpt.h"
 #include "Arguments.h"
 #include "Util.h"
-
 EUCallOpt::EUCallOpt(double T, double K) : Option(T)
 {
 	K_ = K;

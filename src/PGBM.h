@@ -20,6 +20,7 @@ class PGBM : public Process
 			res.push_back(g_ASK<double>("mu"));
 			res.push_back(g_ASK<double>("sigma"));
 			res.push_back(g_ASK<double>("S0"));
+			res.push_back(g_ASK<double>("dt"));
 			return res;
 		}
 	private:

@@ -14,7 +14,7 @@ class Option
 		Option(Arguments&);
 		virtual ~Option(){};
 		double get_T();
-		double payoff(Arguments&);
+		virtual double payoff(Arguments&);
 
 	private:
 		double T_;

@@ -14,7 +14,7 @@ Arguments::~Arguments()
 		it++
 		)
 		(it->second)();
-
+	
 }
 
 void Arguments::set(std::string key, void* value, std::function<void(void)>des)

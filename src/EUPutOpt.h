@@ -8,7 +8,7 @@ class EUPutOpt : public Option
 	public: 
 		EUPutOpt(double, double);
 		EUPutOpt(Arguments&);
-		double payoff(Arguments&);
+		double payoff(Arguments&) override;
 		static PLIST plist()
 		{
 			PLIST res;
