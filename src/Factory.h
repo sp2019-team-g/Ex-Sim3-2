@@ -6,14 +6,27 @@
 #include "PricingEng.h"
 #include "Option.h"
 
+#include <vector>
+
+
 template<class PS,class PE,class OP>
 class Factory{
 	public:
-		Factory();
-		void buildArg();
-		PricingEng* build();
+		Factory()
+		{
+			arg_ = 
+		}
+
+		void build()
+		{
+
+		}
 	private:
-		Arguments arg;
+		Arguments arg_;
+		Process* ps_;
+		PricingEng* pe_;
+		Option* op_;
+
 };
 
 
