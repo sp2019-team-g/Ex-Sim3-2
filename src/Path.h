@@ -11,8 +11,8 @@ class Path{
 		Path(double, double, double, std::vector<double> );
 		Path(Arguments&);
 		void add(double);
-	private:
-		
+	
+	private:	
 		double t_;
 		double dt_;
 		double T_;

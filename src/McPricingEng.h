@@ -7,19 +7,22 @@
 #include <functional>
 #include <vector>
 #include <stdexcept>
-class McPricingEng:public PricingEng{
+
+class McPricingEng : public PricingEng
+{
 	public:
 		McPricingEng(Option*, Process*);
 		McPricingEng(Arguments&);
 		double price();
 		double price(Arguments&);
-		static std::vector<std::function<void(Arguments&)> >plist()
+		static PLIST plist()
 		{
-			std::vector<std::function<void(Arguments)> > res();
+			PLIST res;
 			res.push_back(g_ASK<size_t>("batch_size"));
 			res.push_back(g_ASK<double>("T"));
 			return res;
 		}
+
 	private:
 		Process*pro_;
 };

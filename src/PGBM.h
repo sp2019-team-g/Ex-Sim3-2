@@ -5,7 +5,7 @@
 #include "Process.h"
 #include "Arguments.h"
 
-class PGBM: public Process
+class PGBM : public Process
 {
 	public:
 		PGBM(double,double,double);
@@ -14,9 +14,9 @@ class PGBM: public Process
 		void para_load(Arguments&);
 		double simulate();
 		double simulate(Arguments&);
-		static std::vector<std::function<void(Arguments&)> >plist()
+		static PLIST plist()
 		{
-			std::vector<std::function<void(Arguments)> > res();
+			PLIST res;
 			res.push_back(g_ASK<double>("mu"));
 			res.push_back(g_ASK<double>("sigma"));
 			res.push_back(g_ASK<double>("S0"));

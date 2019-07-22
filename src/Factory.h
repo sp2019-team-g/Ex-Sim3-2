@@ -5,6 +5,7 @@
 #include "Process.h"
 #include "PricingEng.h"
 #include "Option.h"
+
 template<class PS,class PE,class OP>
 class Factory{
 	public:

@@ -5,7 +5,7 @@
 #include "Arguments.h"
 #include <vector>
 #include <functional>
-class P32:public Process
+class P32 : public Process
 {
     public:
         P32(double, double, double, double, double, double);
@@ -14,9 +14,9 @@ class P32:public Process
         void para_load(Arguments&);
         double simulate();
         double simulate(Arguments&);
-        static std::vector<std::function<void(Arguments&)> >plist()
+        static PLIST plist()
         {
-            std::vector<std::function<void(Arguments)> > res();
+            PLIST res;
             res.push_back(g_ASK<double>("r"));
             res.push_back(g_ASK<double>("rho"));
             res.push_back(g_ASK<double>("kappa"));

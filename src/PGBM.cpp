@@ -1,14 +1,14 @@
 
 #include "PGBM.h"
 
-PGBM::PGBM(double dt,double mu,double sigma):Process(dt)
+PGBM::PGBM(double dt,double mu,double sigma) : Process(dt)
 {
 	mu_ = mu;
 	sigma_ = sigma;
 	set_loaded(false);
 }
 
-PGBM::PGBM(Arguments& paras):Process(paras)
+PGBM::PGBM(Arguments& paras) : Process(paras)
 {
 	mu_ = paras.g_VAL<double>("mu");
 	sigma_ = paras.g_VAL<double>("sigma");

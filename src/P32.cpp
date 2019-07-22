@@ -7,7 +7,7 @@ P32::P32(
         double theta,
         double epsilon,
         double dt
-        ): Process(dt)
+        ) : Process(dt)
 {
     r_ = r;
     rho_ = rho;
@@ -18,9 +18,8 @@ P32::P32(
     post_update();
 }
 
-P32::P32(Arguments& paras):Process(paras)
+P32::P32(Arguments& paras) : Process(paras)
 {
-    // Process(0.0, __ARG_VAL("T", double, paras));
     r_ = paras.g_VAL<double>("r");
     rho_ = paras.g_VAL<double>("rho");
     kappa_ = paras.g_VAL<double>("kappa");

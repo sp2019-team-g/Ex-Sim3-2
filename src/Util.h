@@ -9,11 +9,14 @@
 #include <boost/random/variate_generator.hpp>
 
 
-#include<random>
-#include<cmath>
-#include<ctime>
-#include<functional>
-#include<iostream>
+#include <random>
+#include <cmath>
+#include <ctime>
+#include <functional>
+#include <iostream>
+#include <vector>
+
+
 
 namespace UtilFunc
 {
@@ -25,6 +28,12 @@ namespace UtilFunc
     double ncChi2Rnd(double, double);
     double uniRnd(double , double);
     double rvs(std::function<double(double)>,double);
+    template<class T> T max(T a, T b)
+    {
+    	if(a>b)
+    		return a;
+    	return b;
+    }
 }
 namespace UF = UtilFunc;
 

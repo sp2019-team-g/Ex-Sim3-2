@@ -14,7 +14,11 @@ Option::Option(double T, std::function<double(Arguments&)>* pf)
 Option::Option(Arguments& paras)
 {
 	T_ = paras.g_VAL<double>("T");
-	payoff_ = paras.g_PTR<std::function<double(Arguments&)> >("payoff");
+	try
+	{
+		payoff_ = paras.g_PTR<std::function<double(Arguments&)> >("payoff");
+	}
+	catch(...){}
 }
 
 double Option::get_T()

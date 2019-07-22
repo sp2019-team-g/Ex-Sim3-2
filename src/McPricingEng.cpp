@@ -1,12 +1,12 @@
 
 #include "McPricingEng.h"
 
-McPricingEng::McPricingEng(Option*opt, Process*pro):PricingEng(opt)
+McPricingEng::McPricingEng(Option*opt, Process*pro) : PricingEng(opt)
 {
 	pro_ = pro;
 }
 
-McPricingEng::McPricingEng(Arguments& paras):PricingEng(paras)
+McPricingEng::McPricingEng(Arguments& paras) : PricingEng(paras)
 {
 	pro_ = paras.g_PTR<Process>("process");
 }
