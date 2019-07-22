@@ -24,7 +24,7 @@ class McPricingEng : public PricingEng
 		}
 
 	private:
-		Process*pro_;
+		Process* pro_;
 };
 
 

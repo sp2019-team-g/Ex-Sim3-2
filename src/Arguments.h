@@ -6,7 +6,7 @@
 #include <typeinfo>
 #include <functional>
 #include <iostream>
-
+#include <vector>
 
 
 
@@ -25,7 +25,7 @@ class Arguments{
 		{
 			return (T*)get(key);
 		}
-		template<class T> void g_SET(std::string key,T*val)
+		template<class T> void g_SET(std::string key, T*val)
 		{
 			set(key,(void*)val,[&,val](void)->void{delete val;});
 		}

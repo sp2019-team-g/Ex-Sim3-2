@@ -10,7 +10,7 @@ class PGBM : public Process
 	public:
 		PGBM(double,double,double);
 		PGBM(Arguments&);
-		void post_update()
+		void post_update();
 		void para_load(Arguments&);
 		double simulate();
 		double simulate(Arguments&);

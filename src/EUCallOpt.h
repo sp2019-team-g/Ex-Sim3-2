@@ -17,6 +17,7 @@ class EUCallOpt : public Option
             res.push_back(g_ASK<double>("T"));
             return res;
 		}
+		
 	private:
 		double K_;
 };
