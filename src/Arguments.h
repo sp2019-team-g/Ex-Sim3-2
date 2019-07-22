@@ -7,16 +7,18 @@
 #include <functional>
 #include <iostream>
 #include <vector>
-
+#include <limits>
 
 
 class Arguments{
 	public:
 		Arguments();
 		~Arguments();
+
 		void set(std::string, void*, std::function<void(void)>);
 		void* get(std::string);
 		void del(std::string);
+		bool has(std::string);
 		template<class T> T g_VAL(std::string key)
 		{
 			return (*(T*)(get(key)));
@@ -37,21 +39,33 @@ class Arguments{
 
 template<class T> std::function<void(Arguments&)> g_ASK(std::string key)
 {
+
 	T* a = new T();
 	return [&,key,a](Arguments& arg)->void
 	{
-		std::cout<<key<<"("<<typeid(T).name() <<") : ";
-		try
+		if(arg.has(key))
 		{
+			delete a;
+			return;
+		}
+		while(1)
+		{
+			std::cout<<key<<"("<<typeid(T).name() <<") : ";
+
 			std::cin>>*a;
-			arg.g_SET<T>(key,a);
+
+			if(std::cin.fail())
+			{
+				std::cin.clear();
+				std::cin.ignore(std::numeric_limits<std::streamsize>::max(),'\n');
+				std::cout<<"err"<<std::endl;
+			}
+			else
+			{
+				arg.g_SET<T>(key,a);
+				break;
+			}
 		}
-		catch(...)
-		{
-			std::cout<<"err";
-		}
-		std::cout<<arg.g_VAL<T>(key);
-		std::cout<<std::endl;
 	};
 }
 

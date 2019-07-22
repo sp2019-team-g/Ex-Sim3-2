@@ -8,8 +8,6 @@
 #include "Input.h"
 
 #include <vector>
-// #include <iostream>
-// using namespace std;
 
 template<class PS,class PE,class OP>
 class Factory{

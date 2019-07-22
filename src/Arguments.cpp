@@ -42,5 +42,8 @@ void Arguments::del(std::string key)
 	desreg_[key]();
 }
 
-
+bool Arguments::has(std::string key)
+{
+	return (args_.find(key)!=args_.end());
+}
 
