@@ -58,6 +58,10 @@ class Factory{
 		{
 			return pe_;
 		}
+		double price()
+		{
+			return pe_ -> price(arg_);
+		}
 	private:
 		Arguments arg_;
 		Process* ps_;

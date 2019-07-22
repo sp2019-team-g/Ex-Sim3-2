@@ -17,7 +17,6 @@
 #include <vector>
 
 
-
 namespace UtilFunc
 {
     double numericalDiff(std::function<double(double)>, double, double);

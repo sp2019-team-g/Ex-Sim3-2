@@ -14,5 +14,6 @@ int main()
 	fac.build();
 	Arguments& a = fac.get_arg();
 	cout<<fac.get_pe() -> price(a)<<endl;
+	cout<<fac.price()<<endl;
 	return 0;
 }

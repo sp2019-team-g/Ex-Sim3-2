@@ -9,6 +9,10 @@ test : $(TSTS)
 clean :
 	rm obj/*.o
 	rm tmp/*
+	rm bin/*
+
+bin/app : src/app.cpp $(OBJS)
+	$(CC) $(CPPFLAGS) -Isrc -o bin/app src/app.cpp $(OBJS)
 
 tmp/testopt : test/OPTtest.cpp src/Option.h $(OBJS)
 	$(CC) $(CPPFLAGS) $(TESTFLAG) tmp/testopt $(OBJS) test/OPTtest.cpp
