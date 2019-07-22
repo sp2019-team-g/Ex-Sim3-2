@@ -1,14 +1,14 @@
 
 #include "PGBM.h"
 
-PGBM::PGBM(double dt,double mu,double sigma):Process(dt)
+PGBM::PGBM(double dt,double mu,double sigma) : Process(dt)
 {
 	mu_ = mu;
 	sigma_ = sigma;
 	set_loaded(false);
 }
 
-PGBM::PGBM(Arguments& paras):Process(paras)
+PGBM::PGBM(Arguments& paras) : Process(paras)
 {
 	mu_ = paras.g_VAL<double>("mu");
 	sigma_ = paras.g_VAL<double>("sigma");
@@ -36,13 +36,13 @@ void PGBM::para_load(Arguments& paras)
 double PGBM::simulate()
 {
 	double T = get_dt();
-	return S0_*std::exp((mu_-sigma_*sigma_/2.0)*T + sigma_*UF::normalRng(0,T));
+	return S0_*std::exp((mu_-sigma_*sigma_/2.0)*T + sigma_*UF::normalRnd(0,T));
 }
 
 double PGBM::simulate(Arguments& paras)
 {
 	para_load(paras);
 	double* res = new double(simulate());
-	__ARG_SET("ST", res, paras);
+	paras.g_SET<double>("ST", res);
 	return *res;
 }

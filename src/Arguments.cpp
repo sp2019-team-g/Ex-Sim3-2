@@ -42,36 +42,5 @@ void Arguments::del(std::string key)
 	desreg_[key]();
 }
 
-// template<class T> T Arguments::g_VAL(std::string key)
-// {
-// 	return (*(T*)(get(key)));
-// }
 
-// template<class T> T* Arguments::g_PTR(std::string key)
-// {
-// 	return (T*)get(key);
-// }
-
-// template<class T>void Arguments::g_SET(std::string key,T*val)
-// {
-// 	set(key,(void*)val,[&,val](void)->void{delete val;});
-// }
-
-// template<class T> std::function<void(Arguments)> g_ASK(std::string key)
-// {
-// 	return [&,key](Arguments arg)->void
-// 	{
-// 		T a;
-// 		std::cout<<key<<" : ";
-// 		try{
-// 			std::cin>>a;
-// 			arg.g_SET(key,new T(a));
-// 		}
-// 		catch(...)
-// 		{
-// 			std::cout<<"err";
-// 		}
-// 		std::cout<<std::endl;
-// 	};
-// }
 
