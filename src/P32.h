@@ -1,5 +1,5 @@
-#ifndef P32_H
-#define P32_H
+#ifndef P32_EX32_H
+#define P32_EX32_H
 
 #include "Process.h"
 #include "Arguments.h"
