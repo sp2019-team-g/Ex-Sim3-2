@@ -56,10 +56,10 @@ void P32::post_update()
     delta_ = 4.0*(eps2_+kappa_)/eps2_;
     ektT1_ = std::exp((kappa_*theta_*T)-1.0);
     zp_ = eps2_*ektT1_/(4.0*kappa_*theta_ * (ektT1_/M_E));
-    if(check_loaded()){
+    if(check_loaded())
+    {
         X0_ = 1.0/V0_;
         lambda_ = (X0_*4.0*kappa_*theta_)/(eps2_*ektT1_);
-
     }
 
 }
@@ -78,31 +78,36 @@ double P32::simulate()
     double Z = UF::ncChi2Rnd(delta_,lambda_);
     double XT = Z*zp_;
     double x = p_*std::sqrt(XT*X0_)/std::sinh(p_*Delta_);
-    std::function<double(double)> Phi = UF::Phi(v_,epsilon_,x);
-    double mu = UF::numericalDiff(Phi,0,0.01);
-    double sigma2 = UF::numericalDiff2(Phi,0,0.01)+mu*mu;
+    double v = v_;
+    double eps2 = eps2_;
+    std::function<std::complex<double>(double)> Phi = [&, v, x, eps2](double a) -> std::complex<double>
+    {
+        return BSI::I(std::sqrt(complex<double>(v*v, - 8*a/eps2)), x)/BSI::I(v, x);
+    };
+
+    double mu = std::real( complex<double>(0.0,-1.0) * UF::numericalDiff(Phi,0.0,0.01));
+    double sigma2 = std::real(-UF::numericalDiff2(Phi,0.0,0.01)) - mu*mu;
     double sigma = std::sqrt(sigma2);
     double ueps = mu + 12.0*sigma;
-    double h = 3*M_PI/(2.0*ueps);
+    double h = 3.0*M_PI/(2.0*ueps);
     double N = (double)N_;
-    cout<<__LINE__<<endl;
-    cout<<N<<" "<<h<<endl;
-    cout<<__LINE__<<endl;
-    std::function<double(double)> F = [&,h,N,Phi](double x)->double{
+
+
+
+    std::function<double(double)> F = [&, h, N, Phi](double x)->double
+    {
         double res = h*x/M_PI;
-        for(double i = 1;i<=(double)N;i=i+1){
-            res += std::sin(h*i*x)/i*Phi(h*i) * 2/M_PI;
-        }
+        for(double i = 1.0; i<=N; i=i+1.0)
+            res += std::sin(h*i*x)/i*std::real(Phi(h*i)) * 2.0/M_PI;
         return res;
     };
-    cout<<__LINE__<<endl;
 
-    double L = UF::rvs(F,UF::uniRnd(0,1));
-    double K = 1/epsilon_ *(std::log(X0_/XT) + (kappa_+eps2_/2)*L - T*kappa_*theta_);
-    cout<<__LINE__<<endl;
-    double m = std::log(S0_) + r_*T-L/2+rho_*K;
-    double s = (1-rho_*rho_)*K;
-    cout<<__LINE__<<endl;
+    double L = UF::rvs(F,UF::uniRnd(0.0,1.0));
+    double K = 1.0/epsilon_ *(std::log(X0_/XT) + (kappa_+eps2_/2.0)*L - T*kappa_*theta_);
+
+    double m = std::log(S0_) + r_*T-L/2.0+rho_*K;
+    double s = (1.0-rho_*rho_)*K;
+
     double ZZ = UF::normalRnd(m,s);
     return std::exp(ZZ);
 }

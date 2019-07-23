@@ -19,18 +19,9 @@ int main(){
 
     cout<<UF::numericalDiff2(f, 0, 0.03)<<endl;
 
-    cout << "Phi test:" << endl;
-    auto phi = UF::Phi(6.0, 0.1, 0.3);
-    for(double i=0; i<10.0;i=i+1)
-        cout<<phi(i/1000.0)<<"  ";
-    cout<<endl;
 
-    cout << "sum test:" << endl;
-    
-    auto h = [](int x)->double{
-        return (double)x;
-    };
-    cout << UF::sum(h,0,5)<<endl;
+
+
 
 
     cout << "nE test:" << endl;

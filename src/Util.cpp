@@ -7,38 +7,22 @@ std::uniform_real_distribution<double> U(0.0,1.0);
 
 
 
-double UF::numericalDiff(
-        std::function<double(double)>f,
+std::complex<double> UF::numericalDiff(
+        std::function<std::complex<double>(double)>f,
         double x,
         double dx
         )
 {
-    return (f(x+dx)-f(x-dx))/(2.0*dx);
+    return (f(x + dx) - f(x - dx))/(2.0*dx);
 }
 
-double UF::numericalDiff2(
-        std::function<double(double)>f,
+std::complex<double> UF::numericalDiff2(
+        std::function<std::complex<double>(double)>f,
         double x,
         double dx
         )
 {
-    return (f(x-dx)-2.0*f(x)+f(x+dx))/(dx*dx);
-}
-
-std::function<double(double)> UF::Phi(double nu, double epsilon, double x)
-{
-    return [&,nu,epsilon,x](double a) mutable -> double
-    {
-        return boost::math::cyl_bessel_i(std::sqrt(nu*nu-(8*a)/(epsilon*epsilon)),x)/boost::math::cyl_bessel_i(nu,x);
-    };
-}
-
-double UF::sum(std::function<double(int)> f, int begin, int end)
-{
-    double sum = 0;
-    for(int i = begin; i != end; i++)
-        sum += f(i);
-    return sum;
+    return (f(x - dx) - 2.0*f(x) + f(x + dx))/(dx*dx);
 }
 
 double UF::normalRnd(double mean, double std)

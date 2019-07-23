@@ -2,9 +2,10 @@ CPPFLAGS=-std=c++11 -Wall -pedantic
 TESTFLAG=-Isrc -o
 CC=g++
 TSTS=tmp/testarg tmp/testp32 tmp/testproc tmp/testutl tmp/testopt tmp/testeuc tmp/testinp tmp/testfac
-OBJS1=obj/Arguments.o obj/Util.o obj/Process.o obj/P32.o obj/Option.o obj/Input.o obj/Factory.o
+OBJS1=obj/Arguments.o obj/Util.o obj/Process.o obj/Option.o obj/Input.o obj/Factory.o
 OBJS2=obj/PGBM.o obj/PricingEng.o obj/McPricingEng.o obj/EUCallOpt.o obj/EUPutOpt.o
 OBJS=$(OBJS1) $(OBJS2)
+OBJBSI=obj/P32.o obj/Besseli.o
 PYI=-I/home/hanghang/anaconda3/include/python3.6m
 PYL=-L/home/hanghang/anaconda3/lib
 PYl=-lpython3.6m
@@ -15,7 +16,7 @@ clean :
 	rm bin/*
 
 bin/app : src/app.cpp $(OBJS)
-	$(CC) $(CPPFLAGS) -Isrc -o bin/app src/app.cpp $(OBJS)
+	$(CC) $(CPPFLAGS) $(PYI) $(PYL) -Isrc -o bin/app src/app.cpp $(OBJS) $(OBJBSI) $(PYl)
 
 tmp/testopt : test/OPTtest.cpp src/Option.h $(OBJS)
 	$(CC) $(CPPFLAGS) $(TESTFLAG) tmp/testopt $(OBJS) test/OPTtest.cpp
@@ -23,8 +24,8 @@ tmp/testopt : test/OPTtest.cpp src/Option.h $(OBJS)
 tmp/testarg : test/ARGtest.cpp src/Arguments.h $(OBJS)
 	$(CC) $(CPPFLAGS) $(TESTFLAG) tmp/testarg $(OBJS) test/ARGtest.cpp
 
-tmp/testp32 : test/P32test.cpp $(OBJS)
-	$(CC) $(CPPFLAGS) $(TESTFLAG) tmp/testp32 $(OBJS) test/P32test.cpp
+tmp/testp32 : test/P32test.cpp $(OBJS) $(OBJBSI)
+	$(CC) $(CPPFLAGS) $(PYI) $(PYL) $(TESTFLAG) tmp/testp32 $(OBJS) $(OBJBSI) test/P32test.cpp $(PYl)
 
 tmp/testproc : test/PStest.cpp $(OBJS)
 	$(CC) $(CPPFLAGS) $(TESTFLAG) tmp/testproc $(OBJS) test/PStest.cpp
@@ -57,7 +58,7 @@ obj/PGBM.o : src/PGBM.cpp src/PGBM.h
 	$(CC) $(CPPFLAGS) -c -o obj/PGBM.o src/PGBM.cpp
 
 obj/P32.o : src/P32.cpp src/P32.h
-	$(CC) $(CPPFLAGS) -c -o obj/P32.o src/P32.cpp
+	$(CC) $(CPPFLAGS) -c -o obj/P32.o $(PYI) $(PYL) src/P32.cpp $(PYl)
 
 obj/Option.o : src/Option.cpp src/Option.h
 	$(CC) $(CPPFLAGS) -c -o obj/Option.o src/Option.cpp
