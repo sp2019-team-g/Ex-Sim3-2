@@ -5,6 +5,9 @@ TSTS=tmp/testarg tmp/testp32 tmp/testproc tmp/testutl tmp/testopt tmp/testeuc tm
 OBJS1=obj/Arguments.o obj/Util.o obj/Process.o obj/P32.o obj/Option.o obj/Input.o obj/Factory.o
 OBJS2=obj/PGBM.o obj/PricingEng.o obj/McPricingEng.o obj/EUCallOpt.o obj/EUPutOpt.o
 OBJS=$(OBJS1) $(OBJS2)
+PYI=-I/home/hanghang/anaconda3/include/python3.6m
+PYL=-L/home/hanghang/anaconda3/lib
+PYl=-lpython3.6m
 test : $(TSTS)
 clean :
 	rm obj/*.o
@@ -37,6 +40,9 @@ tmp/testinp : test/INPtest.cpp src/Input.h $(OBJS)
 
 tmp/testfac : test/FACtest.cpp src/Factory.h src/PGBM.h src/EUCallOpt.h src/McPricingEng.h $(OBJS)
 	$(CC) $(CPPFLAGS) $(TESTFLAG) tmp/testfac $(OBJS) test/FACtest.cpp
+
+tmp/testbsi : test/BSItest.cpp src/Besseli.h obj/Besseli.o
+	$(CC) $(CPPFLAGS) $(PYI) $(PYL) $(TESTFLAG) tmp/testbsi obj/Besseli.o test/BSItest.cpp $(PYl)
 
 obj/Arguments.o : src/Arguments.cpp src/Arguments.h
 	$(CC) $(CPPFLAGS) -c -o obj/Arguments.o src/Arguments.cpp
@@ -75,4 +81,4 @@ obj/Factory.o : src/Factory.cpp src/Factory.h
 	$(CC) $(CPPFLAGS) -c -o obj/Factory.o src/Factory.cpp
 
 obj/Besseli.o : src/Besseli.cpp src/Besseli.h
-	$(CC) -c -o obj/Besseli.o -I/home/hanghang/anaconda3/include/python3.6m -L/home/hanghang/anaconda3/lib src/Besseli.cpp -lpython3.6m
+	$(CC) -c -o obj/Besseli.o $(PYI) $(PYL) src/Besseli.cpp $(PYl)
