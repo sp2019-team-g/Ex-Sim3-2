@@ -29,6 +29,7 @@ P32::P32(Arguments& paras) : Process(paras)
     kappa_ = paras.g_VAL<double>("kappa");
     theta_ = paras.g_VAL<double>("theta");
     epsilon_ = paras.g_VAL<double>("epsilon");
+    N_ = paras.g_VAL<size_t>("N");
     try
     {
         S0_ = paras.g_VAL<double>("S0");
@@ -83,11 +84,9 @@ double P32::simulate()
     double sigma = std::sqrt(sigma2);
     double ueps = mu + 12.0*sigma;
     double h = 3*M_PI/(2.0*ueps);
-    int N = 1;
+    double N = (double)N_;
     cout<<__LINE__<<endl;
     cout<<N<<" "<<h<<endl;
-    while((std::abs(Phi(N*h))/N) > ((M_PI*epsilon_)/2.0))
-        N+=1;
     cout<<__LINE__<<endl;
     std::function<double(double)> F = [&,h,N,Phi](double x)->double{
         double res = h*x/M_PI;

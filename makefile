@@ -74,4 +74,5 @@ obj/Input.o : src/Input.cpp src/Input.h
 obj/Factory.o : src/Factory.cpp src/Factory.h
 	$(CC) $(CPPFLAGS) -c -o obj/Factory.o src/Factory.cpp
 
-
+obj/Besseli.o : src/Besseli.cpp src/Besseli.h
+	$(CC) -c -o obj/Besseli.o -I/home/hanghang/anaconda3/include/python3.6m -L/home/hanghang/anaconda3/lib src/Besseli.cpp -lpython3.6m
