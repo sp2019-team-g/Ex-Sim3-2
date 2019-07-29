@@ -1,9 +1,12 @@
 
 #include "PGBM.h"
 
+<<<<<<< Updated upstream
 
 
 
+=======
+>>>>>>> Stashed changes
 PGBM::PGBM(double dt,double mu,double sigma) : Process(dt)
 {
 	mu_ = mu;
