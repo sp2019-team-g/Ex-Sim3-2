@@ -49,19 +49,21 @@ std::complex<double> UF::numericalDiff2(
 
 double UF::normalRnd(double mean, double std)
 {
-    re.seed(rd());
-    double p = U(re);
-    auto dist = boost::math::normal_distribution<double>(mean,std);
-    return boost::math::quantile(dist,p);
+    // re.seed(rd());
+    // double p = U(re);
+    // auto dist = boost::math::normal_distribution<double>(mean,std);
+    // return boost::math::quantile(dist,p);
+    return 0.0;
 }
 
 double UF::ncChi2Rnd(double delta, double lambda)
 {   
-    re.seed(rd());
-    double p = U(re);
+    // re.seed(rd());
+    // double p = U(re);
     
-    auto dist = boost::math::non_central_chi_squared_distribution<double>(delta,lambda);
-    return boost::math::quantile(dist,p);
+    // auto dist = boost::math::non_central_chi_squared_distribution<double>(delta,lambda);
+    // return boost::math::quantile(dist,p);
+    return 0.0;
 }
 
 double UF::uniRnd(double a, double b){
