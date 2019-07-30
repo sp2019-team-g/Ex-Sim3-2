@@ -4,9 +4,8 @@
 #include "PricingEng.h"
 #include "Arguments.h"
 
-#include <functional>
-#include <vector>
-#include <stdexcept>
+class Option;
+class Process;
 
 class McPricingEng : public PricingEng
 {

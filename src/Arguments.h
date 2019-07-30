@@ -15,9 +15,7 @@ class Arguments{
 		Arguments();
 		~Arguments();
 
-		void set(std::string, void*, std::function<void(void)>);
-		void* get(std::string);
-		void del(std::string);
+
 		bool has(std::string);
 		template<class T> T g_VAL(std::string key)
 		{
@@ -33,6 +31,9 @@ class Arguments{
 		}
 
 	private:
+		void set(std::string, void*, std::function<void(void)>);
+		void* get(std::string);
+		void del(std::string);
 		std::map<std::string, void*> args_;
 		std::map<std::string, std::function<void(void)> > desreg_;
 };

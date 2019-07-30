@@ -1,8 +1,9 @@
 #ifndef PSS_EX32_H
 #define PSS_EX32_H
 
-#include "Util.h"
-#include "Arguments.h"
+
+class Arguments;
+
 class Process
 {
     public:

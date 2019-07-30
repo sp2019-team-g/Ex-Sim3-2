@@ -1,8 +1,8 @@
+
+
 #include "P32.h"
 
 
-#include <iostream>
-using namespace std;
 
 P32::P32(
         double r,
@@ -82,10 +82,10 @@ double P32::simulate()
     double eps2 = eps2_;
     std::function<std::complex<double>(double)> Phi = [&, v, x, eps2](double a) -> std::complex<double>
     {
-        return UF::I(std::sqrt(complex<double>(v*v, - 8*a/eps2)), x)/UF::I(v, x);
+        return UF::I(std::sqrt(std::complex<double>(v*v, - 8*a/eps2)), x)/UF::I(v, x);
     };
 
-    double mu = std::real( complex<double>(0.0,-1.0) * UF::numericalDiff(Phi,0.0,0.01));
+    double mu = std::real(std::complex<double>(0.0, -1.0) * UF::numericalDiff(Phi, 0.0, 0.01));
     double sigma2 = std::real(-UF::numericalDiff2(Phi,0.0,0.01)) - mu*mu;
     double sigma = std::sqrt(sigma2);
     double ueps = mu + 12.0*sigma;

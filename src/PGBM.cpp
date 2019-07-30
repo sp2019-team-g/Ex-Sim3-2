@@ -1,6 +1,6 @@
 
 #include "PGBM.h"
-
+#include "Util.h"
 
 PGBM::PGBM(double dt,double mu,double sigma) : Process(dt)
 {

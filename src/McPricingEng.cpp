@@ -1,6 +1,12 @@
 
+#include "Process.h"
+#include "Option.h"
 #include "McPricingEng.h"
 
+#include <cmath>
+#include <functional>
+#include <vector>
+#include <stdexcept>
 
 McPricingEng::McPricingEng(Option*opt, Process*pro) : PricingEng(opt)
 {

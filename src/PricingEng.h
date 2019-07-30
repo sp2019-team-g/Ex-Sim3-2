@@ -1,8 +1,8 @@
 #ifndef PRICINGENG_EX32_H
 #define PRICINGENG_EX32_H
 
-#include "Arguments.h"
-#include "Option.h"
+class Option;
+class Arguments;
 
 class PricingEng{
 	public:

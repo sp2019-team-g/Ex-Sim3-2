@@ -4,15 +4,13 @@
 #define _USE_MATH_DEFINES
 #include <cmath>
 #include <random>
-#include <algorithm>
 
 
-#include <random>
-#include <cmath>
-#include <ctime>
+
+
+
+
 #include <functional>
-#include <iostream>
-#include <vector>
 #include <complex>
 
 
