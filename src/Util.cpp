@@ -93,24 +93,32 @@ double numericalDiffDouble(
     return (f(x + dx) - f(x - dx))/(2.0*dx);
 }
 
-double UF::rvs(std::function<double(double)> f,double x)
-{
-
-    double dx = 1e-6;
-	double a0 = UF::uniRnd(dx,1.0);
+double UF::rvs(std::function<double(double)> f,double x){
+    /*TODO
+     * */
+	double a0 = 0.0;
 	double a1 = 1.0;
-	double delta = 0.0;
+	double delta = 10000;
 	int num = 0;
-    double eta = 0.1;
-	do
+
+	while (1)
 	{
-		a1 = a0 - eta*(f(a0) - x) / UF::Diff(f, a0, dx);
-        if((a1 < dx) || (a1 != a1))
-            a1 = UF::uniRnd(dx, a0);
-        delta = a1 - a0;
+		if (UF::Diff(f, a0, 0.01) != 0)
+			break;
+		a0 += 1;
+	}
+
+	while (std::abs(delta) > 0.01 && num < 1000000)
+	{
+		a1 = a0 - (f(a0) - x) / UF::Diff(f, a0, 0.01);
+
+		delta = a1 - a0;
+
 		a0 = a1;
+
 		num++;
-	}while ((std::abs(delta) > 0.001) && (num < 1000000));
+	}
+
     return a0;
 
 }
