@@ -1,15 +1,10 @@
 #ifndef UTIL_EX32_H
 #define UTIL_EX32_H
 
-#define _USE_MATH_DEFINES // This, together with cmath, ensures we can use M_PI = 3.14...
+#define _USE_MATH_DEFINES
 #include <cmath>
 #include <random>
 #include <algorithm>
-
-//#include <boost/math/distributions/non_central_chi_squared.hpp>
-//#include <boost/math/distributions/normal.hpp>
-//#include <boost/random/mersenne_twister.hpp>
-//#include <boost/random/variate_generator.hpp>
 
 
 #include <random>
@@ -30,7 +25,8 @@ namespace UtilFunc
     double normalRnd(double, double);
     double ncChi2Rnd(double, double);
     double uniRnd(double, double);
-    double rvs(std::function<double(double)>,double);
+    double rvs(std::function<double(double)>, double);
+    double MarcumQ(double, double, double);
     template<class T> T max(T a, T b)
     {
     	if(a>b)

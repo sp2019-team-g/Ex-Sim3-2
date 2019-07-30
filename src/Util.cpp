@@ -1,5 +1,8 @@
 #include"Util.h"
 
+#include <iostream>
+using namespace std;
+
 
 std::random_device rd;
 std::default_random_engine re;
@@ -31,6 +34,7 @@ std::complex<double> UF::I(std::complex<double> v, std::complex<double> x)
 
 double UtilFunc::Diff(std::function<double(double)> f, double x, double dx)
 {
+    cout<<"<"<< x << ","<<f(x)<<">"<<endl;
 	return (f(x + dx) - f(x - dx)) / (2.0*dx);
 }
 
@@ -61,19 +65,19 @@ double UF::normalRnd(double mean, double std)
 }
 
 double UF::ncChi2Rnd(double delta, double lambda)
-{   
-    re.seed(rd());
-    
-	auto dist = std::chi_squared_distribution<double>(delta);
-
-    return (dist(re)+lambda);
-
+{
+    std::function<double(double)> f = [&, delta, lambda](double x)
+    {
+        return 1.0 - UF::MarcumQ(delta/2.0, std::sqrt(lambda), std::sqrt(x));
+    };
+    double a = UF::uniRnd(0.0, 1.0);
+    return UF::rvs(f, a);
 }
 
 double UF::uniRnd(double a, double b)
 {
     re.seed(rd());
-    return U(re);
+    return U(re)*(b - a) + a;
 }
 
 
@@ -88,27 +92,37 @@ double numericalDiffDouble(
 
 double UF::rvs(std::function<double(double)> f,double x)
 {
+    cout<<"*"<<x<<"*"<<endl;
 
-
-	double a0 = 0.0;
+	double a0 = 0.5;
 	double a1 = 1.0;
 	double delta = 0.0;
 	int num = 0;
-
-
-	while (std::abs(delta) > 0.01 && num < 1000000)
+	do
 	{
 		a1 = a0 - (f(a0) - x) / UF::Diff(f, a0, 0.01);
-
-		delta = a1 - a0;
-
+        delta = a1 - a0;
 		a0 = a1;
-
 		num++;
-	}
-
+	}while (std::abs(delta) > 0.01 && num < 1000000);
+    cout << endl;
     return a0;
 
 }
 
+double UF::MarcumQ(double M, double a, double b)
+{
+    //TODO: assert a != 0
+    double tol = 1e-8;
+    double x = b;
+    double dx = 1e-4;
+    double p = 0.0;
+    double pp = tol + 1.0;
+    while(std::abs(pp) > tol){
+        pp = x*std::pow(x/a, M - 1.0)*std::exp(-(x*x + a*a)/2.0)*std::cyl_bessel_i(M-1.0, a*x);
+        p += pp*dx;
+        x += dx;
+    }
+    return p;
+}
 
