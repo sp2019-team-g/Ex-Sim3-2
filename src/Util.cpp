@@ -54,6 +54,7 @@ std::complex<double> UF::numericalDiff2(
 
 double UF::normalRnd(double mean, double std)
 {
+
     re.seed(rd());
     auto dist = std::normal_distribution<double>(mean,std);
     return dist(re);
@@ -66,20 +67,34 @@ double UF::ncChi2Rnd(double delta, double lambda)
 	auto dist = std::chi_squared_distribution<double>(delta);
 
     return (dist(re)+lambda);
+
 }
 
-double UF::uniRnd(double a, double b){
+double UF::uniRnd(double a, double b)
+{
     re.seed(rd());
     return U(re);
 }
 
-double UF::rvs(std::function<double(double)> f,double x){
-    /*TODO
-     * */
+
+double numericalDiffDouble(
+        std::function<double(double)>f,
+        double x,
+        double dx
+        )
+{
+    return (f(x + dx) - f(x - dx))/(2.0*dx);
+}
+
+double UF::rvs(std::function<double(double)> f,double x)
+{
+
+
 	double a0 = 0.0;
 	double a1 = 1.0;
 	double delta = 0.0;
 	int num = 0;
+
 
 	while (std::abs(delta) > 0.01 && num < 1000000)
 	{
