@@ -3,12 +3,8 @@ TESTFLAG=-Isrc -o
 CC=g++
 TSTS=tmp/testarg tmp/testp32 tmp/testproc tmp/testutl tmp/testopt tmp/testeuc tmp/testinp tmp/testfac
 OBJS1=obj/Arguments.o obj/Util.o obj/Process.o obj/Option.o obj/Input.o obj/Factory.o
-OBJS2=obj/PGBM.o obj/PricingEng.o obj/McPricingEng.o obj/EUCallOpt.o obj/EUPutOpt.o
+OBJS2=obj/PGBM.o obj/PricingEng.o obj/McPricingEng.o obj/EUCallOpt.o obj/EUPutOpt.o obj/P32.o
 OBJS=$(OBJS1) $(OBJS2)
-OBJBSI=obj/P32.o obj/Besseli.o
-PYI=-I/home/hanghang/anaconda3/include/python3.6m
-PYL=-L/home/hanghang/anaconda3/lib
-PYl=-lpython3.6m
 test : $(TSTS)
 clean :
 	rm obj/*.o
@@ -16,7 +12,7 @@ clean :
 	rm bin/*
 
 bin/app : src/app.cpp $(OBJS)
-	$(CC) $(CPPFLAGS) $(PYI) $(PYL) -Isrc -o bin/app src/app.cpp $(OBJS) $(OBJBSI) $(PYl)
+	$(CC) $(CPPFLAGS) -Isrc -o bin/app src/app.cpp $(OBJS)
 
 tmp/testopt : test/OPTtest.cpp src/Option.h $(OBJS)
 	$(CC) $(CPPFLAGS) $(TESTFLAG) tmp/testopt $(OBJS) test/OPTtest.cpp
@@ -25,7 +21,7 @@ tmp/testarg : test/ARGtest.cpp src/Arguments.h $(OBJS)
 	$(CC) $(CPPFLAGS) $(TESTFLAG) tmp/testarg $(OBJS) test/ARGtest.cpp
 
 tmp/testp32 : test/P32test.cpp $(OBJS) $(OBJBSI)
-	$(CC) $(CPPFLAGS) $(PYI) $(PYL) $(TESTFLAG) tmp/testp32 $(OBJS) $(OBJBSI) test/P32test.cpp $(PYl)
+	$(CC) $(CPPFLAGS) $(TESTFLAG) tmp/testp32 $(OBJS) $(OBJBSI) test/P32test.cpp
 
 tmp/testproc : test/PStest.cpp $(OBJS)
 	$(CC) $(CPPFLAGS) $(TESTFLAG) tmp/testproc $(OBJS) test/PStest.cpp
@@ -43,7 +39,7 @@ tmp/testfac : test/FACtest.cpp src/Factory.h src/PGBM.h src/EUCallOpt.h src/McPr
 	$(CC) $(CPPFLAGS) $(TESTFLAG) tmp/testfac $(OBJS) test/FACtest.cpp
 
 tmp/testbsi : test/BSItest.cpp src/Besseli.h obj/Besseli.o
-	$(CC) $(CPPFLAGS) $(PYI) $(PYL) $(TESTFLAG) tmp/testbsi obj/Besseli.o test/BSItest.cpp $(PYl)
+	$(CC) $(CPPFLAGS) $(TESTFLAG) tmp/testbsi obj/Besseli.o test/BSItest.cpp
 
 obj/Arguments.o : src/Arguments.cpp src/Arguments.h
 	$(CC) $(CPPFLAGS) -c -o obj/Arguments.o src/Arguments.cpp
@@ -58,7 +54,7 @@ obj/PGBM.o : src/PGBM.cpp src/PGBM.h
 	$(CC) $(CPPFLAGS) -c -o obj/PGBM.o src/PGBM.cpp
 
 obj/P32.o : src/P32.cpp src/P32.h
-	$(CC) $(CPPFLAGS) -c -o obj/P32.o $(PYI) $(PYL) src/P32.cpp $(PYl)
+	$(CC) $(CPPFLAGS) -c -o obj/P32.o src/P32.cpp
 
 obj/Option.o : src/Option.cpp src/Option.h
 	$(CC) $(CPPFLAGS) -c -o obj/Option.o src/Option.cpp
@@ -81,5 +77,3 @@ obj/Input.o : src/Input.cpp src/Input.h
 obj/Factory.o : src/Factory.cpp src/Factory.h
 	$(CC) $(CPPFLAGS) -c -o obj/Factory.o src/Factory.cpp
 
-obj/Besseli.o : src/Besseli.cpp src/Besseli.h
-	$(CC) -c -o obj/Besseli.o $(PYI) $(PYL) src/Besseli.cpp $(PYl)

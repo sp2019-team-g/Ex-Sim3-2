@@ -20,10 +20,7 @@ class PGBM : public Process
 			res.push_back(g_ASK<double>("mu"));
 			res.push_back(g_ASK<double>("sigma"));
 			res.push_back(g_ASK<double>("S0"));
-<<<<<<< Updated upstream
 			res.push_back(g_ASK<double>("dt"));
-=======
->>>>>>> Stashed changes
 			return res;
 		}
 	private:

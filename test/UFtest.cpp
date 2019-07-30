@@ -3,10 +3,18 @@
 #include "Util.h"
 
 #include <iostream>
+
+#include <complex>
+
 using namespace std;
 int main(){
 
 //    double tol = 1e-3;
+
+
+    cout << "I test"<<endl;
+
+    cout << UF::I(complex<double>(0.33,0.12), complex<double>(4.11,0.0) )<<endl;
 
     cout << "nd test:" << endl;
     

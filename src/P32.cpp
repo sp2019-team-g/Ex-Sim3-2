@@ -82,7 +82,7 @@ double P32::simulate()
     double eps2 = eps2_;
     std::function<std::complex<double>(double)> Phi = [&, v, x, eps2](double a) -> std::complex<double>
     {
-        return BSI::I(std::sqrt(complex<double>(v*v, - 8*a/eps2)), x)/BSI::I(v, x);
+        return UF::I(std::sqrt(complex<double>(v*v, - 8*a/eps2)), x)/UF::I(v, x);
     };
 
     double mu = std::real( complex<double>(0.0,-1.0) * UF::numericalDiff(Phi,0.0,0.01));
@@ -117,7 +117,7 @@ double P32::simulate(Arguments& paras)
     /*Assert loaded
      * */
     para_load(paras);
-    paras.g_SET<double>("ST",new double(simulate()));
+    paras.g_SET<double>("ST", new double(simulate()));
     return 0.0;
 }
 

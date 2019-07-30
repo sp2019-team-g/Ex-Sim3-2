@@ -19,6 +19,7 @@
 
 namespace UtilFunc
 {
+    std::complex<double> I(std::complex<double>, std::complex<double>);
     std::complex<double> numericalDiff(std::function<std::complex<double>(double)>, double, double);
     std::complex<double> numericalDiff2(std::function<std::complex<double>(double)>, double, double);
     double normalRnd(double, double);

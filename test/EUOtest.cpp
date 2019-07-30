@@ -19,14 +19,13 @@ int main(){
 	cout<<p.payoff(a)<<endl;
 	cout<<cc.payoff(a)<<endl;
 	cout<<pp.payoff(a)<<endl;
-<<<<<<< Updated upstream
-=======
+
+
 	PLIST pl = EUCallOpt::plist();
-	for(auto it = pl.begin(); it != pl.end();pl++){
+	for(auto it = pl.begin(); it != pl.end(); it++){
 		it->operator()(a);
 	}
-	
->>>>>>> Stashed changes
+
 
 	return 0;
 }
