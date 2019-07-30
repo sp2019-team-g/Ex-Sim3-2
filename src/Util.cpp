@@ -34,7 +34,7 @@ std::complex<double> UF::I(std::complex<double> v, std::complex<double> x)
 
 double UtilFunc::Diff(std::function<double(double)> f, double x, double dx)
 {
-    cout<<"<"<< x << ","<<f(x)<<">"<<endl;
+    
 	return (f(x + dx) - f(x - dx)) / (2.0*dx);
 }
 
@@ -68,7 +68,7 @@ double UF::ncChi2Rnd(double delta, double lambda)
 {
     std::function<double(double)> f = [&, delta, lambda](double x)
     {
-        return 1.0 - UF::MarcumQ(delta/2.0, std::sqrt(lambda), std::sqrt(x));
+        return 1.0 - UF::MarcumQ(delta/2.0, (lambda), (x));
     };
     double a = UF::uniRnd(0.0, 1.0);
     return UF::rvs(f, a);
@@ -92,20 +92,22 @@ double numericalDiffDouble(
 
 double UF::rvs(std::function<double(double)> f,double x)
 {
-    cout<<"*"<<x<<"*"<<endl;
 
-	double a0 = 0.5;
+    double dx = 1e-6;
+	double a0 = UF::uniRnd(dx,1.0);
 	double a1 = 1.0;
 	double delta = 0.0;
 	int num = 0;
+    double eta = 0.1;
 	do
 	{
-		a1 = a0 - (f(a0) - x) / UF::Diff(f, a0, 0.01);
+		a1 = a0 - eta*(f(a0) - x) / UF::Diff(f, a0, dx);
+        if((a1 < dx) || (a1 != a1))
+            a1 = UF::uniRnd(dx, a0);
         delta = a1 - a0;
 		a0 = a1;
 		num++;
-	}while (std::abs(delta) > 0.01 && num < 1000000);
-    cout << endl;
+	}while ((std::abs(delta) > 0.001) && (num < 1000000));
     return a0;
 
 }
