@@ -49,21 +49,19 @@ std::complex<double> UF::numericalDiff2(
 
 double UF::normalRnd(double mean, double std)
 {
-    // re.seed(rd());
-    // double p = U(re);
-    // auto dist = boost::math::normal_distribution<double>(mean,std);
-    // return boost::math::quantile(dist,p);
-    return 0.0;
+    re.seed(rd());
+    double p = U(re);
+    auto dist = boost::math::normal_distribution<double>(mean,std);
+    return boost::math::quantile(dist,p);
 }
 
 double UF::ncChi2Rnd(double delta, double lambda)
-{   
-    // re.seed(rd());
-    // double p = U(re);
-    
-    // auto dist = boost::math::non_central_chi_squared_distribution<double>(delta,lambda);
-    // return boost::math::quantile(dist,p);
-    return 0.0;
+{
+    re.seed(rd());
+    double p = U(re);
+
+    auto dist = boost::math::non_central_chi_squared_distribution<double>(delta,lambda);
+    return boost::math::quantile(dist,p);
 }
 
 double UF::uniRnd(double a, double b){
@@ -72,9 +70,14 @@ double UF::uniRnd(double a, double b){
 }
 
 double UF::rvs(std::function<double(double)> f,double x){
-    /*TODO
-     * */
-    return 0;
+    double a = x;
+	double x = x - f(x)/std::complex<double> UF::numericalDiff(f,x,0.01);
+    while (abs(x - a) > 0.000001)
+	{
+		a = x;
+		x = x - f(x)/std::complex<double> UF::numericalDiff(f,x,0.01);
+    }
+    return a;
 
 }
 
