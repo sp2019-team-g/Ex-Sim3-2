@@ -10,21 +10,25 @@ std::complex<double> UF::I(std::complex<double> v, std::complex<double> x)
 
     double tol = 1e-8;
     double dt = 1e-4;
+	double u_db = 100000;
+	
     std::complex<double> p1 = std::complex<double>(0.0, 0.0);
     for(double t = 0.0; t < M_PI; t += dt)
-        p1 += std::exp(x * std::cos(t))*std::cos(v*t) * dt;
-    p1 = p1/M_PI;
+        p1 += std::exp(x * std::cos(t))*std::cos(v*t);
+
 
     std::complex<double> pp = std::complex<double>(tol + 0.01, 0.0);
     std::complex<double> p2 = std::complex<double>(0.0, 0.0);
     double t = 0.0;
-    while(std::abs(pp) > tol){
+	
+	while(std::abs(pp) > tol && t < u_bd)
+{
         pp = std::exp(-x * std::cosh(t) - v*t);
-        p2 += pp*dt;
+        p2 += pp;
         t += dt;
     }
-    p2 = p2 * std::sin(v*M_PI)/M_PI;
-    return p1-p2;
+    p2 *= std::sin(v*M_PI);
+    return (p1 - p2)*dt/M_PI;
 
 
 }
