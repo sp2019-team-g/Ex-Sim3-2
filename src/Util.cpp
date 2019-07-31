@@ -101,15 +101,15 @@ double UF::rvs(std::function<double(double)> f,double x){
 	double delta = 10000;
 	int num = 0;
 
-	while (1)
-	{
-		if (UF::Diff(f, a0, 0.01) != 0)
-			break;
-		a0 += 1;
-	}
-
 	while (std::abs(delta) > 0.01 && num < 1000000)
 	{
+		while (1)
+		{
+			if (UF::Diff(f, a0, 0.01) != 0)
+				break;
+			a0 += 0.01;
+		}
+		
 		a1 = a0 - (f(a0) - x) / UF::Diff(f, a0, 0.01);
 
 		delta = a1 - a0;
