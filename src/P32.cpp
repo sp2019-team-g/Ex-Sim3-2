@@ -91,7 +91,7 @@ double P32::simulate()
     double ueps = mu + 12.0*sigma;
     double h = 3.0*M_PI/(2.0*ueps);
     double N = (double)N_;
-
+    cout<<" xxx "<< mu <<" , "<<sigma<<" , "<<h<<endl;
 
 
     std::function<double(double)> F = [&, h, N, Phi](double x)->double
