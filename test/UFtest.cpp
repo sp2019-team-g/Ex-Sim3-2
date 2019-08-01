@@ -38,14 +38,14 @@ int main(){
     cout << "c2E test:" <<endl;
     cout << UF::ncChi2Rnd(4.1,3.2)<<endl;
 
+
 	auto f1 = [](double x)->double {
 		return x*x*x + 2*x +1;
 	};
 	cout << "rvs test:" << endl;
 	cout << UF::rvs(f1, 4) << endl;
 
-    cout << "MarcumQ test:"<<endl;
-    cout << UF::MarcumQ(2.74,0.11,1.42)<<endl;
+
 
     return 0;
 }
