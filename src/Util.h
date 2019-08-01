@@ -12,6 +12,7 @@ namespace UtilFunc
     const double INF = std::numeric_limits<double>::infinity();
     const double MAXD = 1e8;
     std::complex<double> I(std::complex<double>, std::complex<double>);
+    inline std::complex<double> I(std::complex<double> a, double b){return I(a,std::complex<double>(b,0));}
     double Diff(std::function<double(double)>, double, double);
     std::complex<double> numericalDiff(std::function<std::complex<double>(double)>, double, double);
     std::complex<double> numericalDiff2(std::function<std::complex<double>(double)>, double, double);

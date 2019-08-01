@@ -131,12 +131,9 @@ double UF::rvs(
     double a1 = inig;
     double delta = 0.0;
     int num = 0;
-    cout<<"PPPPPPPPPPPPP"<<f(inig)<<endl;
     do
     {
         a1 = a0 - eta * (f(a0) - x) / UF::asmax(UF::Diff(f, a0, 0.01), 1e-3);
-        // cout<<a1<<endl;
-    // cout<<"<"<<a1<<","<<f(a1)<<">"<<endl;
         if(a1 < b1)
             a1 = UF::uniRnd(b1, a0);
         else if(a1 > b2)

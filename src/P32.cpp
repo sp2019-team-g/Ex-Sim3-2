@@ -69,7 +69,7 @@ void P32::post_update()
     double T = get_dt();
     eps2_ = epsilon_*epsilon_;
     p_ = - (2.0*kappa_*theta_)/eps2_;
-    v_ = p_ * (kappa_+eps2_)/(kappa_*theta_) - 1.0;
+    v_ = 2.0 * kappa_*theta_*(kappa_+eps2_)/(eps2_*kappa_*theta_) - 1.0;
     Delta_ = 0.25 * T * eps2_; 
     delta_ = 4.0*(eps2_+kappa_)/eps2_;
     ektT_ = std::exp(kappa_*theta_*T);
@@ -104,14 +104,20 @@ double P32::simulate()
     cout<<" delta "<< delta_<<endl;
     cout<<" lambda "<< lambda_ << endl;
     cout<<" XT "<<XT<<endl;
+    cout<<" j "<<p_<<endl;
+    cout<<" Delta "<<Delta_<<endl;
     double x = p_*std::sqrt(XT*X0_)/std::sinh(p_*Delta_);
     double v = v_;
+    cout<<" v "<<v<<endl;
     double eps2 = eps2_;
     std::function<std::complex<double>(double)> Phi = [&, v, x, eps2](double a) -> std::complex<double>
     {
-        return UF::I(std::sqrt(std::complex<double>(v*v, - 8*a/eps2)), x)/UF::I(v, x);
+        return UF::I(std::sqrt(std::complex<double>(v*v, - 8*a/eps2)), x)/UF::I(std::abs(v), x);
     };
-
+    cout<<" g "<<endl;
+    cout<<UF::I(std::sqrt(std::complex<double>(v*v, - 8*0.66/eps2)), x)<<endl;
+    cout<<UF::I(std::abs(v), x)<<endl;
+    cout<<endl;
     double mu = std::real(std::complex<double>(0.0, -1.0) * UF::numericalDiff(Phi, 0.0, 0.01));
     double sigma2 = std::real(-UF::numericalDiff2(Phi,0.0,0.01)) - mu*mu;
 
