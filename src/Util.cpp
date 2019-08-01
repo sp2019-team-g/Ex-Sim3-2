@@ -1,5 +1,6 @@
 
 #include "Util.h"
+#include "rv_library.h"
 
 #include <ctime>
 #include <random>
@@ -71,7 +72,7 @@ double UF::ncChi2Rnd(double delta, double lambda)
 {
     std::function<double(double)> f = [&, delta, lambda](double x)
     {
-        return 1.0 - UF::MarcumQ(delta/2.0, (lambda), (x));
+        return rv::NC_Chi_squ_cdf(x, delta, lambda);
     };
     double a = UF::uniRnd(0.0, 1.0);
     return UF::rvs(f, a);
@@ -101,15 +102,9 @@ double UF::rvs(std::function<double(double)> f,double x){
 	double delta = 10000;
 	int num = 0;
 
-	while (1)
-	{
-		if (UF::Diff(f, a0, 0.01) != 0)
-			break;
-		a0 += 1;
-	}
-
-	while (std::abs(delta) > 0.01 && num < 1000000)
-	{
+	
+	do
+    {
 		a1 = a0 - (f(a0) - x) / UF::Diff(f, a0, 0.01);
 
 		delta = a1 - a0;
@@ -117,25 +112,9 @@ double UF::rvs(std::function<double(double)> f,double x){
 		a0 = a1;
 
 		num++;
-	}
+	}while (std::abs(delta) > 0.01 && num < 1000000);
 
     return a0;
 
-}
-
-double UF::MarcumQ(double M, double a, double b)
-{
-    //TODO: assert a != 0
-    double tol = 1e-8;
-    double x = b;
-    double dx = 1e-4;
-    double p = 0.0;
-    double pp = tol + 1.0;
-    while(std::abs(pp) > tol){
-        pp = x*std::pow(x/a, M - 1.0)*std::exp(-(x*x + a*a)/2.0)*std::cyl_bessel_i(M-1.0, a*x);
-        p += pp*dx;
-        x += dx;
-    }
-    return p;
 }
 

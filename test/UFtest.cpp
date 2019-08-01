@@ -38,8 +38,6 @@ int main(){
     cout << "c2E test:" <<endl;
     cout << UF::ncChi2Rnd(4.1,3.2)<<endl;
 
-    cout << "MarcumQ test:"<<endl;
-    cout << UF::MarcumQ(2.74,0.11,1.42)<<endl;
 
     return 0;
 }
