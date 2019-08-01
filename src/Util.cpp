@@ -4,7 +4,6 @@
 
 #include <ctime>
 #include <random>
-#include <cmath>
 #include <cassert>
 
 
@@ -23,8 +22,8 @@ namespace
 std::complex<double> UF::I(std::complex<double> v, std::complex<double> x)
 {
 
-    double tol = 1e-8;
-    double dt = 1e-4;
+    double tol = 1e-11;
+    double dt = 1e-6;
     std::complex<double> p1 = std::complex<double>(0.0, 0.0);
     for(double t = 0.0; t < M_PI; t += dt)
         p1 += std::exp(x * std::cos(t))*std::cos(v*t) * dt;
@@ -39,7 +38,7 @@ std::complex<double> UF::I(std::complex<double> v, std::complex<double> x)
         p2 += pp*dt;
         t += dt;
     }
-    p2 = p2 * std::sin(v*M_PI)/M_PI;
+    p2 = p2 * std::sin(v * M_PI)/M_PI;
     return p1-p2;
 
 
@@ -84,7 +83,7 @@ double UF::ncChi2Rnd(double delta, double lambda)
         return rv::NC_Chi_squ_cdf(x, delta, lambda);
     };
     double a = UF::uniRnd(0.0, 1.0);
-    return UF::rvs(f, a, 0.2, 0, 10.0);
+    return UF::rvs(f, a, 0.2, 0, UF::MAXD, delta+lambda);
 }
 
 double UF::uniRnd(double a, double b)
@@ -122,20 +121,22 @@ double UF::rvs(
     double x, 
     double eta, 
     double b1, 
-    double b2
+    double b2,
+    double inig
     )
 {   
     assert(b2 > b1);
     assert(eta > 0);
-    double a0 = UF::uniRnd(b1, b2);
-    double a1 = 0.0;
+    double a0 = inig;
+    double a1 = inig;
     double delta = 0.0;
     int num = 0;
-
+    cout<<"PPPPPPPPPPPPP"<<f(inig)<<endl;
     do
     {
-        a1 = a0 - eta * (f(a0) - x) / UF::Diff(f, a0, 0.01);
-
+        a1 = a0 - eta * (f(a0) - x) / UF::asmax(UF::Diff(f, a0, 0.01), 1e-3);
+        // cout<<a1<<endl;
+    // cout<<"<"<<a1<<","<<f(a1)<<">"<<endl;
         if(a1 < b1)
             a1 = UF::uniRnd(b1, a0);
         else if(a1 > b2)
@@ -145,14 +146,25 @@ double UF::rvs(
         delta = a1 - a0;
         a0 = a1;
         num++;
-    }while (std::abs(delta) > 0.001 && num < 1000000);
+    }
+    while (std::abs(delta) > 0.001 && num < 1000000);
 
     return a0;
 
+}
+
+double UF::rvs(
+    std::function<double(double)> f, 
+    double x, 
+    double eta, 
+    double b1, 
+    double b2
+    )
+{  
+    return rvs(f, x, eta, b1, b2, UF::uniRnd(b1,b2));
 }
 
 double UF::rvs(std::function<double(double)> f, double x)
 {
     return UF::rvs(f, x, 1.0, -UF::MAXD, UF::MAXD);
 }
-

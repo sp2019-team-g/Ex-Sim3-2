@@ -72,12 +72,15 @@ void P32::post_update()
     v_ = p_ * (kappa_+eps2_)/(kappa_*theta_) - 1.0;
     Delta_ = 0.25 * T * eps2_; 
     delta_ = 4.0*(eps2_+kappa_)/eps2_;
-    ektT1_ = std::exp((kappa_*theta_*T)-1.0);
-    zp_ = eps2_*ektT1_/(4.0*kappa_*theta_ * (ektT1_/M_E));
+    ektT_ = std::exp(kappa_*theta_*T);
+    cout << " kappa " <<kappa_<<endl;
+    cout << " theta " <<theta_<<endl;
+    cout << " T "<<T<<endl;
+    zp_ = eps2_*(ektT_-1.0)/(4.0*kappa_*theta_);
     if(check_loaded())
     {
         X0_ = 1.0/V0_;
-        lambda_ = (X0_*4.0*kappa_*theta_)/(eps2_*ektT1_);
+        lambda_ = X0_/zp_;
     }
 
 }
@@ -93,10 +96,14 @@ void P32::para_load(Arguments& paras)
 double P32::simulate()
 {
     double T = get_dt();
-    double Z = UF::ncChi2Rnd(delta_,lambda_);
-    // cout<<" Z zp "<<Z<<"  "<<zp_ <<endl;
-    double XT = Z*zp_;
-
+    double Z = UF::ncChi2Rnd(delta_, lambda_);
+    
+    double XT = Z*zp_/ektT_;
+    cout<<endl;
+    cout<<" Z "<<Z<<endl;
+    cout<<" delta "<< delta_<<endl;
+    cout<<" lambda "<< lambda_ << endl;
+    cout<<" XT "<<XT<<endl;
     double x = p_*std::sqrt(XT*X0_)/std::sinh(p_*Delta_);
     double v = v_;
     double eps2 = eps2_;
@@ -114,8 +121,8 @@ double P32::simulate()
     cout <<" mu "<<mu<<endl;
     cout<<" sigma "<< sigma<<endl;
     cout<<" ueps "<<ueps<<endl;
-    // double h = 3.0*M_PI/(2.0*ueps);
-    double h = 0.2;
+    // double h = 1.5*M_PI/ueps;
+    double h = 0.02;
     double N = (double)N_;
 
     cout <<" h " << h <<endl;
@@ -133,15 +140,17 @@ double P32::simulate()
         cout << F(i) << ",";
     }
     cout << "]" << endl;
-    double L = UF::rvs(F, UF::uniRnd(0.0,1.0), 0,8, 0.0, UF::MAXD);
+    double L = UF::rvs(F, UF::uniRnd(0.0,1.0), 0.2, 0.0, UF::MAXD);
     cout << " L "<< L <<endl;
     double K = 1.0/epsilon_ *(std::log(X0_/XT) + (kappa_+eps2_/2.0)*L - T*kappa_*theta_);
 
-    double m = std::log(S0_) + r_*T-L/2.0+rho_*K;
+    double m = std::log(S0_) + r_*T-0.5*L+rho_*K;
     double s = (1.0-rho_*rho_)*K;
+    cout<<" m "<<m<<endl;
+    cout<<" s "<<s<<endl;
 
     double ZZ = UF::normalRnd(m,s);
-    cout<<"zzzzz"<<(ZZ)<<endl;
+    cout<<" ZZ "<<(ZZ)<<endl;
     return std::exp(ZZ);
 }
 

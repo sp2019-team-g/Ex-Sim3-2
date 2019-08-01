@@ -42,6 +42,9 @@ tmp/testfac : test/FACtest.cpp src/Factory.h src/PGBM.h src/EUCallOpt.h src/McPr
 tmp/testbsi : test/BSItest.cpp src/Besseli.h obj/Besseli.o
 	$(CC) $(CPPFLAGS) $(TESTFLAG) tmp/testbsi obj/Besseli.o test/BSItest.cpp
 
+tmp/testrv : test/RVtest.cpp src/rv_library.h obj/rv_library.o
+	$(CC) $(CPPFLAGS) $(TESTFLAG) tmp/testrv obj/rv_library.o test/RVtest.cpp
+
 obj/Arguments.o : src/Arguments.cpp src/Arguments.h
 	$(CC) $(CPPFLAGS) -c -o obj/Arguments.o src/Arguments.cpp
 

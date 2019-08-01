@@ -61,7 +61,7 @@ class P32 : public Process
         double theta_;
         double epsilon_;
         double delta_;
-        double ektT1_;
+        double ektT_;
         double zp_;
         size_t N_;
 
