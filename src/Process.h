@@ -10,6 +10,7 @@ class Process
         Process(double);
         virtual ~Process(){};
         Process(Arguments&);
+        void para_validate();
         void set_loaded(bool);
         double get_dt();
         bool check_loaded();

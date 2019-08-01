@@ -35,7 +35,7 @@ double McPricingEng::price(Arguments& paras)
     {
 
         pro_->simulate(paras);
-        res += opt_->payoff(paras)*std::exp(-T)/T;
+        res += opt_->payoff(paras)*std::exp(-T)/bsize;
     }
     return res;
 }

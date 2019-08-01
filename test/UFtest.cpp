@@ -15,7 +15,14 @@ int main(){
     cout << "I test"<<endl;
 
     cout << UF::I(complex<double>(0.33,0.12), complex<double>(4.11,0.0) )<<endl;
-
+    cout << UF::I(complex<double>(-0.24,1.32), complex<double>(2.51,0.0) )<<endl;
+    cout << UF::I(complex<double>(3.53,2.62), complex<double>(1.17,0.0) )<<endl;
+    cout << UF::I(complex<double>(0.73,1.22), complex<double>(0.61,0.0) )<<endl;
+    cout<<" b "<<endl;
+    cout << "12.259486134636589, -0.13998460121961476"<<endl;
+    cout << "5.4489272839914769, 0.5130476413585956" <<endl;
+    cout << "0.015148654099080911, 0.024929605388193849"<<endl;
+    cout << "-0.25939081859014679, -0.7550570633605812"<<endl;
     cout << "nd test:" << endl;
     
     auto f = [](double x)->double{
@@ -46,7 +53,12 @@ int main(){
 	cout << UF::rvs(f1, 4) << endl;
 
 
+    cout<<"acc test:"<<endl;
+    cout<<4.5703224426292e-18/4.57032734666753e-18<<endl;
 
+    cout<<1.75359928797419e-19 / 1.75359928797419e-19 << endl;
+    cout<<-1.2616131891979e-19 / 1.75359928797419e-19<<endl;
+    cout << 1.2797164540907e-20/1.75359928797419e-19 <<endl;
     return 0;
 }
 

@@ -2,28 +2,18 @@
 #include "Arguments.h"
 #include "Process.h"
 
-Process::Process(double dt)
-{
-    dt_ = dt;
-}
+#include <cassert>
 
-Process::Process(Arguments& paras){
-    dt_ = paras.g_VAL<double>("dt");
-}
+Process::Process(double dt){dt_ = dt;}
 
-void Process::set_loaded(bool ldd)
-{
-    loaded_ = ldd;
-}
+Process::Process(Arguments& paras){dt_ = paras.g_VAL<double>("dt");}
 
-double Process::get_dt()
-{
-    return dt_;
-}
+void Process::para_validate(){assert(dt_ > 0.0);}
 
-bool Process::check_loaded()
-{
-    return loaded_;
-}
+void Process::set_loaded(bool ldd){loaded_ = ldd;}
+
+double Process::get_dt(){return dt_;}
+
+bool Process::check_loaded(){return loaded_;}
 
 

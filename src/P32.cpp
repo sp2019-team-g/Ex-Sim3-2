@@ -1,9 +1,15 @@
 
 
 #include "P32.h"
+#include "Util.h"
 
 #include <cmath>
-#include "Util.h"
+#include <cassert>
+
+#include <iostream>
+using namespace std;
+
+
 P32::P32(
         double r,
         double rho,
@@ -16,8 +22,9 @@ P32::P32(
     r_ = r;
     rho_ = rho;
     kappa_ = kappa;
-    theta_ = theta;
+    theta_ = theta;    
     epsilon_ = epsilon;
+    para_validate();
     set_loaded(false);
     post_update();
 }
@@ -30,6 +37,7 @@ P32::P32(Arguments& paras) : Process(paras)
     theta_ = paras.g_VAL<double>("theta");
     epsilon_ = paras.g_VAL<double>("epsilon");
     N_ = paras.g_VAL<size_t>("N");
+    para_validate();
     try
     {
         S0_ = paras.g_VAL<double>("S0");
@@ -43,23 +51,36 @@ P32::P32(Arguments& paras) : Process(paras)
     post_update();
 }
 
+void P32::para_validate()
+{
+    Process::para_validate();
+    assert(r_ >= 0.0);
+    assert(rho_ >= -1.0);
+    assert(rho_ <= 1.0);
+    assert(kappa_ >= 0.0);
+    assert(theta_ >= 0.0);
+    assert(epsilon_ > 0.0);
+}
+
+
 void P32::post_update()
 {
-/*
- * TODO: Validate Inputs
- * */
+
     double T = get_dt();
     eps2_ = epsilon_*epsilon_;
     p_ = - (2.0*kappa_*theta_)/eps2_;
-    v_ = p_ * (kappa_+eps2_)/(kappa_*theta_) - 1.0;
-    Delta_ = T*eps2_/4.0; 
+    v_ = 2.0 * kappa_*theta_*(kappa_+eps2_)/(eps2_*kappa_*theta_) - 1.0;
+    Delta_ = 0.25 * T * eps2_; 
     delta_ = 4.0*(eps2_+kappa_)/eps2_;
-    ektT1_ = std::exp((kappa_*theta_*T)-1.0);
-    zp_ = eps2_*ektT1_/(4.0*kappa_*theta_ * (ektT1_/M_E));
+    ektT_ = std::exp(kappa_*theta_*T);
+    cout << " kappa " <<kappa_<<endl;
+    cout << " theta " <<theta_<<endl;
+    cout << " T "<<T<<endl;
+    zp_ = eps2_*(ektT_-1.0)/(4.0*kappa_*theta_);
     if(check_loaded())
     {
         X0_ = 1.0/V0_;
-        lambda_ = (X0_*4.0*kappa_*theta_)/(eps2_*ektT1_);
+        lambda_ = X0_/zp_;
     }
 
 }
@@ -75,24 +96,42 @@ void P32::para_load(Arguments& paras)
 double P32::simulate()
 {
     double T = get_dt();
-    double Z = UF::ncChi2Rnd(delta_,lambda_);
-    double XT = Z*zp_;
+    double Z = UF::ncChi2Rnd(delta_, lambda_);
+    
+    double XT = Z*zp_/ektT_;
+    cout<<endl;
+    cout<<" Z "<<Z<<endl;
+    cout<<" delta "<< delta_<<endl;
+    cout<<" lambda "<< lambda_ << endl;
+    cout<<" XT "<<XT<<endl;
+    cout<<" j "<<p_<<endl;
+    cout<<" Delta "<<Delta_<<endl;
     double x = p_*std::sqrt(XT*X0_)/std::sinh(p_*Delta_);
     double v = v_;
+    cout<<" v "<<v<<endl;
     double eps2 = eps2_;
     std::function<std::complex<double>(double)> Phi = [&, v, x, eps2](double a) -> std::complex<double>
     {
-        return UF::I(std::sqrt(std::complex<double>(v*v, - 8*a/eps2)), x)/UF::I(v, x);
+        return UF::I(std::sqrt(std::complex<double>(v*v, - 8*a/eps2)), x)/UF::I(std::abs(v), x);
     };
-
+    cout<<" g "<<endl;
+    cout<<UF::I(std::sqrt(std::complex<double>(v*v, - 8*0.66/eps2)), x)<<endl;
+    cout<<UF::I(std::abs(v), x)<<endl;
+    cout<<endl;
     double mu = std::real(std::complex<double>(0.0, -1.0) * UF::numericalDiff(Phi, 0.0, 0.01));
     double sigma2 = std::real(-UF::numericalDiff2(Phi,0.0,0.01)) - mu*mu;
+
+
     double sigma = std::sqrt(sigma2);
     double ueps = mu + 12.0*sigma;
-    double h = 3.0*M_PI/(2.0*ueps);
+    cout <<" mu "<<mu<<endl;
+    cout<<" sigma "<< sigma<<endl;
+    cout<<" ueps "<<ueps<<endl;
+    // double h = 1.5*M_PI/ueps;
+    double h = 0.02;
     double N = (double)N_;
 
-
+    cout <<" h " << h <<endl;
 
     std::function<double(double)> F = [&, h, N, Phi](double x)->double
     {
@@ -102,13 +141,22 @@ double P32::simulate()
         return res;
     };
 
-    double L = UF::rvs(F,UF::uniRnd(0.0,1.0));
+    cout <<"[";
+    for(double i = 0.0; i < 10.0; i += 0.25){
+        cout << F(i) << ",";
+    }
+    cout << "]" << endl;
+    double L = UF::rvs(F, UF::uniRnd(0.0,1.0), 0.2, 0.0, UF::MAXD);
+    cout << " L "<< L <<endl;
     double K = 1.0/epsilon_ *(std::log(X0_/XT) + (kappa_+eps2_/2.0)*L - T*kappa_*theta_);
 
-    double m = std::log(S0_) + r_*T-L/2.0+rho_*K;
+    double m = std::log(S0_) + r_*T-0.5*L+rho_*K;
     double s = (1.0-rho_*rho_)*K;
+    cout<<" m "<<m<<endl;
+    cout<<" s "<<s<<endl;
 
     double ZZ = UF::normalRnd(m,s);
+    cout<<" ZZ "<<(ZZ)<<endl;
     return std::exp(ZZ);
 }
 
