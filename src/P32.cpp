@@ -2,8 +2,8 @@
 
 #include "P32.h"
 
-
-
+#include <cmath>
+#include "Util.h"
 P32::P32(
         double r,
         double rho,

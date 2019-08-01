@@ -7,10 +7,10 @@
 #include <iostream>
 using namespace std;
 int main(){
-	// BSI::PYB();
-	Factory<P32, McPricingEng, EUCallOpt> fac = Factory<P32, McPricingEng, EUCallOpt>();
-	fac.build();
-	cout<<fac.price()<<endl;
-	// BSI::PYE();
-	return 0;
+    // BSI::PYB();
+    Factory<P32, McPricingEng, EUCallOpt> fac = Factory<P32, McPricingEng, EUCallOpt>();
+    fac.build();
+    cout<<fac.price()<<endl;
+    // BSI::PYE();
+    return 0;
 }

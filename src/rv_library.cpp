@@ -35,27 +35,27 @@ double RandomVariableStatisticalFunctions::n_probs(double z)
     static const double CUTOFF = 7.07106781186547;
       
     static const double p[7] =
-	{
-		220.206867912376,
-		221.213596169931,
-		112.079291497871,
-		33.912866078383,
-		6.37396220353165,
-		0.700383064443688,
-		3.52624965998911E-02
-	};
+    {
+        220.206867912376,
+        221.213596169931,
+        112.079291497871,
+        33.912866078383,
+        6.37396220353165,
+        0.700383064443688,
+        3.52624965998911E-02
+    };
 
     static const double q[8] =
-	{
-		440.413735824752,
-		793.826512519948,
-		637.333633378831,
-		296.564248779674,
-		86.7807322029461,
-		16.064177579207,
-		1.75566716318264,
-		8.83883476483184E-02
-	};
+    {
+        440.413735824752,
+        793.826512519948,
+        637.333633378831,
+        296.564248779674,
+        86.7807322029461,
+        16.064177579207,
+        1.75566716318264,
+        8.83883476483184E-02
+    };
       
     double ZABS = std::fabs(z);
 
@@ -74,7 +74,7 @@ double RandomVariableStatisticalFunctions::n_probs(double z)
             tempP = ((tempP*ZABS + p[2])*ZABS + p[1])*ZABS + p[0];
             
             PP = EXPNTL*tempP/tempQ;
-		}
+        }
         else
         {
             double tempQ = ZABS + 3.0/(ZABS + 4.0/(ZABS + 0.65));
@@ -106,18 +106,18 @@ double RandomVariableStatisticalFunctions::hittingDist(const double a, const dou
     //static const double PI = 3.1415926535897932384626433832795;
 
     double tCube = t * t * t;
-	double first = a / (sigma * std::sqrt(rv::TWO_PI * tCube));
-	double third = a + t * (mu - b);
+    double first = a / (sigma * std::sqrt(rv::TWO_PI * tCube));
+    double third = a + t * (mu - b);
     double second = third * third / (2.0 * sigma * sigma * t);
 
-	return first * std::exp(-second);
+    return first * std::exp(-second);
 }
 
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 //XX
 //XX    Simulate from Hitting Distribution (IG distribution with negative drift)
 //XX    Accept-Rejection method with Gamma Distributio n 
-//XX	
+//XX    
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 double RandomVariableStatisticalFunctions::ranHittingDist
@@ -131,16 +131,16 @@ double RandomVariableStatisticalFunctions::ranHittingDist
     double bad_value = -1;
     double mu = b - drift;
     double lambda = (a * a)/(sigma * sigma);
-	double nu = a / std::abs(mu);
+    double nu = a / std::abs(mu);
 
-	double t = ranInverseGaussian(nu, lambda);
+    double t = ranInverseGaussian(nu, lambda);
 
-	if (mu >= 0) return t;  //just usual IG
+    if (mu >= 0) return t;  //just usual IG
 
-	double probAccept = std::exp(-2.0 * lambda / nu);
-	double u = my_ran2();
+    double probAccept = std::exp(-2.0 * lambda / nu);
+    double u = my_ran2();
 
-	return (u > probAccept) ? bad_value : t; 
+    return (u > probAccept) ? bad_value : t; 
 }
 
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
@@ -171,7 +171,7 @@ double RandomVariableStatisticalFunctions::InverseGaussiancdf(const double x, co
 //XX    Simulate from Inverse Guassian Distribution
 //XX        
 //XX    Root Transformation Method (MSH)
-//XX	mu is a mean and a is a shape parameter.
+//XX    mu is a mean and a is a shape parameter.
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 double RandomVariableStatisticalFunctions::ranInverseGaussian(double nu, double lambda)
@@ -200,30 +200,30 @@ double RandomVariableStatisticalFunctions::ranInverseGaussian(double nu, double 
 
 double RandomVariableStatisticalFunctions::ran0()
 {
-	static bool NOT_FIRST_TIME = false;
-	
-	const static long IA = 16807, IM = 2147483647;
-	const static long IQ = 127773;
-	const long IR = 2836;
-	const static long MASK = 123459876;
-	const double AM = 1.0/double(IM);
-	
-	static long idum;
-	
-	if (NOT_FIRST_TIME == false)
-	{
-		srand(time(NULL));	
-		idum = rand();
-		NOT_FIRST_TIME = true;
-	}
-	
-	idum ^= MASK;
-	long k = idum/IQ;
-	idum = IA*(idum - k*IQ) - IR*k;
-	if (idum < 0) idum += IM;
-	double ans = AM*idum;
-	idum ^= MASK;
-	return ans;
+    static bool NOT_FIRST_TIME = false;
+    
+    const static long IA = 16807, IM = 2147483647;
+    const static long IQ = 127773;
+    const long IR = 2836;
+    const static long MASK = 123459876;
+    const double AM = 1.0/double(IM);
+    
+    static long idum;
+    
+    if (NOT_FIRST_TIME == false)
+    {
+        srand(time(NULL));  
+        idum = rand();
+        NOT_FIRST_TIME = true;
+    }
+    
+    idum ^= MASK;
+    long k = idum/IQ;
+    idum = IA*(idum - k*IQ) - IR*k;
+    if (idum < 0) idum += IM;
+    double ans = AM*idum;
+    idum ^= MASK;
+    return ans;
 }
 
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
@@ -232,52 +232,52 @@ double RandomVariableStatisticalFunctions::ran0()
 
 double RandomVariableStatisticalFunctions::GetNormalVariate()
 {
-	static bool Spare_normal_flag = false;
-	static double Spare_normal;
+    static bool Spare_normal_flag = false;
+    static double Spare_normal;
 
-	double rsq, v1, v2;
+    double rsq, v1, v2;
 
-	if (Spare_normal_flag == false)
-	{
-		do
-		{
-			v1 = 2.0*my_ran2() - 1.0;			//Put in range (-1,1)
-			v2 = 2.0*my_ran2() - 1.0;
+    if (Spare_normal_flag == false)
+    {
+        do
+        {
+            v1 = 2.0*my_ran2() - 1.0;           //Put in range (-1,1)
+            v2 = 2.0*my_ran2() - 1.0;
 
-			rsq = v1*v1 + v2*v2;
+            rsq = v1*v1 + v2*v2;
 
-		} while (rsq >= 1.0 || rsq == 0.0);		//Reject if outside unit circle
+        } while (rsq >= 1.0 || rsq == 0.0);     //Reject if outside unit circle
 
-		double fac = std::sqrt(-2.0*std::log(rsq)/rsq);
+        double fac = std::sqrt(-2.0*std::log(rsq)/rsq);
 
-		Spare_normal = v1*fac; 					//Generates two normals
-		Spare_normal_flag = true;  				//Store one,  return the other
+        Spare_normal = v1*fac;                  //Generates two normals
+        Spare_normal_flag = true;               //Store one,  return the other
 
-		return v2*fac;
+        return v2*fac;
 
-	}
-	else
-	{
-		Spare_normal_flag = false;
-		return Spare_normal;
-	}
+    }
+    else
+    {
+        Spare_normal_flag = false;
+        return Spare_normal;
+    }
 }
 
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 //  double my_ran2()   modified from Numerical recipes to use statics
 //  Generates a U[0,1] with period ~2.3*10^18.
-//	(See L'Ecuyer 1988 p747)
+//  (See L'Ecuyer 1988 p747)
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 double RandomVariableStatisticalFunctions::my_ran2()   //modified from Numerical recipes
 {
     static const long NTAB = 32;
     
-    static const long IM1 = 2147483563;	static const long IA1 = 40014;
-	static const long IQ1 = 53668;		static const long IR1 = 12211;
+    static const long IM1 = 2147483563; static const long IA1 = 40014;
+    static const long IQ1 = 53668;      static const long IR1 = 12211;
            
-    static const long IM2 = 2147483399;	static const long IA2 = 40692;    
-    static const long IQ2 = 52774;		static const long IR2 = 3791;
+    static const long IM2 = 2147483399; static const long IA2 = 40692;    
+    static const long IQ2 = 52774;      static const long IR2 = 3791;
     
     static const long IMM1 = IM1 - 1;
     static const long NDIV = 1 + IMM1/NTAB;
@@ -285,25 +285,25 @@ double RandomVariableStatisticalFunctions::my_ran2()   //modified from Numerical
     static const double RNMX = 1.0 - EPS;
     static const double AM = 1.0/double(IM1);
 
-	static long idum2;
-	static long iy;
-	static long iv[NTAB];
-	static long idum;
+    static long idum2;
+    static long iy;
+    static long iv[NTAB];
+    static long idum;
 
-	static bool NOT_FIRST_TIME = false;
+    static bool NOT_FIRST_TIME = false;
 
-	if (NOT_FIRST_TIME == false)		//run for first time
+    if (NOT_FIRST_TIME == false)        //run for first time
     {
-		srand(time(NULL));	//initialise ran2
-		idum = -rand();
+        srand(time(NULL));  //initialise ran2
+        idum = -rand();
 
-		idum = (idum == 0)? 1 : -idum;
+        idum = (idum == 0)? 1 : -idum;
         idum2 = idum;
 
         for (long j = NTAB + 7; j >= 0; --j)
         {
             long k = idum/IQ1;
-			idum = IA1*(idum - k*IQ1) - k*IR1;
+            idum = IA1*(idum - k*IQ1) - k*IR1;
             if (idum < 0) idum += IM1;
             
             if (j < NTAB) iv[j] = idum;
@@ -339,7 +339,7 @@ double RandomVariableStatisticalFunctions::my_ran2()   //modified from Numerical
 
 double RandomVariableStatisticalFunctions::maxd(double a, double b)
 {
-	return (a > b) ? a : b;
+    return (a > b) ? a : b;
 }
 
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
@@ -348,7 +348,7 @@ double RandomVariableStatisticalFunctions::maxd(double a, double b)
 
 double RandomVariableStatisticalFunctions::mind(double a, double b)
 {
-	return (a < b) ? a : b;
+    return (a < b) ? a : b;
 }
 
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
@@ -357,7 +357,7 @@ double RandomVariableStatisticalFunctions::mind(double a, double b)
 
 double RandomVariableStatisticalFunctions::normal_cdf(double X)
 {
-	return 0.5 + 0.5*Cody_erf(X*ROOT_TWO_INVERSE, 0);
+    return 0.5 + 0.5*Cody_erf(X*ROOT_TWO_INVERSE, 0);
 }
 
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
@@ -401,209 +401,209 @@ double RandomVariableStatisticalFunctions::normal_cdf(double X)
 
 double RandomVariableStatisticalFunctions::Cody_erf(double X, long jint)
 {
-	static const double XINF = 1.79769313486231E+308;         //Machine dependent constants;
-	static const double XNEG = -26.6287357137515;
-	static const double XSMALL = 1E-150;
-	static const double XBIG = 25.0;
-	static const double XHUGE = 5E+74;
-	static const double XMAX = 5E+74;
-	//static const double XMIN = 4.94065645841247E-324;
+    static const double XINF = 1.79769313486231E+308;         //Machine dependent constants;
+    static const double XNEG = -26.6287357137515;
+    static const double XSMALL = 1E-150;
+    static const double XBIG = 25.0;
+    static const double XHUGE = 5E+74;
+    static const double XMAX = 5E+74;
+    //static const double XMIN = 4.94065645841247E-324;
 
 
-	static const double a[5] =          //Case |x| <= 0.46875
-	{	3.16112374387057,
-		113.86415415105,
-		377.485237685302,
-		3209.37758913847,
-		0.185777706184603
-	};
+    static const double a[5] =          //Case |x| <= 0.46875
+    {   3.16112374387057,
+        113.86415415105,
+        377.485237685302,
+        3209.37758913847,
+        0.185777706184603
+    };
 
-	static const double b[4] =          //Case |x| <= 0.46875
-	{	23.6012909523441,
-		244.024637934444,
-		1282.61652607737,
-		2844.23683343917
-	};
+    static const double b[4] =          //Case |x| <= 0.46875
+    {   23.6012909523441,
+        244.024637934444,
+        1282.61652607737,
+        2844.23683343917
+    };
 
-	static const double c[9] =          //Case 0.46875 < |x| <= 4
-	{	0.56418849698867,
-		8.88314979438838,
-		66.1191906371416,
-		298.6351381974,
-		881.952221241769,
-		1712.04761263407,
-		2051.07837782607,
-		1230.339354798,
-		2.15311535474404E-08
-	};
+    static const double c[9] =          //Case 0.46875 < |x| <= 4
+    {   0.56418849698867,
+        8.88314979438838,
+        66.1191906371416,
+        298.6351381974,
+        881.952221241769,
+        1712.04761263407,
+        2051.07837782607,
+        1230.339354798,
+        2.15311535474404E-08
+    };
 
-	static const double D[8] =          //Case 0.46875 < |x| <= 4
-	{	15.7449261107098,
-		117.693950891312,
-		537.18110186201,
-		1621.38957456669,
-		3290.79923573346,
-		4362.61909014325,
-		3439.36767414372,
-		1230.33935480375
-	};
+    static const double D[8] =          //Case 0.46875 < |x| <= 4
+    {   15.7449261107098,
+        117.693950891312,
+        537.18110186201,
+        1621.38957456669,
+        3290.79923573346,
+        4362.61909014325,
+        3439.36767414372,
+        1230.33935480375
+    };
 
-	static const double P[6] =          //Case 4 < |x|
-	{	0.305326634961232,
-		0.360344899949804,
-		0.125781726111229,
-		1.60837851487423E-02,
-		6.58749161529838E-04,
-		1.63153871373021E-02
-	};
+    static const double P[6] =          //Case 4 < |x|
+    {   0.305326634961232,
+        0.360344899949804,
+        0.125781726111229,
+        1.60837851487423E-02,
+        6.58749161529838E-04,
+        1.63153871373021E-02
+    };
     
-	static const double Q[5] =          //Case 4 < |x|
-	{	2.56852019228982,
-		1.87295284992346,
-		0.527905102951428,
-		6.05183413124413E-02,
-		2.33520497626869E-03
-	};
+    static const double Q[5] =          //Case 4 < |x|
+    {   2.56852019228982,
+        1.87295284992346,
+        0.527905102951428,
+        6.05183413124413E-02,
+        2.33520497626869E-03
+    };
 
-	static const double xbreak_1 = 0.46875;
-	static const long xbreak_2 = 4;
+    static const double xbreak_1 = 0.46875;
+    static const long xbreak_2 = 4;
 
-	double Cody;    
-	double z;
+    double Cody;    
+    double z;
 
-	double Y = std::fabs(X);
+    double Y = std::fabs(X);
         
-	//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-	//XX     Evaluate erf for |x| <= 0.46875
-	//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+    //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+    //XX     Evaluate erf for |x| <= 0.46875
+    //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
     
-	if (Y <= xbreak_1)
-	{
-		if (Y >= XSMALL) z = Y*Y;
+    if (Y <= xbreak_1)
+    {
+        if (Y >= XSMALL) z = Y*Y;
         
-		double xnum = a[4]*z;
-		double xden = z;
+        double xnum = a[4]*z;
+        double xden = z;
         
-		for (long i = 0; i <= 2; ++i)
-		{
-			xnum = (xnum + a[i])*z;
-			xden = (xden + b[i])*z;
-		}
+        for (long i = 0; i <= 2; ++i)
+        {
+            xnum = (xnum + a[i])*z;
+            xden = (xden + b[i])*z;
+        }
         
-		Cody = X*(xnum + a[3])/(xden + b[3]);
+        Cody = X*(xnum + a[3])/(xden + b[3]);
         
-		if (jint != 0) Cody = 1 - Cody;
+        if (jint != 0) Cody = 1 - Cody;
 
-		if (jint == 2) Cody = std::exp(z)*Cody;
+        if (jint == 2) Cody = std::exp(z)*Cody;
 
-		return Cody;
-	}
+        return Cody;
+    }
     
-	//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-	//XX     Evaluate erf for 0.46875 < |x| <= 4
-	//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+    //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+    //XX     Evaluate erf for 0.46875 < |x| <= 4
+    //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
     
-	if ((Y > xbreak_1) && (Y <= xbreak_2))
-	{
-		double xnum = c[8]*Y;
-		double xden = Y;
+    if ((Y > xbreak_1) && (Y <= xbreak_2))
+    {
+        double xnum = c[8]*Y;
+        double xden = Y;
         
-		for(long i = 0; i <= 6; ++i)
-		{
-			xnum = (xnum + c[i])*Y;
-			xden = (xden + D[i])*Y;
-		}
+        for(long i = 0; i <= 6; ++i)
+        {
+            xnum = (xnum + c[i])*Y;
+            xden = (xden + D[i])*Y;
+        }
         
-		Cody = (xnum + c[7])/(xden + D[7]);
+        Cody = (xnum + c[7])/(xden + D[7]);
         
-		if (jint != 2)
-		{
-			if (Y > 0) z = std::floor(Y * 16) / 16;
-			else z = std::ceil(Y * 16) / 16;
+        if (jint != 2)
+        {
+            if (Y > 0) z = std::floor(Y * 16) / 16;
+            else z = std::ceil(Y * 16) / 16;
 
-			double del = (Y - z) * (Y + z);
-			Cody = std::exp(-z * z) * std::exp(-del) * Cody;
-		}
-	}
+            double del = (Y - z) * (Y + z);
+            Cody = std::exp(-z * z) * std::exp(-del) * Cody;
+        }
+    }
     
-	//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-	//XX     Evaluate erf for 4 < |x| < XBIG
-	//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+    //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+    //XX     Evaluate erf for 4 < |x| < XBIG
+    //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
           
-	if ((Y > xbreak_2) && (Y < XBIG))
-	{
-		z = 1.0 / (Y * Y);
-		double xnum = P[5] * z;
-		double xden = z;
+    if ((Y > xbreak_2) && (Y < XBIG))
+    {
+        z = 1.0 / (Y * Y);
+        double xnum = P[5] * z;
+        double xden = z;
         
-		for (long i = 0; i <= 3; ++i)
-		{
-		   xnum = (xnum + P[i]) * z;
-		   xden = (xden + Q[i]) * z;
-		}
+        for (long i = 0; i <= 3; ++i)
+        {
+           xnum = (xnum + P[i]) * z;
+           xden = (xden + Q[i]) * z;
+        }
         
-		Cody = z * (xnum + P[4]) / (xden + Q[4]);
-		Cody = (ROOT_PI_INVERSE - Cody) / Y;
+        Cody = z * (xnum + P[4]) / (xden + Q[4]);
+        Cody = (ROOT_PI_INVERSE - Cody) / Y;
          
-		if (jint != 2)
-		{
-			if (Y > 0) z = std::floor(Y * 16) / 16;
-			else z = std::ceil(Y * 16) / 16;
+        if (jint != 2)
+        {
+            if (Y > 0) z = std::floor(Y * 16) / 16;
+            else z = std::ceil(Y * 16) / 16;
 
-			double del = (Y - z) * (Y + z);
-			Cody = std::exp(-z * z) * std::exp(-del) * Cody;
-		}
-	}
+            double del = (Y - z) * (Y + z);
+            Cody = std::exp(-z * z) * std::exp(-del) * Cody;
+        }
+    }
     
-	//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-	//XX     Evaluate erf for XBIG <= |x|
-	//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+    //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+    //XX     Evaluate erf for XBIG <= |x|
+    //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
           
-	if ((Y >= XBIG) && ((jint != 2) || (Y >= XMAX))) Cody = 0;
+    if ((Y >= XBIG) && ((jint != 2) || (Y >= XMAX))) Cody = 0;
     
-	if ((Y >= XBIG) && (Y >= XHUGE)) Cody = ROOT_PI_INVERSE / Y;
+    if ((Y >= XBIG) && (Y >= XHUGE)) Cody = ROOT_PI_INVERSE / Y;
  
-	//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-	//XX     Fix up for negative argument, erf, etc.
-	//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+    //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+    //XX     Fix up for negative argument, erf, etc.
+    //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
     
-	switch (jint)
-	{
-		case 0:
+    switch (jint)
+    {
+        case 0:
     
-			if (X > xbreak_1) Cody = (0.5 - Cody) + 0.5;
-			if (X < -xbreak_1) Cody = (-0.5 + Cody) - 0.5;
-			break;
+            if (X > xbreak_1) Cody = (0.5 - Cody) + 0.5;
+            if (X < -xbreak_1) Cody = (-0.5 + Cody) - 0.5;
+            break;
             
-		case 1:
+        case 1:
     
-			if (X < -xbreak_1) Cody = 2.0 - Cody;
-			break;
+            if (X < -xbreak_1) Cody = 2.0 - Cody;
+            break;
              
-		case 2:
+        case 2:
         
-			if (X < -xbreak_1)
-			{
-				if (X < XNEG) Cody = XINF;
-				else
-				{
-					if (Y > 0) z = std::floor(X * 16) / 16;
-					else z = std::ceil(X * 16) / 16;
+            if (X < -xbreak_1)
+            {
+                if (X < XNEG) Cody = XINF;
+                else
+                {
+                    if (Y > 0) z = std::floor(X * 16) / 16;
+                    else z = std::ceil(X * 16) / 16;
 
-					double del = (X - z) * (X + z);
-					Y = std::exp(z * z) * std::exp(del);
-					Cody = (Y + Y) - Cody;
-				}
-			}
-			break;
+                    double del = (X - z) * (X + z);
+                    Y = std::exp(z * z) * std::exp(del);
+                    Cody = (Y + Y) - Cody;
+                }
+            }
+            break;
             
-		default:
+        default:
 
-			//Argument must be 0, 1 or 2
-			break;
-	}
+            //Argument must be 0, 1 or 2
+            break;
+    }
 
-	return Cody;
+    return Cody;
 }
 
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
@@ -613,49 +613,49 @@ double RandomVariableStatisticalFunctions::Cody_erf(double X, long jint)
 
 double RandomVariableStatisticalFunctions::cndev(double u)
 {
-	static const double a[4] =        //Constants in the rational polynomial approximation
-	{	2.50662823884,
-		-18.61500062529,
-		41.39119773534,
-		-25.44106049637
-	};
+    static const double a[4] =        //Constants in the rational polynomial approximation
+    {   2.50662823884,
+        -18.61500062529,
+        41.39119773534,
+        -25.44106049637
+    };
 
-	static const double b[4] =
-	{	-8.4735109309,
-		23.08336743743,
-		-21.06224101826,
-		3.13082909833
-	};
+    static const double b[4] =
+    {   -8.4735109309,
+        23.08336743743,
+        -21.06224101826,
+        3.13082909833
+    };
 
-	static const double c[9] =
-	{	0.337475482272615,
-		0.976169019091719,
-		0.160797971491821,
-		2.76438810333863E-02,
-		3.8405729373609E-03,
-		3.951896511919E-04,
-		3.21767881768E-05,
-		2.888167364E-07,
-		3.960315187E-07
-	};
+    static const double c[9] =
+    {   0.337475482272615,
+        0.976169019091719,
+        0.160797971491821,
+        2.76438810333863E-02,
+        3.8405729373609E-03,
+        3.951896511919E-04,
+        3.21767881768E-05,
+        2.888167364E-07,
+        3.960315187E-07
+    };
 
-	double X = u - 0.5;
+    double X = u - 0.5;
 
-	if (std::fabs(X) < 0.42)
-	{
-		double r = X * X;
-		return X * (((a[3] * r + a[2]) * r + a[1]) * r + a[0]) / ((((b[3] * r + b[2]) * r + b[1]) * r + b[0]) * r + 1.0);
-	}
+    if (std::fabs(X) < 0.42)
+    {
+        double r = X * X;
+        return X * (((a[3] * r + a[2]) * r + a[1]) * r + a[0]) / ((((b[3] * r + b[2]) * r + b[1]) * r + b[0]) * r + 1.0);
+    }
 
-	double r = (X > 0.0) ? 1.0 - u : u;
+    double r = (X > 0.0) ? 1.0 - u : u;
 
-	r = std::log(-std::log(r));
+    r = std::log(-std::log(r));
     
-	double r1 = r * (c[6] + r * (c[7] + r * c[8]));
-	double r2 = r * (c[3] + r * (c[4] + r * (c[5] + r1)));
-	double r3 = c[0] + r * (c[1] + r * (c[2] + r2));
+    double r1 = r * (c[6] + r * (c[7] + r * c[8]));
+    double r2 = r * (c[3] + r * (c[4] + r * (c[5] + r1)));
+    double r3 = c[0] + r * (c[1] + r * (c[2] + r2));
     
-	return (X < 0.0) ? -r3 : r3;
+    return (X < 0.0) ? -r3 : r3;
 }
 
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
@@ -683,15 +683,15 @@ double RandomVariableStatisticalFunctions::cndev(double u)
 
 double RandomVariableStatisticalFunctions::ltqnorm(double p, int err)
 {
-	static const double XINF = 1.79769313486231E+308; 	//Machine dependent constants
+    static const double XINF = 1.79769313486231E+308;   //Machine dependent constants
 
-	static const double LOW = 0.02425;
-	static const double HIGH = 0.97575;
+    static const double LOW = 0.02425;
+    static const double HIGH = 0.97575;
 
-	static const int ERR_DOM = 1;
-	static const int ERR_RANGE = 2;
+    static const int ERR_DOM = 1;
+    static const int ERR_RANGE = 2;
 
-	err = 0;
+    err = 0;
 
     /* Coefficients in rational approximations. */
 
@@ -734,18 +734,18 @@ double RandomVariableStatisticalFunctions::ltqnorm(double p, int err)
 
     if (p < 0 || p > 1)
     {
-		err = ERR_DOM;
+        err = ERR_DOM;
         return 0.0;
     }
     else if (p == 0)
-	{
-		err = ERR_RANGE;
-		return -XINF /* minus "infinity" */;
+    {
+        err = ERR_RANGE;
+        return -XINF /* minus "infinity" */;
     }
     else if (p == 1)
     {
-		err = ERR_RANGE;
-		return XINF /* "infinity" */;
+        err = ERR_RANGE;
+        return XINF /* "infinity" */;
     }
     else if (p < LOW)
     {
@@ -793,7 +793,7 @@ double RandomVariableStatisticalFunctions::N(double z)
     static double c2 =  0.3989423;
 
     if (z >  6.0) { return 1.0; };  // this guards against overflow
-	if (z < -6.0) { return 0.0; };  // This is a very narrow range
+    if (z < -6.0) { return 0.0; };  // This is a very narrow range
 
     double a = std::fabs(z);
     double t = 1.0/(1.0 + a*p);
@@ -808,152 +808,152 @@ double RandomVariableStatisticalFunctions::N(double z)
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 //XX
 //XX     void sobseq(const long n_dim, double *x)
-//XX		Generates sobol' sequence numbers.  Modified from Numerical Recipes
-//XX     	n_dim is number of dimensions,  results are returned in x()
+//XX        Generates sobol' sequence numbers.  Modified from Numerical Recipes
+//XX        n_dim is number of dimensions,  results are returned in x()
 //XX
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 void RandomVariableStatisticalFunctions::sobseq(std::vector<double> & x)
 {
-	const int MAXBIT = 30, MAXDIM = 39; //NR uses MAXDIM = 6
+    const int MAXBIT = 30, MAXDIM = 39; //NR uses MAXDIM = 6
 
-	static bool NOT_FIRST_TIME = false;
-		
-	static unsigned long step_number = 0;   //step_number incremented on every call of sobseq
-	
-	static long n_dim = x.size();
+    static bool NOT_FIRST_TIME = false;
+        
+    static unsigned long step_number = 0;   //step_number incremented on every call of sobseq
+    
+    static long n_dim = x.size();
 
-	static long r = (n_dim < MAXDIM) ? n_dim : MAXDIM;
+    static long r = (n_dim < MAXDIM) ? n_dim : MAXDIM;
 
-	//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-	//XX	Uses Bratley and Fox numbers
-	//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+    //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+    //XX    Uses Bratley and Fox numbers
+    //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
-	static const int degrees[MAXDIM] =   			//Degree of the primitive polynomials
-		{1, 2, 3, 3, 4, 4, 5, 5, 5, 5,
-		 5, 5, 6, 6, 6, 6, 6, 6, 7, 7,
-		 7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
-		 7, 7, 7, 7, 7, 7, 8, 8, 8
-		};
-	static const unsigned long prim_poly[MAXDIM] = 	//Specifier of the primitive polynimial
-		{ 0,  1,  1,  2,  1,  4,  2, 13,  7, 14,
-		 11,  4,  1, 16, 13, 22, 19, 25,  1, 32,
-		  4,  8,  7, 56, 14, 28, 19, 50, 21, 42,
-		  31, 62, 37, 41, 55, 59, 14, 56, 21
-		 };
+    static const int degrees[MAXDIM] =              //Degree of the primitive polynomials
+        {1, 2, 3, 3, 4, 4, 5, 5, 5, 5,
+         5, 5, 6, 6, 6, 6, 6, 6, 7, 7,
+         7, 7, 7, 7, 7, 7, 7, 7, 7, 7,
+         7, 7, 7, 7, 7, 7, 8, 8, 8
+        };
+    static const unsigned long prim_poly[MAXDIM] =  //Specifier of the primitive polynimial
+        { 0,  1,  1,  2,  1,  4,  2, 13,  7, 14,
+         11,  4,  1, 16, 13, 22, 19, 25,  1, 32,
+          4,  8,  7, 56, 14, 28, 19, 50, 21, 42,
+          31, 62, 37, 41, 55, 59, 14, 56, 21
+         };
 
-		//B and F:  (3,7,11,13,19,25,37,59,47,            //NR = (BF - (1 + 2^degree))/2
-		//			 61,55,41,67,97,91,109,103,115,131,
-		//			 193,137,145,143,241,157,185,167,229,171,
-		//			 213,191,253,203,211,239,247,285,369,299}
+        //B and F:  (3,7,11,13,19,25,37,59,47,            //NR = (BF - (1 + 2^degree))/2
+        //           61,55,41,67,97,91,109,103,115,131,
+        //           193,137,145,143,241,157,185,167,229,171,
+        //           213,191,253,203,211,239,247,285,369,299}
 
-	static unsigned long coeff_values[MAXBIT*MAXDIM] =  //coefficients of primitive polynomials
-		{	 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-			 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-			 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-			 1, 1, 1, 1, 1, 1, 1, 1, 1,
+    static unsigned long coeff_values[MAXBIT*MAXDIM] =  //coefficients of primitive polynomials
+        {    1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+             1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+             1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+             1, 1, 1, 1, 1, 1, 1, 1, 1,
 
-			 0, 1, 3, 1, 3, 1, 3, 3, 1,
-			 3, 1, 3, 1, 3, 1, 1, 3, 1, 3,
-			 1, 3, 1, 3, 3, 1, 3, 1, 3, 1,
-			 3, 1, 1, 3, 1, 3, 1, 3, 1, 3,
+             0, 1, 3, 1, 3, 1, 3, 3, 1,
+             3, 1, 3, 1, 3, 1, 1, 3, 1, 3,
+             1, 3, 1, 3, 3, 1, 3, 1, 3, 1,
+             3, 1, 1, 3, 1, 3, 1, 3, 1, 3,
 
-			 0, 0, 7, 5, 1, 3, 3, 7, 5,
-			 5, 7, 7, 1, 3, 3, 7, 5, 1, 1,
-			 5, 3, 3, 1, 7, 5, 1, 3, 3, 7,
-			 5, 1, 1, 5, 7, 7, 5, 1, 3, 3,
+             0, 0, 7, 5, 1, 3, 3, 7, 5,
+             5, 7, 7, 1, 3, 3, 7, 5, 1, 1,
+             5, 3, 3, 1, 7, 5, 1, 3, 3, 7,
+             5, 1, 1, 5, 7, 7, 5, 1, 3, 3,
 
-			 0, 0, 0, 0, 1, 7, 9, 13, 11,
-			 1, 3, 7, 9, 5, 13, 13, 11, 3, 15,
-			 5, 3, 15, 7, 9, 13, 9, 1, 11, 7,
-			 5, 15, 1, 15, 11, 5, 3, 1, 7, 9,
+             0, 0, 0, 0, 1, 7, 9, 13, 11,
+             1, 3, 7, 9, 5, 13, 13, 11, 3, 15,
+             5, 3, 15, 7, 9, 13, 9, 1, 11, 7,
+             5, 15, 1, 15, 11, 5, 3, 1, 7, 9,
 
-			 0,   0,  0,  0,  0,  0,  9,  3, 27,
-			 15, 29, 21, 23, 19, 11, 25,  7, 13, 17,
-			 1,  25, 29,  3, 31, 11,  5, 23, 27, 19,
-			 21,  5,  1, 17, 13,  7, 15,  9, 31,  9,
+             0,   0,  0,  0,  0,  0,  9,  3, 27,
+             15, 29, 21, 23, 19, 11, 25,  7, 13, 17,
+             1,  25, 29,  3, 31, 11,  5, 23, 27, 19,
+             21,  5,  1, 17, 13,  7, 15,  9, 31,  9,
 
-			 0,  0,  0,   0,  0,  0,  0,  0,  0,
-			 0,  0,  0,  37, 33,  7,  5, 11, 39, 63,
-			 27, 17, 15, 23, 29,  3, 21, 13, 31, 25,
-			 9,  49, 33, 19, 29, 11, 19, 27, 15, 25,
+             0,  0,  0,   0,  0,  0,  0,  0,  0,
+             0,  0,  0,  37, 33,  7,  5, 11, 39, 63,
+             27, 17, 15, 23, 29,  3, 21, 13, 31, 25,
+             9,  49, 33, 19, 29, 11, 19, 27, 15, 25,
 
-			 0,  0,  0,   0,  0,  0,  0,  0,  0,
-			 0,  0,  0,   0,  0,  0,  0,  0,  0, 13,
-			 33,115, 41, 79, 17, 29,119, 75, 73,105,
-			 7, 59,  65,  21, 3,113, 61, 89, 45,107,
+             0,  0,  0,   0,  0,  0,  0,  0,  0,
+             0,  0,  0,   0,  0,  0,  0,  0,  0, 13,
+             33,115, 41, 79, 17, 29,119, 75, 73,105,
+             7, 59,  65,  21, 3,113, 61, 89, 45,107,
 
-			 0,  0,  0,   0,  0,  0,  0,  0,  0,
-			 0,  0,  0,   0,  0,  0,  0,  0,  0, 0,
-			 0,  0,  0,   0,  0,  0,  0,  0,  0, 0,
-			 0,  0,  0,   0,  0,  0,  0,  7, 23, 39
-		};
+             0,  0,  0,   0,  0,  0,  0,  0,  0,
+             0,  0,  0,   0,  0,  0,  0,  0,  0, 0,
+             0,  0,  0,   0,  0,  0,  0,  0,  0, 0,
+             0,  0,  0,   0,  0,  0,  0,  7, 23, 39
+        };
 
-	static unsigned long x_big[MAXDIM];  //ix = x_big   Successive (unscaled) sobol sequence numbers
-	static unsigned long *iu[MAXBIT];
+    static unsigned long x_big[MAXDIM];  //ix = x_big   Successive (unscaled) sobol sequence numbers
+    static unsigned long *iu[MAXBIT];
 
-	static double factor = 1.0/(1 << MAXBIT);		//scale factor of 2^-MAXBIT to create double in range [0,1]
+    static double factor = 1.0/(1 << MAXBIT);       //scale factor of 2^-MAXBIT to create double in range [0,1]
 
-	if (NOT_FIRST_TIME == false)
-	{
-		//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-		//XX     Just initialises everything.  Nothing returned.  Uses Bratley and Fox numbers
-		//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+    if (NOT_FIRST_TIME == false)
+    {
+        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+        //XX     Just initialises everything.  Nothing returned.  Uses Bratley and Fox numbers
+        //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
-		for (long k = 0; k != MAXDIM; ++k) x_big[k] = 0;
-						
-		if (coeff_values[0] != 1) return;
+        for (long k = 0; k != MAXDIM; ++k) x_big[k] = 0;
+                        
+        if (coeff_values[0] != 1) return;
 
-		for (long j = 0, k = 0 ; j != MAXBIT; ++j, k += MAXDIM) iu[j] = &coeff_values[k];
+        for (long j = 0, k = 0 ; j != MAXBIT; ++j, k += MAXDIM) iu[j] = &coeff_values[k];
 
-		for (long k = 0; k != MAXDIM; ++k)
+        for (long k = 0; k != MAXDIM; ++k)
         {
-			for (long j = 0; j != degrees[k]; ++j)           //Just normalise the given values
-				iu[j][k] <<= (MAXBIT-1-j);
+            for (long j = 0; j != degrees[k]; ++j)           //Just normalise the given values
+                iu[j][k] <<= (MAXBIT-1-j);
 
-			for (long j = degrees[k]; j != MAXBIT; ++j)      //Work out the rest by recursion
+            for (long j = degrees[k]; j != MAXBIT; ++j)      //Work out the rest by recursion
             {
-				unsigned long ipp = prim_poly[k];
-				unsigned long i = iu[j - degrees[k]][k];
-				i ^= (i >> degrees[k]);
+                unsigned long ipp = prim_poly[k];
+                unsigned long i = iu[j - degrees[k]][k];
+                i ^= (i >> degrees[k]);
 
-				for (long l = degrees[k] - 1; l >= 1; l--)
+                for (long l = degrees[k] - 1; l >= 1; l--)
                 {
-					if (ipp & 1) i ^= iu[j-l][k];      //If 1 in l'th place
-					ipp >>= 1;
-				}
-				iu[j][k] = i;
-			}
-		}
-		
-		NOT_FIRST_TIME = true;
-	}
+                    if (ipp & 1) i ^= iu[j-l][k];      //If 1 in l'th place
+                    ipp >>= 1;
+                }
+                iu[j][k] = i;
+            }
+        }
+        
+        NOT_FIRST_TIME = true;
+    }
 
-	unsigned long this_step = step_number++;
-	long count = 0;
-	for (long j = 0; j != MAXBIT; ++j)		//Finds rightmost zero
+    unsigned long this_step = step_number++;
+    long count = 0;
+    for (long j = 0; j != MAXBIT; ++j)      //Finds rightmost zero
     {
-		if (!(this_step & 1)) break;
-		this_step >>= 1;                //j is index of RH zero when exits for
-		++count;
-	}
+        if (!(this_step & 1)) break;
+        this_step >>= 1;                //j is index of RH zero when exits for
+        ++count;
+    }
 
-	//if (count >= MAXBIT) nrerror("MAXBIT too small in sobseq");
+    //if (count >= MAXBIT) nrerror("MAXBIT too small in sobseq");
 
-	this_step = count*MAXDIM;
+    this_step = count*MAXDIM;
 
-	for (long k = 0; k != r; ++k)
+    for (long k = 0; k != r; ++k)
     {
-		x_big[k] ^= coeff_values[this_step + k];
-		x[k] = x_big[k]*factor;
-	}
-	
-	for (long k = r; k != n_dim; ++k)
-	    x[k] = my_ran2();
+        x_big[k] ^= coeff_values[this_step + k];
+        x[k] = x_big[k]*factor;
+    }
+    
+    for (long k = r; k != n_dim; ++k)
+        x[k] = my_ran2();
 }
 
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-//XX	Get_Brownian_bridge
+//XX    Get_Brownian_bridge
 //XX    Constructs a Brownian bridge between i and N, in binary chops,
 //XX    Uses recursion to get lefthand and righthand sides.
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
@@ -966,35 +966,35 @@ void RandomVariableStatisticalFunctions::Get_Brownian_bridge
 ) 
 {
     if (i == j || j == N) return;
-	
-	Wiener_Path[j] = Get_one_Wiener_bridge_step(Wiener_Path[i], Wiener_Path[N], dt*(j - i), dt*(N - j));
-	
-	if (j > i + 1) Get_Brownian_bridge(Wiener_Path, dt, i, long(std::floor(0.5 + 0.5*(i + j))), j);
-	if (j < N - 1) Get_Brownian_bridge(Wiener_Path, dt, j, long(std::floor(0.5 + 0.5*(j + N))), N);
+    
+    Wiener_Path[j] = Get_one_Wiener_bridge_step(Wiener_Path[i], Wiener_Path[N], dt*(j - i), dt*(N - j));
+    
+    if (j > i + 1) Get_Brownian_bridge(Wiener_Path, dt, i, long(std::floor(0.5 + 0.5*(i + j))), j);
+    if (j < N - 1) Get_Brownian_bridge(Wiener_Path, dt, j, long(std::floor(0.5 + 0.5*(j + N))), N);
 }
 
 double RandomVariableStatisticalFunctions::Get_one_Wiener_bridge_step
 (
-	const double prior_z, 
-	const double post_z, 
-	const double prior_t, 
-	const double post_t
+    const double prior_z, 
+    const double post_z, 
+    const double prior_t, 
+    const double post_t
 )
 {
-	double interval = prior_t + post_t;
-	
-    double c_1 = post_t/interval;
-	double c_2 = prior_t/interval;
-	double c_3 = std::sqrt(prior_t*post_t/interval);
-
-	double z = rv::cndev(rv::my_ran2());
+    double interval = prior_t + post_t;
     
-	return c_1*prior_z + c_2*post_z + c_3*z;
-	
+    double c_1 = post_t/interval;
+    double c_2 = prior_t/interval;
+    double c_3 = std::sqrt(prior_t*post_t/interval);
+
+    double z = rv::cndev(rv::my_ran2());
+    
+    return c_1*prior_z + c_2*post_z + c_3*z;
+    
 }
 
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-//XX	Get_Brownian_bridge
+//XX    Get_Brownian_bridge
 //XX    Constructs a Brownian bridge using given set of normal_rvs
 //XX    Adapted from Jaeckel, P
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
@@ -1071,9 +1071,9 @@ void RandomVariableStatisticalFunctions::Get_Brownian_bridge
 
 double RandomVariableStatisticalFunctions::NC_Chi_squ_cdf(const double x, double const v, double const lam)
 {
-	const long MAX_ITERATIONS = 100;
-	const double TOLERANCE = 0.00000001;
-	
+    const long MAX_ITERATIONS = 100;
+    const double TOLERANCE = 0.00000001;
+    
     if (x < 0 || v <= 0) throw std::runtime_error("NC_Chi_squ_dist: Arguments out of range");
     
     double lam2 = 0.5 * lam;
@@ -1194,26 +1194,26 @@ double RandomVariableStatisticalFunctions::invgammp(const double p, const double
 
 double RandomVariableStatisticalFunctions::gser(const double a, const double x)
 {
-	const long ITMAX = 100;
-	const double EPS = std::numeric_limits<double>::epsilon();
+    const long ITMAX = 100;
+    const double EPS = std::numeric_limits<double>::epsilon();
 
-	double gln = gammln(a);
-	if (x <= 0.0) throw std::runtime_error("gser: x out of range");
+    double gln = gammln(a);
+    if (x <= 0.0) throw std::runtime_error("gser: x out of range");
 
-	double ap = a;
-	double del = 1.0/a;
-	double sum = 1.0/a;
-	for (long n = 0; n < ITMAX; ++n) 
-	{
-		++ap;
-		del *= x/ap;
-		sum += del;
-		if (std::fabs(del) < std::fabs(sum)*EPS) return sum*std::exp(-x + a*std::log(x) - gln);
-	}
+    double ap = a;
+    double del = 1.0/a;
+    double sum = 1.0/a;
+    for (long n = 0; n < ITMAX; ++n) 
+    {
+        ++ap;
+        del *= x/ap;
+        sum += del;
+        if (std::fabs(del) < std::fabs(sum)*EPS) return sum*std::exp(-x + a*std::log(x) - gln);
+    }
 
-	long aa = 1; long bb = 0;
-	if (aa == bb) return 0.0;
-	else throw std::runtime_error("gser: a too large, ITMAX too small in routine gser");
+    long aa = 1; long bb = 0;
+    if (aa == bb) return 0.0;
+    else throw std::runtime_error("gser: a too large, ITMAX too small in routine gser");
 }
 
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
@@ -1223,36 +1223,36 @@ double RandomVariableStatisticalFunctions::gser(const double a, const double x)
 
 double RandomVariableStatisticalFunctions::gcf(const double a, const double x)
 {
-	const long ITMAX = 100;
-	const double EPS = std::numeric_limits<double>::epsilon();
-	const double FPMIN = std::numeric_limits<double>::min()/EPS;
+    const long ITMAX = 100;
+    const double EPS = std::numeric_limits<double>::epsilon();
+    const double FPMIN = std::numeric_limits<double>::min()/EPS;
 
-	double gln = gammln(a);
-	double b = x + 1.0 - a;
-	double c = 1.0/FPMIN;
-	double d = 1.0/b;
-	double h = d;
-	
-	long i = 1;
-	while (i <= ITMAX) 
-	{
-		double an = -i*(i - a);
-		b += 2.0;
-		d = an*d + b;
-		if (std::fabs(d) < FPMIN) d = FPMIN;
-		c = b + an/c;
-		if (std::fabs(c) < FPMIN) c = FPMIN;
-		d = 1.0/d;
-		double del = d*c;
-		h *= del;
-		if (std::fabs(del - 1.0) <= EPS) break;
-		
-		++i;
-	}
-	
-	if (i > ITMAX) throw std::runtime_error("gcf:  a too large, ITMAX too small");
-	
-	return std::exp(-x + a*std::log(x) - gln)*h;
+    double gln = gammln(a);
+    double b = x + 1.0 - a;
+    double c = 1.0/FPMIN;
+    double d = 1.0/b;
+    double h = d;
+    
+    long i = 1;
+    while (i <= ITMAX) 
+    {
+        double an = -i*(i - a);
+        b += 2.0;
+        d = an*d + b;
+        if (std::fabs(d) < FPMIN) d = FPMIN;
+        c = b + an/c;
+        if (std::fabs(c) < FPMIN) c = FPMIN;
+        d = 1.0/d;
+        double del = d*c;
+        h *= del;
+        if (std::fabs(del - 1.0) <= EPS) break;
+        
+        ++i;
+    }
+    
+    if (i > ITMAX) throw std::runtime_error("gcf:  a too large, ITMAX too small");
+    
+    return std::exp(-x + a*std::log(x) - gln)*h;
 }
 
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
@@ -1262,25 +1262,25 @@ double RandomVariableStatisticalFunctions::gcf(const double a, const double x)
 
 double RandomVariableStatisticalFunctions::gammln(const double xx)
 {
-	static const double cof[6] = 
-		{
-			76.18009172947146, 
-			-86.50532032941677,
-			24.01409824083091,
-			-1.231739572450155,
-			0.1208650973866179e-2,
-			-0.5395239384953e-5
-		};
+    static const double cof[6] = 
+        {
+            76.18009172947146, 
+            -86.50532032941677,
+            24.01409824083091,
+            -1.231739572450155,
+            0.1208650973866179e-2,
+            -0.5395239384953e-5
+        };
 
-	double y = xx;
-	double x = xx;
-	double tmp = x + 5.5;
-	tmp -= (x + 0.5)*std::log(tmp);
-	double ser = 1.000000000190015;
-	
-	for (long j = 0; j < 6; ++j) ser += cof[j]/++y;
-	
-	return -tmp + std::log(2.5066282746310005*ser/x);
+    double y = xx;
+    double x = xx;
+    double tmp = x + 5.5;
+    tmp -= (x + 0.5)*std::log(tmp);
+    double ser = 1.000000000190015;
+    
+    for (long j = 0; j < 6; ++j) ser += cof[j]/++y;
+    
+    return -tmp + std::log(2.5066282746310005*ser/x);
 }
 
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
@@ -1289,19 +1289,19 @@ double RandomVariableStatisticalFunctions::gammln(const double xx)
 
 double RandomVariableStatisticalFunctions::betai(const double a, const double b, const double x)
 {
-	double bt;
+    double bt;
 
-	if (x < 0.0 || x > 1.0) throw std::runtime_error("Bad x in routine betai");
-	
-	if (x == 0.0 || x == 1.0) 
+    if (x < 0.0 || x > 1.0) throw std::runtime_error("Bad x in routine betai");
+    
+    if (x == 0.0 || x == 1.0) 
         bt = 0.0;
-	else
-		bt = exp(gammln(a + b) - gammln(a) - gammln(b) + a*log(x) + b*log(1.0 - x));
-		
-	if (x < (a + 1.0)/(a + b + 2.0))
-		return bt*betacf(a, b, x)/a;
-	else
-		return 1.0 - bt*betacf(b, a, 1.0 - x)/b;
+    else
+        bt = exp(gammln(a + b) - gammln(a) - gammln(b) + a*log(x) + b*log(1.0 - x));
+        
+    if (x < (a + 1.0)/(a + b + 2.0))
+        return bt*betacf(a, b, x)/a;
+    else
+        return 1.0 - bt*betacf(b, a, 1.0 - x)/b;
 }
 
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
@@ -1310,44 +1310,44 @@ double RandomVariableStatisticalFunctions::betai(const double a, const double b,
 
 double RandomVariableStatisticalFunctions::betacf(const double a, const double b, const double x)
 {
-	const int MAXIT = 100;
-	const double EPS = std::numeric_limits<double>::epsilon();
-	const double FPMIN = std::numeric_limits<double>::min()/EPS;
+    const int MAXIT = 100;
+    const double EPS = std::numeric_limits<double>::epsilon();
+    const double FPMIN = std::numeric_limits<double>::min()/EPS;
 
-	double qab = a + b;
-	double qap = a + 1.0;
-	double qam = a - 1.0;
-	double c = 1.0;
-	double d = 1.0 - qab*x/qap;
-	
-	if (fabs(d) < FPMIN) d = FPMIN;
-	d = 1.0/d;
-	double h = d;
-	
-	long m;
-	for (m = 1; m <= MAXIT; ++m) 
+    double qab = a + b;
+    double qap = a + 1.0;
+    double qam = a - 1.0;
+    double c = 1.0;
+    double d = 1.0 - qab*x/qap;
+    
+    if (fabs(d) < FPMIN) d = FPMIN;
+    d = 1.0/d;
+    double h = d;
+    
+    long m;
+    for (m = 1; m <= MAXIT; ++m) 
     {
-		long m2 = 2*m;
-		double aa = m*(b-m)*x/((qam + m2)*(a + m2));
-		d = 1.0 + aa*d;
-		if (fabs(d) < FPMIN) d = FPMIN;
-		c = 1.0 + aa/c;
-		if (fabs(c) < FPMIN) c = FPMIN;
-		d = 1.0/d;
-		h *= d*c;
-		aa = -(a + m)*(qab + m)*x/((a + m2)*(qap + m2));
-		d = 1.0 + aa*d;
-		if (fabs(d) < FPMIN) d = FPMIN;
-		c=1.0 + aa/c;
-		if (fabs(c) < FPMIN) c = FPMIN;
-		d = 1.0/d;
-		double del = d*c;
-		h *= del;
-		if (fabs(del - 1.0) <= EPS) break;
-	}
-	if (m > MAXIT) throw std::runtime_error("a or b too big, or MAXIT too small in betacf");
-	
-	return h;
+        long m2 = 2*m;
+        double aa = m*(b-m)*x/((qam + m2)*(a + m2));
+        d = 1.0 + aa*d;
+        if (fabs(d) < FPMIN) d = FPMIN;
+        c = 1.0 + aa/c;
+        if (fabs(c) < FPMIN) c = FPMIN;
+        d = 1.0/d;
+        h *= d*c;
+        aa = -(a + m)*(qab + m)*x/((a + m2)*(qap + m2));
+        d = 1.0 + aa*d;
+        if (fabs(d) < FPMIN) d = FPMIN;
+        c=1.0 + aa/c;
+        if (fabs(c) < FPMIN) c = FPMIN;
+        d = 1.0/d;
+        double del = d*c;
+        h *= del;
+        if (fabs(del - 1.0) <= EPS) break;
+    }
+    if (m > MAXIT) throw std::runtime_error("a or b too big, or MAXIT too small in betacf");
+    
+    return h;
 }
 
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
@@ -1384,11 +1384,11 @@ long RandomVariableStatisticalFunctions::rand_bessel(const double x, const doubl
 
 double RandomVariableStatisticalFunctions::besseli(const double x, const double xnu)
 {
-	double i, k, di, dk;
-	
-	if (xnu >= 0.0) bessik(x, xnu, i, k, di, dk);
-	else 
-	{
+    double i, k, di, dk;
+    
+    if (xnu >= 0.0) bessik(x, xnu, i, k, di, dk);
+    else 
+    {
          bessik(x, -xnu, i, k, di, dk);
          i = i - TWO_PI_INVERSE * std::sin(xnu * PI) * k;
     }
@@ -1405,10 +1405,10 @@ double RandomVariableStatisticalFunctions::besseli(const double x, const double 
 
 void RandomVariableStatisticalFunctions::bessik(const double x, const double nu, double & io, double & ko, double & ipo, double & kpo)
 {
-	static const long MAXIT = 10000;
-	static const double EPS = std::numeric_limits<double>::epsilon();
-	static const double FPMIN = std::numeric_limits<double>::min()/EPS;
-	static const double XMIN = 2.0;
+    static const long MAXIT = 10000;
+    static const double EPS = std::numeric_limits<double>::epsilon();
+    static const double FPMIN = std::numeric_limits<double>::min()/EPS;
+    static const double XMIN = 2.0;
     static const double PI = 3.141592653589793;
 
     double a,a1,b,c,d,del,del1,delh,dels,e,f,fact,fact2,ff,gam1,gam2,
@@ -1540,37 +1540,37 @@ void RandomVariableStatisticalFunctions::bessik(const double x, const double nu,
 
 void RandomVariableStatisticalFunctions::beschb(const double x, double &gam1, double &gam2, double &gampl, double &gammi)
 {
-	const long NUSE1 = 7;
-	const long NUSE2 = 8;
-	
-	static const double c1_d[NUSE1] = 
-	{
-		-1.142022680371168e0, 
-		6.5165112670737e-3,
-		3.087090173086e-4, 
-		-3.4706269649e-6,
-		6.9437664e-9, 
-		3.67795e-11,
-		-1.356e-13
-	};
-	
-	static const double c2_d[NUSE2] = 
-	{
-		1.843740587300905e0, 
-		-7.68528408447867e-2,
-		1.2719271366546e-3, 
-		-4.9717367042e-6,
-		-3.31261198e-8, 
-		2.423096e-10,
-		-1.702e-13, 
-		-1.49e-15
-	};
+    const long NUSE1 = 7;
+    const long NUSE2 = 8;
+    
+    static const double c1_d[NUSE1] = 
+    {
+        -1.142022680371168e0, 
+        6.5165112670737e-3,
+        3.087090173086e-4, 
+        -3.4706269649e-6,
+        6.9437664e-9, 
+        3.67795e-11,
+        -1.356e-13
+    };
+    
+    static const double c2_d[NUSE2] = 
+    {
+        1.843740587300905e0, 
+        -7.68528408447867e-2,
+        1.2719271366546e-3, 
+        -4.9717367042e-6,
+        -3.31261198e-8, 
+        2.423096e-10,
+        -1.702e-13, 
+        -1.49e-15
+    };
 
-	double xx = 8.0*x*x - 1.0;
-	gam1 = chebev(-1.0, 1.0, c1_d, NUSE1, xx);
-	gam2 = chebev(-1.0, 1.0, c2_d, NUSE2, xx);
-	gampl = gam2 - x*gam1;
-	gammi = gam2 + x*gam1;
+    double xx = 8.0*x*x - 1.0;
+    gam1 = chebev(-1.0, 1.0, c1_d, NUSE1, xx);
+    gam2 = chebev(-1.0, 1.0, c2_d, NUSE2, xx);
+    gampl = gam2 - x*gam1;
+    gammi = gam2 + x*gam1;
 }
 
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
@@ -1579,25 +1579,25 @@ void RandomVariableStatisticalFunctions::beschb(const double x, double &gam1, do
 
 double RandomVariableStatisticalFunctions::chebev(const double  a, const double b, const double * const c, const long m, const double x)
 {
-	double d = 0.0;
-	double dd = 0.0;
-	
-	if ((x - a)*(x - b) > 0.0) throw std::runtime_error("chebev: x not in range");
-	
-	double y = (2.0*x - a - b)/(b - a);
-	double y2 = 2.0*y;
-	for (long j = m-1; j > 0; --j) 
-	{
-		double sv = d;
-		d = y2*d - dd + c[j];
-		dd = sv;
-	}
-	return y*d - dd + 0.5*c[0];
+    double d = 0.0;
+    double dd = 0.0;
+    
+    if ((x - a)*(x - b) > 0.0) throw std::runtime_error("chebev: x not in range");
+    
+    double y = (2.0*x - a - b)/(b - a);
+    double y2 = 2.0*y;
+    for (long j = m-1; j > 0; --j) 
+    {
+        double sv = d;
+        d = y2*d - dd + c[j];
+        dd = sv;
+    }
+    return y*d - dd + 0.5*c[0];
 }
 
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 //XX    long Ex(const double lambda)
-//XX	Simulates from an Exponential distribution (by inverse transform)
+//XX    Simulates from an Exponential distribution (by inverse transform)
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 double RandomVariableStatisticalFunctions::Ex(const double lambda)
@@ -1605,13 +1605,13 @@ double RandomVariableStatisticalFunctions::Ex(const double lambda)
 
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 //XX    long Poisson_jumps(const double lambda)
-//XX	Simulates a Poisson distribution (by inverse transform)
+//XX    Simulates a Poisson distribution (by inverse transform)
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 long RandomVariableStatisticalFunctions::Poisson_jumps(const double lambda)
 {
     const long N_max = 1000;     //Arbitrary upper bound on the number of jumps
-	double w = 1.0;
+    double w = 1.0;
     double sum = 1.0;
     
     double u = rv::my_ran2()*std::exp(lambda);
@@ -1630,13 +1630,13 @@ long RandomVariableStatisticalFunctions::Poisson_jumps(const double lambda)
 
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 //XX    long Poisson_jumps_inv(const double lambda, const double u)
-//XX	Simulates a Poisson disotribution (by inverse transform)
+//XX    Simulates a Poisson disotribution (by inverse transform)
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 long RandomVariableStatisticalFunctions::Poisson_jumps_inv(const double lambda, const double u)
 {
     const long N_max = 1000;     //Arbitrary upper bound on the number of jumps
-	double w = 1.0;
+    double w = 1.0;
     double sum = 1.0;
     
     double v = u * std::exp(lambda);
@@ -1655,7 +1655,7 @@ long RandomVariableStatisticalFunctions::Poisson_jumps_inv(const double lambda, 
 
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 //XX    long Poisson_jumps2(const double lambda)
-//XX	Simulates a Poisson variate (rejection method), adapted from Numerical Recipe 3rd ed.
+//XX    Simulates a Poisson variate (rejection method), adapted from Numerical Recipe 3rd ed.
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 long RandomVariableStatisticalFunctions::Poisson_jumps2(const double lambda)
@@ -1714,114 +1714,114 @@ long RandomVariableStatisticalFunctions::Poisson_jumps2(const double lambda)
 
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 //XX    Brownian bridge hitting time distribution to a linear barrier
-//XX	Pr[tau < T | u_t = a + bt;  w_0, w_T] 
-//XX	dw = mu.dt + sigma.dz
+//XX    Pr[tau < T | u_t = a + bt;  w_0, w_T] 
+//XX    dw = mu.dt + sigma.dz
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 double RandomVariableStatisticalFunctions::Brownian_bridge_hitting_time_dist
 (
-	const double w0, const double wT, const double T, const double a, const double b,
-	const double sigma
+    const double w0, const double wT, const double T, const double a, const double b,
+    const double sigma
 )
 {
-	double s2_T = sigma*sigma*T;
-	return std::exp(-2.0*(a - w0)*(a - wT + b*T)/s2_T);
+    double s2_T = sigma*sigma*T;
+    return std::exp(-2.0*(a - w0)*(a - wT + b*T)/s2_T);
 }
 
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 //XX    Brownian bridge distribution of the maximum
-//XX	Pr[M < B | w_0, w_T],  dw = mu.dt + sigma.dz
+//XX    Pr[M < B | w_0, w_T],  dw = mu.dt + sigma.dz
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 double RandomVariableStatisticalFunctions::Brownian_bridge_maximum_dist
 (
-	const double w0, const double wT, const double T, const double B, const double sigma
+    const double w0, const double wT, const double T, const double B, const double sigma
 )
 {
-	if ((w0 >= B) || (wT >= B)) return 0.0;
-	
-	double s2_T = sigma*sigma*T;
-	return 1 - std::exp(-2.0*(B - w0)*(B - wT)/s2_T);
+    if ((w0 >= B) || (wT >= B)) return 0.0;
+    
+    double s2_T = sigma*sigma*T;
+    return 1 - std::exp(-2.0*(B - w0)*(B - wT)/s2_T);
 }
 
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 //XX    Brownian bridge distribution of the maximum
-//XX	Pr[M < B | w_0, w_T],  dw = mu.dt + sigma.dz
+//XX    Pr[M < B | w_0, w_T],  dw = mu.dt + sigma.dz
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 double RandomVariableStatisticalFunctions::Brownian_bridge_minimum_dist
 (
-	const double w0, const double wT, const double T, const double B, const double sigma
+    const double w0, const double wT, const double T, const double B, const double sigma
 )
 {
-	if ((w0 <= B) || (wT <= B)) return 1.0;
-	
-	double s2_T = sigma*sigma*T;
-	return std::exp(-2.0*(B - w0)*(B - wT)/s2_T);
+    if ((w0 <= B) || (wT <= B)) return 1.0;
+    
+    double s2_T = sigma*sigma*T;
+    return std::exp(-2.0*(B - w0)*(B - wT)/s2_T);
 }
 
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 //XX    Simulation from the Brownian bridge distribution of the maximum
-//XX	f( M | w_0, w_T),  dw = mu.dt + sigma.dz
-//XX	u is a uniform variate
+//XX    f( M | w_0, w_T),  dw = mu.dt + sigma.dz
+//XX    u is a uniform variate
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 double RandomVariableStatisticalFunctions::Brownian_bridge_maximum_draw
 (
-	const double w0, const double wT, const double T, const double sigma, const double u
+    const double w0, const double wT, const double T, const double sigma, const double u
 )
 {
-	double s_rt_T = sigma*std::sqrt(T);
-	double z0 = w0/s_rt_T;
-	double zT = wT/s_rt_T;
-	
-	return s_rt_T*Wiener_bridge_maximum_draw(z0, zT, T, u);
+    double s_rt_T = sigma*std::sqrt(T);
+    double z0 = w0/s_rt_T;
+    double zT = wT/s_rt_T;
+    
+    return s_rt_T*Wiener_bridge_maximum_draw(z0, zT, T, u);
 }
 
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 //XX    Simulation from the Wiener bridge distribution of the maximum
-//XX	f( M | w_0, w_T),  dw = mu.dt + sigma.dz
-//XX	u is a uniform variate
+//XX    f( M | w_0, w_T),  dw = mu.dt + sigma.dz
+//XX    u is a uniform variate
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 double RandomVariableStatisticalFunctions::Wiener_bridge_maximum_draw
 (
-	const double z0, const double zT, const double T, const double u
+    const double z0, const double zT, const double T, const double u
 )
 {
-	return 0.5*(z0 + zT + std::sqrt((z0 - zT)*(z0 - zT) - 2.0*T*std::log(1 - u)));
+    return 0.5*(z0 + zT + std::sqrt((z0 - zT)*(z0 - zT) - 2.0*T*std::log(1 - u)));
 }
 
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 //XX    Simulation from the Brownian bridge distribution of the minimum
-//XX	f( m | w_0, w_T),  dw = mu.dt + sigma.dz
-//XX	u is a uniform variate
+//XX    f( m | w_0, w_T),  dw = mu.dt + sigma.dz
+//XX    u is a uniform variate
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 double RandomVariableStatisticalFunctions::Brownian_bridge_minimum_draw
 (
-	const double w0, const double wT, const double T, const double sigma, const double u
+    const double w0, const double wT, const double T, const double sigma, const double u
 )
 {
-	double s_rt_T = sigma*std::sqrt(T);
-	double z0 = w0/s_rt_T;
-	double zT = wT/s_rt_T;
-	
-	return s_rt_T*Wiener_bridge_minimum_draw(z0, zT, T, u);
+    double s_rt_T = sigma*std::sqrt(T);
+    double z0 = w0/s_rt_T;
+    double zT = wT/s_rt_T;
+    
+    return s_rt_T*Wiener_bridge_minimum_draw(z0, zT, T, u);
 }
 
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 //XX    Simulation from the Wiener bridge distribution of the minimum
-//XX	f( m | w_0, w_T),  dw = mu.dt + sigma.dz
-//XX	u is a uniform variate
+//XX    f( m | w_0, w_T),  dw = mu.dt + sigma.dz
+//XX    u is a uniform variate
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 double RandomVariableStatisticalFunctions::Wiener_bridge_minimum_draw
 (
-	const double z0, const double zT, const double T, const double u
+    const double z0, const double zT, const double T, const double u
 )
 {
-	return 0.5*(z0 + zT - std::sqrt((z0 - zT)*(z0 - zT) - 2.0*T*std::log(1 - u)));
+    return 0.5*(z0 + zT - std::sqrt((z0 - zT)*(z0 - zT) - 2.0*T*std::log(1 - u)));
 }
 
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
@@ -1854,8 +1854,8 @@ double RandomVariableStatisticalFunctions::rand_gamma_small(double lia)
 {
     if (lia > 1)
     {
-		throw std::runtime_error("rand_gamma_small: gamma parameter must be < 1");
-	}
+        throw std::runtime_error("rand_gamma_small: gamma parameter must be < 1");
+    }
     
     bool accept = false;
     
@@ -1875,12 +1875,12 @@ double RandomVariableStatisticalFunctions::rand_gamma_small(double lia)
         {
             X = T * std::pow(V, c);  //mistake?
             if ((W <= (2.0 - X)/(2.0 + X)) || (W <= std::exp(-X)))
-            	accept = true;
+                accept = true;
         } 
-		else 
-		{
+        else 
+        {
             X = -std::log(c*T*(b - V));
-			double y = X/T;
+            double y = X/T;
             if ((W*(lia + y - lia*y) <= 1.0) || (W <= std::pow(y, lia - 1.0)))
                   accept = true;
         }
@@ -1900,8 +1900,8 @@ double RandomVariableStatisticalFunctions::rand_gamma_large(double gia)
 {
     if (gia < 1.0)
     {
-		throw std::runtime_error("rand_gamma_large: gamma parameter must be > 1");
-	}
+        throw std::runtime_error("rand_gamma_large: gamma parameter must be > 1");
+    }
     
     bool accept = false;
     
@@ -1924,7 +1924,7 @@ double RandomVariableStatisticalFunctions::rand_gamma_large(double gia)
             if ((z <= 1.0 - (2.0*y*y)/X) || (std::log(z) <= 2.0*(b*std::log(X/b) - y)))
                 accept = true;
         }
-	}
+    }
     
     return X;
 }
@@ -1974,12 +1974,12 @@ double RandomVariableStatisticalFunctions::rand_student(double  V)
     double u1, u2;
     while (w >= 1.0)                 //Finds a t(v) variate by Polar Rejection
     {
-	    u1 = 2.0*rv::my_ran2() - 1.0;
+        u1 = 2.0*rv::my_ran2() - 1.0;
         u2 = 2.0*rv::my_ran2() - 1.0;
         w = u1*u1 + u2*u2;
     }
-	
-	//Have not rejected,  so construct the student variate
+    
+    //Have not rejected,  so construct the student variate
         
     return u1*std::sqrt(V*(std::pow(w, -4.0/V) - 1.0)/w);
 }
@@ -2016,78 +2016,78 @@ double RandomVariableStatisticalFunctions::rand_ig(double delta, double gamma)
 
 double RandomVariableStatisticalFunctions::student_3_density(double x)
 {
-	double s = 3.0 + x*x;
-	return 	6.0*rv::ROOT_THREE/(s*s*rv::PI);
+    double s = 3.0 + x*x;
+    return  6.0*rv::ROOT_THREE/(s*s*rv::PI);
 }
 
 double RandomVariableStatisticalFunctions::student_3_dist(double x)
 {
-	double s = 3.0 + x*x;
-	double t = std::atan(x/rv::ROOT_THREE);
-	return 0.5 + (t + rv::ROOT_THREE*x/(s*s))/rv::PI;
+    double s = 3.0 + x*x;
+    double t = std::atan(x/rv::ROOT_THREE);
+    return 0.5 + (t + rv::ROOT_THREE*x/(s*s))/rv::PI;
 }
 
 double RandomVariableStatisticalFunctions::student_3_dist_inv(double u)
 {
-	const double cross_over1 = 0.16;
-	const double cross_over2 = 0.84;
+    const double cross_over1 = 0.16;
+    const double cross_over2 = 0.84;
 
-	if ((u <= 0.0) || (u >= 1.0)) throw std::runtime_error("student_3_dist_inv: argument out of range");
+    if ((u <= 0.0) || (u >= 1.0)) throw std::runtime_error("student_3_dist_inv: argument out of range");
 
-	double x;	//the solution
+    double x;   //the solution
 
-	const double d[] =
-	{
-		-2.0/5.0,  -9.0/175.0,  -92.0/7875.0,
-		-1894.0/606375.0, -19758.0/21896875.0, -2418092.0/8868234375.0
-	};
+    const double d[] =
+    {
+        -2.0/5.0,  -9.0/175.0,  -92.0/7875.0,
+        -1894.0/606375.0, -19758.0/21896875.0, -2418092.0/8868234375.0
+    };
 
-	const double a[] =
-	{
-		2.0, 11.0, 292.0, 3548.0, 273766.0, 15360178.0,
-		214706776.0, 59574521252.0, 15270220299064.0
-	};
+    const double a[] =
+    {
+        2.0, 11.0, 292.0, 3548.0, 273766.0, 15360178.0,
+        214706776.0, 59574521252.0, 15270220299064.0
+    };
 
-	const double b[] =
-	{
-		9.0, 135.0, 8505.0, 229635.0, 37889775.0, 4433103675.0,
-		126947968875.0, 71217810538875.0, 36534736806442875.0
-	};
+    const double b[] =
+    {
+        9.0, 135.0, 8505.0, 229635.0, 37889775.0, 4433103675.0,
+        126947968875.0, 71217810538875.0, 36534736806442875.0
+    };
 
-	if ((u <= cross_over1) || (u >= cross_over2))
-	{
-		double z = (u >= cross_over2) ? u : 1.0 - u;
+    if ((u <= cross_over1) || (u >= cross_over2))
+    {
+        double z = (u >= cross_over2) ? u : 1.0 - u;
 
-		double v = 3.0*rv::PI_BY_TWO*(1.0 - z);
-		double w = std::pow(v, 2.0/3.0);
-		double y = w;
-		x = 1.0;
+        double v = 3.0*rv::PI_BY_TWO*(1.0 - z);
+        double w = std::pow(v, 2.0/3.0);
+        double y = w;
+        x = 1.0;
 
-		for (long i = 0; i <= 5; ++i)
-		{
-			x += d[i]*y;
-			y *= w;
-		}
-		x *= rv::ROOT_THREE*w/v;
+        for (long i = 0; i <= 5; ++i)
+        {
+            x += d[i]*y;
+            y *= w;
+        }
+        x *= rv::ROOT_THREE*w/v;
 
-		x = (u >= cross_over2) ? x : -x;
-	}
-	else
-	{
-		double v = rv::ROOT_THREE_PI_BY_TWO*(u - 0.5);
-		double w = v*v;
-		double y = w;
-		x = 1.0;
+        x = (u >= cross_over2) ? x : -x;
+    }
+    else
+    {
+        double v = rv::ROOT_THREE_PI_BY_TWO*(u - 0.5);
+        double w = v*v;
+        double y = w;
+        x = 1.0;
 
-		for (long i = 0; i <= 8; ++i)
-		{
-			x += a[i]*y/b[i];
-			y *= w;
-		}
-		x *= v;
-	}
+        for (long i = 0; i <= 8; ++i)
+        {
+            x += a[i]*y/b[i];
+            y *= w;
+        }
+        x *= v;
+    }
 
-	return x;
+    return x;
 }
 
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
@@ -2096,84 +2096,84 @@ double RandomVariableStatisticalFunctions::student_3_dist_inv(double u)
 
 double RandomVariableStatisticalFunctions::student_5_density(double x)
 {
-	double s = 5.0 + x*x;
-	return 	200.0*rv::ROOT_FIVE/(3.0*s*s*s*rv::PI);
+    double s = 5.0 + x*x;
+    return  200.0*rv::ROOT_FIVE/(3.0*s*s*s*rv::PI);
 }
 
 double RandomVariableStatisticalFunctions::student_5_dist(double x)
 {
-	double s = 5.0 + x*x;
-	double t = std::atan(x/rv::ROOT_FIVE);
-	return 0.5 + (t + rv::ROOT_FIVE*x*(3.0*x*x + 25.0)/(3.0*s*s))/rv::PI;
+    double s = 5.0 + x*x;
+    double t = std::atan(x/rv::ROOT_FIVE);
+    return 0.5 + (t + rv::ROOT_FIVE*x*(3.0*x*x + 25.0)/(3.0*s*s))/rv::PI;
 }
 
 double RandomVariableStatisticalFunctions::student_5_dist_inv(double u)
 {
-	const double cross_over1 = 0.16;
-	const double cross_over2 = 1.0 - cross_over1;
+    const double cross_over1 = 0.16;
+    const double cross_over2 = 1.0 - cross_over1;
 
-	if ((u <= 0.0) || (u >= 1.0)) throw std::runtime_error("student_5_dist_inv: argument out of range");
+    if ((u <= 0.0) || (u >= 1.0)) throw std::runtime_error("student_5_dist_inv: argument out of range");
 
-	double x;	//the solution
+    double x;   //the solution
 
-	const double d[] =
-	{
-		-3.0/7.0,  -10.0/147.0,  -75.0/3773.0,
-		-7180.0/1030029.0, -13757.0/5150145.0, -65447468.0/60673858245.0,
-		565996174.0/1255274711691.0
-	};
+    const double d[] =
+    {
+        -3.0/7.0,  -10.0/147.0,  -75.0/3773.0,
+        -7180.0/1030029.0, -13757.0/5150145.0, -65447468.0/60673858245.0,
+        565996174.0/1255274711691.0
+    };
 
-	const double a[] =
-	{
-		1.0, 9.0, 134.0, 926.0, 40976.0, 1325803.0,
-		354074884.0, 5186310638.0, 773723059913.0
-	};
+    const double a[] =
+    {
+        1.0, 9.0, 134.0, 926.0, 40976.0, 1325803.0,
+        354074884.0, 5186310638.0, 773723059913.0
+    };
 
-	const double b[] =
-	{
-		5.0, 125.0, 4375.0, 65625.0, 6015625.0, 391015625.0,
-		205283203125.0, 5816357421875.0, 1657661865234375.0
-	};
+    const double b[] =
+    {
+        5.0, 125.0, 4375.0, 65625.0, 6015625.0, 391015625.0,
+        205283203125.0, 5816357421875.0, 1657661865234375.0
+    };
 
-	if ((u <= cross_over1) || (u >= cross_over2))
-	{
-		double z = (u >= cross_over2) ? u : 1.0 - u;
+    if ((u <= cross_over1) || (u >= cross_over2))
+    {
+        double z = (u >= cross_over2) ? u : 1.0 - u;
 
-		double w = 15.0*rv::PI*(1.0 - z)/8.0;
-		double v1 = std::pow(w, 1.0/5.0);
-		double v2 = v1*v1;
-		double y = v2;
-		x = 1.0;
+        double w = 15.0*rv::PI*(1.0 - z)/8.0;
+        double v1 = std::pow(w, 1.0/5.0);
+        double v2 = v1*v1;
+        double y = v2;
+        x = 1.0;
 
-		for (long i = 0; i <= 6; ++i)
-		{
-			x += d[i]*y;
-			y *= v2;
-		}
-		x *= rv::ROOT_FIVE/v1;
+        for (long i = 0; i <= 6; ++i)
+        {
+            x += d[i]*y;
+            y *= v2;
+        }
+        x *= rv::ROOT_FIVE/v1;
 
-		x = (u >= cross_over2) ? x : -x;
-	}
-	else
-	{
-		double v = 3.0*rv::ROOT_FIVE*rv::PI*(u - 0.5)/8.0;
-		double w = v*v;
-		double y = w;
-		x = 1.0;
+        x = (u >= cross_over2) ? x : -x;
+    }
+    else
+    {
+        double v = 3.0*rv::ROOT_FIVE*rv::PI*(u - 0.5)/8.0;
+        double w = v*v;
+        double y = w;
+        x = 1.0;
 
-		for (long i = 0; i <= 8; ++i)
-		{
-			x += a[i]*y/b[i];
-			y *= w;
-		}
-		x *= v;
-	}
+        for (long i = 0; i <= 8; ++i)
+        {
+            x += a[i]*y/b[i];
+            y *= w;
+        }
+        x *= v;
+    }
 
-	return x;
+    return x;
 }
 
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-//	sample_quantile_se_Maritz_Jarrett()
+//  sample_quantile_se_Maritz_Jarrett()
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 double RandomVariableStatisticalFunctions::sample_quantile_se_Maritz_Jarrett(std::vector<double> v, double quantile_level)

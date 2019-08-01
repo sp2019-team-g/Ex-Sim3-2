@@ -5,11 +5,11 @@
 
 PricingEng::PricingEng(Option*opt)
 {
-	opt_ = opt;
+    opt_ = opt;
 }
 
 PricingEng::PricingEng(Arguments& paras)
 {
-	opt_ = paras.g_PTR<Option>("option");
+    opt_ = paras.g_PTR<Option>("option");
 }
 

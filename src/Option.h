@@ -8,17 +8,17 @@
 
 class Option
 {
-	public:
-		Option(double);
-		Option(double, std::function<double(Arguments&)>*);
-		Option(Arguments&);
-		virtual ~Option(){};
-		double get_T();
-		virtual double payoff(Arguments&);
+    public:
+        Option(double);
+        Option(double, std::function<double(Arguments&)>*);
+        Option(Arguments&);
+        virtual ~Option(){};
+        double get_T();
+        virtual double payoff(Arguments&);
 
-	private:
-		double T_;
-		std::function<double(Arguments&)>* payoff_;
+    private:
+        double T_;
+        std::function<double(Arguments&)>* payoff_;
 };
 
 

@@ -6,20 +6,20 @@
 
 class EUCallOpt : public Option
 {
-	public:
-		EUCallOpt(double, double);
-		EUCallOpt(Arguments&);
-		double payoff(Arguments&) override;
-		static PLIST plist()
-		{
+    public:
+        EUCallOpt(double, double);
+        EUCallOpt(Arguments&);
+        double payoff(Arguments&) override;
+        static PLIST plist()
+        {
             PLIST res;
             res.push_back(g_ASK<double>("K"));
             res.push_back(g_ASK<double>("T"));
             return res;
-		}
-		
-	private:
-		double K_;
+        }
+        
+    private:
+        double K_;
 };
 
 #endif

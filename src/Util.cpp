@@ -5,12 +5,21 @@
 #include <ctime>
 #include <random>
 #include <cmath>
+#include <cassert>
+#include <limits>
+
+#include <iostream>
+using namespace std;
 
 
-
-std::random_device rd;
-std::default_random_engine re;
-std::uniform_real_distribution<double> U(0.0,1.0);
+namespace
+{
+    std::random_device rd;
+    std::default_random_engine re;
+    std::uniform_real_distribution<double> U(0.0,1.0);
+    const double INF = std::numeric_limits<double>::infinity();
+    const double MAXD = 1e8;
+}
 
 std::complex<double> UF::I(std::complex<double> v, std::complex<double> x)
 {
@@ -25,7 +34,8 @@ std::complex<double> UF::I(std::complex<double> v, std::complex<double> x)
     std::complex<double> pp = std::complex<double>(tol + 0.01, 0.0);
     std::complex<double> p2 = std::complex<double>(0.0, 0.0);
     double t = 0.0;
-    while(std::abs(pp) > tol){
+    while(std::abs(pp) > tol)
+    {
         pp = std::exp(-x * std::cosh(t) - v*t);
         p2 += pp*dt;
         t += dt;
@@ -39,7 +49,7 @@ std::complex<double> UF::I(std::complex<double> v, std::complex<double> x)
 double UtilFunc::Diff(std::function<double(double)> f, double x, double dx)
 {
     
-	return (f(x + dx) - f(x - dx)) / (2.0*dx);
+    return (f(x + dx) - f(x - dx)) / (2.0*dx);
 }
 
 std::complex<double> UF::numericalDiff(
@@ -75,7 +85,7 @@ double UF::ncChi2Rnd(double delta, double lambda)
         return rv::NC_Chi_squ_cdf(x, delta, lambda);
     };
     double a = UF::uniRnd(0.0, 1.0);
-    return UF::rvs(f, a);
+    return UF::rvs(f, a, 0.2, 0, 10.0);
 }
 
 double UF::uniRnd(double a, double b)
@@ -94,28 +104,56 @@ double numericalDiffDouble(
     return (f(x + dx) - f(x - dx))/(2.0*dx);
 }
 
-double UF::rvs(std::function<double(double)> f,double x){
-    /*TODO
-     * */
-	double a0 = 0.0;
-	double a1 = 1.0;
-	double delta = 10000;
-	int num = 0;
 
-	
-	do
-  {
 
-		a1 = a0 - (f(a0) - x) / UF::Diff(f, a0, 0.01);
+//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+//XX
+//XX    rvs( f, x, eta, b1, b2):  Inverse Transform
+//XX
+//XX       f (function<double(double)>): a real function
+//XX       x (double): a real value to be inverse transformed
+//XX       eta (double): learning rate, a positive real number
+//XX       b1 (double): lower bound of f's support
+//XX       b2 (double): upper bound of f's support
+//XX       return (double): a real number z s.t. f(z) = x
+//XX
+//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+double UF::rvs(
+    std::function<double(double)> f, 
+    double x, 
+    double eta, 
+    double b1, 
+    double b2
+    )
+{   
+    assert(b2 > b1);
+    assert(eta > 0);
+    double a0 = UF::uniRnd(b1, b2);
+    double a1 = 0.0;
+    double delta = 0.0;
+    int num = 0;
 
-		delta = a1 - a0;
+    do
+    {
+        a1 = a0 - eta * (f(a0) - x) / UF::Diff(f, a0, 0.01);
 
-		a0 = a1;
+        if(a1 < b1)
+            a1 = UF::uniRnd(b1, a0);
+        else if(a1 > b2)
+            a1 = UF::uniRnd(a0, b2);
 
-		num++;
-	}while (std::abs(delta) > 0.01 && num < 1000000);
+        
+        delta = a1 - a0;
+        a0 = a1;
+        num++;
+    }while (std::abs(delta) > 0.001 && num < 1000000);
 
     return a0;
 
+}
+
+double UF::rvs(std::function<double(double)> f, double x)
+{
+    return UF::rvs(f, x, 1.0, -MAXD, MAXD);
 }
 
