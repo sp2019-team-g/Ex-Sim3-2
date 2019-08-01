@@ -39,6 +39,14 @@ int main(){
     cout << UF::ncChi2Rnd(4.1,3.2)<<endl;
 
 
+	auto f1 = [](double x)->double {
+		return x*x*x + 2*x +1;
+	};
+	cout << "rvs test:" << endl;
+	cout << UF::rvs(f1, 4) << endl;
+
+
+
     return 0;
 }
 

@@ -104,7 +104,8 @@ double UF::rvs(std::function<double(double)> f,double x){
 
 	
 	do
-    {
+  {
+
 		a1 = a0 - (f(a0) - x) / UF::Diff(f, a0, 0.01);
 
 		delta = a1 - a0;
