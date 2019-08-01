@@ -1,6 +1,8 @@
 
 #include "Util.h"
 #include "rv_library.h"
+#include "BES.h"
+
 
 #include <ctime>
 #include <random>
@@ -19,11 +21,15 @@ namespace
 
 }
 
+std::complex<double> UF::I(std::complex<double> v, double x){
+    return BES::I(v,x);
+}
+
 std::complex<double> UF::I(std::complex<double> v, std::complex<double> x)
 {
 
-    double tol = 1e-11;
-    double dt = 1e-6;
+    double tol = 1e-10;
+    double dt = 1e-7;
     std::complex<double> p1 = std::complex<double>(0.0, 0.0);
     for(double t = 0.0; t < M_PI; t += dt)
         p1 += std::exp(x * std::cos(t))*std::cos(v*t) * dt;
@@ -40,7 +46,6 @@ std::complex<double> UF::I(std::complex<double> v, std::complex<double> x)
     }
     p2 = p2 * std::sin(v * M_PI)/M_PI;
     return p1-p2;
-
 
 }
 
