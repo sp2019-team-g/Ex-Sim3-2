@@ -5,11 +5,12 @@
 
 #include <functional>
 #include <complex>
-
+#include <limits>
 
 namespace UtilFunc
 {
-    
+    const double INF = std::numeric_limits<double>::infinity();
+    const double MAXD = 1e8;
     std::complex<double> I(std::complex<double>, std::complex<double>);
     double Diff(std::function<double(double)>, double, double);
     std::complex<double> numericalDiff(std::function<std::complex<double>(double)>, double, double);

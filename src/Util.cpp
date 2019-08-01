@@ -6,7 +6,7 @@
 #include <random>
 #include <cmath>
 #include <cassert>
-#include <limits>
+
 
 #include <iostream>
 using namespace std;
@@ -17,8 +17,7 @@ namespace
     std::random_device rd;
     std::default_random_engine re;
     std::uniform_real_distribution<double> U(0.0,1.0);
-    const double INF = std::numeric_limits<double>::infinity();
-    const double MAXD = 1e8;
+
 }
 
 std::complex<double> UF::I(std::complex<double> v, std::complex<double> x)
@@ -154,6 +153,6 @@ double UF::rvs(
 
 double UF::rvs(std::function<double(double)> f, double x)
 {
-    return UF::rvs(f, x, 1.0, -MAXD, MAXD);
+    return UF::rvs(f, x, 1.0, -UF::MAXD, UF::MAXD);
 }
 

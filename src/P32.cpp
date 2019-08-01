@@ -1,9 +1,15 @@
 
 
 #include "P32.h"
+#include "Util.h"
 
 #include <cmath>
-#include "Util.h"
+#include <cassert>
+
+#include <iostream>
+using namespace std;
+
+
 P32::P32(
         double r,
         double rho,
@@ -16,8 +22,9 @@ P32::P32(
     r_ = r;
     rho_ = rho;
     kappa_ = kappa;
-    theta_ = theta;
+    theta_ = theta;    
     epsilon_ = epsilon;
+    para_validate();
     set_loaded(false);
     post_update();
 }
@@ -30,6 +37,7 @@ P32::P32(Arguments& paras) : Process(paras)
     theta_ = paras.g_VAL<double>("theta");
     epsilon_ = paras.g_VAL<double>("epsilon");
     N_ = paras.g_VAL<size_t>("N");
+    para_validate();
     try
     {
         S0_ = paras.g_VAL<double>("S0");
@@ -43,16 +51,26 @@ P32::P32(Arguments& paras) : Process(paras)
     post_update();
 }
 
+void P32::para_validate()
+{
+    Process::para_validate();
+    assert(r_ >= 0.0);
+    assert(rho_ >= -1.0);
+    assert(rho_ <= 1.0);
+    assert(kappa_ >= 0.0);
+    assert(theta_ >= 0.0);
+    assert(epsilon_ > 0.0);
+}
+
+
 void P32::post_update()
 {
-/*
- * TODO: Validate Inputs
- * */
+
     double T = get_dt();
     eps2_ = epsilon_*epsilon_;
     p_ = - (2.0*kappa_*theta_)/eps2_;
     v_ = p_ * (kappa_+eps2_)/(kappa_*theta_) - 1.0;
-    Delta_ = T*eps2_/4.0; 
+    Delta_ = 0.25 * T * eps2_; 
     delta_ = 4.0*(eps2_+kappa_)/eps2_;
     ektT1_ = std::exp((kappa_*theta_*T)-1.0);
     zp_ = eps2_*ektT1_/(4.0*kappa_*theta_ * (ektT1_/M_E));
@@ -76,7 +94,9 @@ double P32::simulate()
 {
     double T = get_dt();
     double Z = UF::ncChi2Rnd(delta_,lambda_);
+    // cout<<" Z zp "<<Z<<"  "<<zp_ <<endl;
     double XT = Z*zp_;
+
     double x = p_*std::sqrt(XT*X0_)/std::sinh(p_*Delta_);
     double v = v_;
     double eps2 = eps2_;
@@ -87,12 +107,18 @@ double P32::simulate()
 
     double mu = std::real(std::complex<double>(0.0, -1.0) * UF::numericalDiff(Phi, 0.0, 0.01));
     double sigma2 = std::real(-UF::numericalDiff2(Phi,0.0,0.01)) - mu*mu;
+
+
     double sigma = std::sqrt(sigma2);
     double ueps = mu + 12.0*sigma;
-    double h = 3.0*M_PI/(2.0*ueps);
+    cout <<" mu "<<mu<<endl;
+    cout<<" sigma "<< sigma<<endl;
+    cout<<" ueps "<<ueps<<endl;
+    // double h = 3.0*M_PI/(2.0*ueps);
+    double h = 0.2;
     double N = (double)N_;
 
-
+    cout <<" h " << h <<endl;
 
     std::function<double(double)> F = [&, h, N, Phi](double x)->double
     {
@@ -102,13 +128,20 @@ double P32::simulate()
         return res;
     };
 
-    double L = UF::rvs(F,UF::uniRnd(0.0,1.0));
+    cout <<"[";
+    for(double i = 0.0; i < 10.0; i += 0.25){
+        cout << F(i) << ",";
+    }
+    cout << "]" << endl;
+    double L = UF::rvs(F, UF::uniRnd(0.0,1.0), 0,8, 0.0, UF::MAXD);
+    cout << " L "<< L <<endl;
     double K = 1.0/epsilon_ *(std::log(X0_/XT) + (kappa_+eps2_/2.0)*L - T*kappa_*theta_);
 
     double m = std::log(S0_) + r_*T-L/2.0+rho_*K;
     double s = (1.0-rho_*rho_)*K;
 
     double ZZ = UF::normalRnd(m,s);
+    cout<<"zzzzz"<<(ZZ)<<endl;
     return std::exp(ZZ);
 }
 
