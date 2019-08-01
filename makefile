@@ -4,7 +4,8 @@ CC=g++
 TSTS=tmp/testarg tmp/testp32 tmp/testproc tmp/testutl tmp/testopt tmp/testeuc tmp/testinp tmp/testfac
 OBJS1=obj/Arguments.o obj/Util.o obj/Process.o obj/Option.o obj/Input.o obj/Factory.o
 OBJS2=obj/PGBM.o obj/PricingEng.o obj/McPricingEng.o obj/EUCallOpt.o obj/EUPutOpt.o obj/P32.o
-OBJS=$(OBJS1) $(OBJS2)
+OBJS3=obj/rv_library.o
+OBJS=$(OBJS1) $(OBJS2) $(OBJS3)
 test : $(TSTS)
 clean :
 	rm obj/*.o
@@ -77,3 +78,5 @@ obj/Input.o : src/Input.cpp src/Input.h
 obj/Factory.o : src/Factory.cpp src/Factory.h
 	$(CC) $(CPPFLAGS) -c -o obj/Factory.o src/Factory.cpp
 
+obj/rv_library.o : src/rv_library.cpp src/rv_library.h
+	$(CC) $(CPPFLAGS) -c -o obj/rv_library.o src/rv_library.cpp
