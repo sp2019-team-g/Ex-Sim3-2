@@ -171,6 +171,7 @@ double P32::simulate()
         double z = F(*it);
         FXs.push_back(z);
         // cout<<z<<", "<<flush;
+
     }
     // cout<<"]"<<endl;
 
