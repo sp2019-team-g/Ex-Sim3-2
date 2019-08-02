@@ -8,6 +8,9 @@
 #include <vector>
 #include <stdexcept>
 
+#include <iostream>
+using namespace std;
+
 McPricingEng::McPricingEng(Option*opt, Process*pro) : PricingEng(opt)
 {
     pro_ = pro;
@@ -25,17 +28,23 @@ double McPricingEng::price()
 
 double McPricingEng::price(Arguments& paras)
 {
-    double bsize = (double)paras.g_VAL<size_t>("batch_size");
+    size_t bsize = paras.g_VAL<size_t>("batch_size");
 
     double T = paras.g_VAL<double>("T");
 
     double res = 0.0;
 
-    for(double i = 0;i<bsize;i=i+1.0)
+    cout << endl;
+    cout << " T " << T << endl;
+    cout << " e-T "<< std::exp(-T) <<endl; 
+    for(size_t i = 0; i < bsize; i = i + 1.0)
     {
-
-        pro_->simulate(paras);
-        res += opt_->payoff(paras)*std::exp(-T)/bsize;
+        pro_ -> simulate(paras);
+        cout << " ST " << paras.g_VAL<double>("ST") << endl;
+        cout << " poff " << opt_ -> payoff(paras) << endl;
+        res += opt_ -> payoff(paras) * std::exp(-T);
     }
-    return res;
+    cout << res <<endl;
+    cout<<endl;
+    return res/(double)bsize;
 }

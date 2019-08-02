@@ -1,4 +1,5 @@
 #include "Path.h"
+
 Path::Path(double t, double dt, double T, std::vector<double> path)
 {
 	t_ = t;

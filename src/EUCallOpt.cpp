@@ -14,6 +14,6 @@ EUCallOpt::EUCallOpt(Arguments& paras) : Option(paras)
 
 double EUCallOpt::payoff(Arguments& paras)
 {
-    return UF::max(0.0, K_ - paras.g_VAL<double>("ST"));
+    return UF::max(0.0, paras.g_VAL<double>("ST") - K_);
 }
 

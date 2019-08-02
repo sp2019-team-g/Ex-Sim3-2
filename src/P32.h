@@ -50,7 +50,6 @@ class P32 : public Process
             res.push_back(g_ASK<double>("dt"));
             res.push_back(g_ASK<double>("S0"));
             res.push_back(g_ASK<double>("V0"));
-            res.push_back(g_ASK<size_t>("N"));
             return res;
         }
 
@@ -63,7 +62,6 @@ class P32 : public Process
         double delta_;
         double ektT_;
         double zp_;
-        size_t N_;
 
         double S0_;
         double V0_;
