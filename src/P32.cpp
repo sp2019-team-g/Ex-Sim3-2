@@ -36,7 +36,6 @@ P32::P32(Arguments& paras) : Process(paras)
     kappa_ = paras.g_VAL<double>("kappa");
     theta_ = paras.g_VAL<double>("theta");
     epsilon_ = paras.g_VAL<double>("epsilon");
-    N_ = paras.g_VAL<size_t>("N");
     para_validate();
     try
     {
@@ -127,26 +126,43 @@ double P32::simulate()
     cout <<" mu "<<mu<<endl;
     cout<<" sigma "<< sigma<<endl;
     cout<<" ueps "<<ueps<<endl;
-    // double h = 1.5*M_PI/ueps;
-    double h = 0.02;
-    double N = (double)N_;
+    double h = M_PI/ueps;
 
     cout <<" h " << h <<endl;
 
-    std::function<double(double)> F = [&, h, N, Phi](double x)->double
+    std::function<double(double)> F = [&, h, Phi](double x)->double
     {
         double res = h*x/M_PI;
-        for(double i = 1.0; i<=N; i=i+1.0)
-            res += std::sin(h*i*x)/i*std::real(Phi(h*i)) * 2.0/M_PI;
-        return res;
+        double i = 1.0;
+        double res2 = 0.0;
+        while(std::abs(Phi(h*i))/i > M_PI*epsilon_/2.0 )
+        {
+            res2 += std::sin(h * i * x) / i * std::real(Phi(h * i));
+            i += 1.0;
+        }
+        return res + res2 * 2.0 / M_PI;
     };
-
-    cout <<"[";
-    for(double i = 0.0; i < 10.0; i += 0.25){
-        cout << F(i) << ",";
+    double M = 200.0;
+    double w = 0.01;
+    std::vector<double>Xs;
+    std::vector<double>FXs;
+    for(double i = 1.0; i <= M; i += 1.0)
+        Xs.push_back(w * mu + (i - 1) * (ueps - w * mu) / M);
+    cout<<"[ "<<flush;
+    for(
+        std::vector<double>::iterator it = Xs.begin();
+        it != Xs.end();
+        it++
+        )
+    {
+        double z = F(*it);
+        FXs.push_back(z);
+        cout<<z<<", "<<flush;
     }
-    cout << "]" << endl;
-    double L = UF::rvs(F, UF::uniRnd(0.0,1.0), 0.2, 0.0, UF::MAXD);
+    cout<<"]"<<endl;
+
+
+    double L = UF::rvs(F, UF::uniRnd(0.0,1.0), 0.2, 0.0, UF::MAXD, mu);
     cout << " L "<< L <<endl;
     double K = 1.0/epsilon_ *(std::log(X0_/XT) + (kappa_+eps2_/2.0)*L - T*kappa_*theta_);
 
