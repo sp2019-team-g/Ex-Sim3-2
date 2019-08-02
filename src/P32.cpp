@@ -2,6 +2,7 @@
 
 #include "P32.h"
 #include "Util.h"
+#include "BES.h"
 
 #include <cmath>
 #include <cassert>
@@ -36,7 +37,6 @@ P32::P32(Arguments& paras) : Process(paras)
     kappa_ = paras.g_VAL<double>("kappa");
     theta_ = paras.g_VAL<double>("theta");
     epsilon_ = paras.g_VAL<double>("epsilon");
-    N_ = paras.g_VAL<size_t>("N");
     para_validate();
     try
     {
@@ -73,9 +73,6 @@ void P32::post_update()
     Delta_ = 0.25 * T * eps2_; 
     delta_ = 4.0*(eps2_+kappa_)/eps2_;
     ektT_ = std::exp(kappa_*theta_*T);
-    cout << " kappa " <<kappa_<<endl;
-    cout << " theta " <<theta_<<endl;
-    cout << " T "<<T<<endl;
     zp_ = eps2_*(ektT_-1.0)/(4.0*kappa_*theta_);
     if(check_loaded())
     {
@@ -99,70 +96,54 @@ double P32::simulate()
     double Z = UF::ncChi2Rnd(delta_, lambda_);
     
     double XT = Z*zp_/ektT_;
-    cout<<endl;
-    cout<<" Z "<<Z<<endl;
-    cout<<" delta "<< delta_<<endl;
-    cout<<" lambda "<< lambda_ << endl;
-    cout<<" XT "<<XT<<endl;
-    cout<<" j "<<p_<<endl;
-    cout<<" Delta "<<Delta_<<endl;
+
     double x = p_*std::sqrt(XT*X0_)/std::sinh(p_*Delta_);
     double v = v_;
-    cout<<" v "<<v<<endl;
     double eps2 = eps2_;
     std::function<std::complex<double>(double)> Phi = [&, v, x, eps2](double a) -> std::complex<double>
     {
         return UF::I(std::sqrt(std::complex<double>(v*v, - 8*a/eps2)), x)/UF::I(std::abs(v), x);
     };
-    cout<<" g "<<endl;
-    cout<<UF::I(std::sqrt(std::complex<double>(v*v, - 8*0.66/eps2)), x)<<endl;
-    cout<<UF::I(std::abs(v), x)<<endl;
-    cout<<endl;
-    double mu = std::real(std::complex<double>(0.0, -1.0) * UF::numericalDiff(Phi, 0.0, 0.01));
-    double sigma2 = std::real(-UF::numericalDiff2(Phi,0.0,0.01)) - mu*mu;
 
+    double eps = epsilon_;
+    double theta = theta_;
+    double kappa = kappa_;
+    double ub = BES::CR_PHI(v, eps, kappa, theta, T, 6.0);
 
-    double sigma = std::sqrt(sigma2);
-    double ueps = mu + 12.0*sigma;
-    cout <<" mu "<<mu<<endl;
-    cout<<" sigma "<< sigma<<endl;
-    cout<<" ueps "<<ueps<<endl;
-    // double h = 1.5*M_PI/ueps;
-    double h = 0.02;
-    double N = (double)N_;
+    cout << " v , x ["<<v<<" , "<<x<<"]"<<endl;
 
-    cout <<" h " << h <<endl;
-    std::function<double(double)> F = [&, h, N, Phi](double x)->double
+    std::function<double(double)> F = [&, Phi, eps, theta, kappa](double x)->double
     {
-        // double res = 0.0;
-        // double I = 0.01;
-        // double dI = 0.01;
-        // double tol = 1e-8;
-        // double pp = tol + 1.0;
-        return 0.0;
-         
-                // double res = h*x/M_PI;
-        // for(double i = 1.0; i<=N; i=i+1.0)
-        //     res += std::sin(h*i*x)/i*std::real(Phi(h*i)) * 2.0/M_PI;
-        // return res;
+        // cout <<"("<<flush;
+        double tb = ub + BES::CR_PHISIN_P(eps, theta, kappa, x);
+        double du = 0.01;
+        double res = 0.0;
+        // cout<<" tb "<<tb<<flush;
+        for(double u = du; u < tb; u += du)
+        {
+            double rpu = real(Phi(u));
+            if(rpu != rpu)
+                break;
+            res += rpu * std::sin(u * x) / u;
+            // cout << "-- u x -- "<<u<<" , "<<x<<flush;
+            // cout << " res,rpu,sin <"<< res<<" , "<<rpu<< ","<<std::sin(u * x) / u <<">"<<flush;
+        }
+        res *= 2.0 * du / M_PI;
+        return res;
+        // cout<<")"<<flush;
     };
 
-    cout <<"[";
-    for(double i = 0.0; i < 30.0; i += 0.25){
-        cout << F(i) << ",";
+    cout <<"["<<flush;
+    for(double i = 0.01; i < 30.0; i += 0.25){
+        cout << F(i) << ","<<std::flush;
     }
     cout << "]" << endl;
     double L = UF::rvs(F, UF::uniRnd(0.0,1.0), 0.2, 0.0, UF::MAXD);
-    cout << " L "<< L <<endl;
     double K = 1.0/epsilon_ *(std::log(X0_/XT) + (kappa_+eps2_/2.0)*L - T*kappa_*theta_);
 
     double m = std::log(S0_) + r_*T-0.5*L+rho_*K;
     double s = (1.0-rho_*rho_)*K;
-    cout<<" m "<<m<<endl;
-    cout<<" s "<<s<<endl;
-
     double ZZ = UF::normalRnd(m,s);
-    cout<<" ZZ "<<(ZZ)<<endl;
     return std::exp(ZZ);
 }
 

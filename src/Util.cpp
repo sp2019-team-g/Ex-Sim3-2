@@ -28,24 +28,24 @@ std::complex<double> UF::I(std::complex<double> v, double x){
 std::complex<double> UF::I(std::complex<double> v, std::complex<double> x)
 {
 
-    double tol = 1e-10;
-    double dt = 1e-7;
-    std::complex<double> p1 = std::complex<double>(0.0, 0.0);
-    for(double t = 0.0; t < M_PI; t += dt)
-        p1 += std::exp(x * std::cos(t))*std::cos(v*t) * dt;
-    p1 = p1/M_PI;
+    // double tol = 1e-10;
+    // double dt = 1e-7;
+    // std::complex<double> p1 = std::complex<double>(0.0, 0.0);
+    // for(double t = 0.0; t < M_PI; t += dt)
+    //     p1 += std::exp(x * std::cos(t))*std::cos(v*t) * dt;
+    // p1 = p1/M_PI;
 
-    std::complex<double> pp = std::complex<double>(tol + 0.01, 0.0);
-    std::complex<double> p2 = std::complex<double>(0.0, 0.0);
-    double t = 0.0;
-    while(std::abs(pp) > tol)
-    {
-        pp = std::exp(-x * std::cosh(t) - v*t);
-        p2 += pp*dt;
-        t += dt;
-    }
-    p2 = p2 * std::sin(v * M_PI)/M_PI;
-    return p1-p2;
+    // std::complex<double> pp = std::complex<double>(tol + 0.01, 0.0);
+    // std::complex<double> p2 = std::complex<double>(0.0, 0.0);
+    // double t = 0.0;
+    // while(std::abs(pp) > tol)
+    // {
+    //     pp = std::exp(-x * std::cosh(t) - v*t);
+    //     p2 += pp*dt;
+    //     t += dt;
+    // }
+    // p2 = p2 * std::sin(v * M_PI)/M_PI;
+    return std::complex<double>(0.0, 0.0);
 
 }
 
