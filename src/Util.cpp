@@ -2,6 +2,7 @@
 #include "Util.h"
 #include "rv_library.h"
 #include "BES.h"
+#include "Exceptions.h"
 
 
 #include <ctime>
@@ -27,25 +28,25 @@ std::complex<double> UF::I(std::complex<double> v, double x){
 
 std::complex<double> UF::I(std::complex<double> v, std::complex<double> x)
 {
+    throw BadAccess_Exception();
+    // double tol = 1e-10;
+    // double dt = 1e-7;
+    // std::complex<double> p1 = std::complex<double>(0.0, 0.0);
+    // for(double t = 0.0; t < M_PI; t += dt)
+    //     p1 += std::exp(x * std::cos(t))*std::cos(v*t) * dt;
+    // p1 = p1/M_PI;
 
-    double tol = 1e-10;
-    double dt = 1e-7;
-    std::complex<double> p1 = std::complex<double>(0.0, 0.0);
-    for(double t = 0.0; t < M_PI; t += dt)
-        p1 += std::exp(x * std::cos(t))*std::cos(v*t) * dt;
-    p1 = p1/M_PI;
-
-    std::complex<double> pp = std::complex<double>(tol + 0.01, 0.0);
-    std::complex<double> p2 = std::complex<double>(0.0, 0.0);
-    double t = 0.0;
-    while(std::abs(pp) > tol)
-    {
-        pp = std::exp(-x * std::cosh(t) - v*t);
-        p2 += pp*dt;
-        t += dt;
-    }
-    p2 = p2 * std::sin(v * M_PI)/M_PI;
-    return p1-p2;
+    // std::complex<double> pp = std::complex<double>(tol + 0.01, 0.0);
+    // std::complex<double> p2 = std::complex<double>(0.0, 0.0);
+    // double t = 0.0;
+    // while(std::abs(pp) > tol)
+    // {
+    //     pp = std::exp(-x * std::cosh(t) - v*t);
+    //     p2 += pp*dt;
+    //     t += dt;
+    // }
+    // p2 = p2 * std::sin(v * M_PI)/M_PI;
+    // return p1-p2;
 
 }
 
@@ -77,7 +78,7 @@ double UF::normalRnd(double mean, double std)
 {
 
     re.seed(rd());
-    auto dist = std::normal_distribution<double>(mean,std);
+    auto dist = std::normal_distribution<double>(mean, std);
     return dist(re);
 }
 
@@ -88,7 +89,19 @@ double UF::ncChi2Rnd(double delta, double lambda)
         return rv::NC_Chi_squ_cdf(x, delta, lambda);
     };
     double a = UF::uniRnd(0.0, 1.0);
-    return UF::rvs(f, a, 0.2, 0, UF::MAXD, delta+lambda);
+    double res = 0.0;
+    try
+    {
+        res = UF::rvs(f, a, 0.2, 0.0, UF::MAXD, delta + lambda);
+    }
+    catch(...)
+    {
+        throw NC_Exception();
+    }
+
+    
+
+    return res;
 }
 
 double UF::uniRnd(double a, double b)
@@ -104,7 +117,7 @@ double numericalDiffDouble(
         double dx
         )
 {
-    return (f(x + dx) - f(x - dx))/(2.0*dx);
+    return (f(x + dx) - f(x - dx))/(2.0 * dx);
 }
 
 
