@@ -52,3 +52,14 @@ std::complex<double> BES::I(std::complex<double> v, double x)
 	return pow(0.5 * x, v) / gamma(v + 1.0) * hyper0F1(v + 1.0, 0.25 * x * x);
 }
 
+double BES::CR_PHI(
+	double v,
+	double eps, 
+	double kappa, 
+	double theta, 
+	double T,
+	double coeff
+	)
+{
+	return coeff * M_PI * v * eps / (std::sqrt(kappa), std::exp(theta), T * T);
+}

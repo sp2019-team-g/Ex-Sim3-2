@@ -132,17 +132,23 @@ double P32::simulate()
     double N = (double)N_;
 
     cout <<" h " << h <<endl;
-
     std::function<double(double)> F = [&, h, N, Phi](double x)->double
     {
-        double res = h*x/M_PI;
-        for(double i = 1.0; i<=N; i=i+1.0)
-            res += std::sin(h*i*x)/i*std::real(Phi(h*i)) * 2.0/M_PI;
-        return res;
+        // double res = 0.0;
+        // double I = 0.01;
+        // double dI = 0.01;
+        // double tol = 1e-8;
+        // double pp = tol + 1.0;
+        return 0.0;
+         
+                // double res = h*x/M_PI;
+        // for(double i = 1.0; i<=N; i=i+1.0)
+        //     res += std::sin(h*i*x)/i*std::real(Phi(h*i)) * 2.0/M_PI;
+        // return res;
     };
 
     cout <<"[";
-    for(double i = 0.0; i < 10.0; i += 0.25){
+    for(double i = 0.0; i < 30.0; i += 0.25){
         cout << F(i) << ",";
     }
     cout << "]" << endl;
