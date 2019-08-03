@@ -38,6 +38,8 @@ P32::P32(Arguments& paras) : Process(paras)
     kappa_ = paras.g_VAL<double>("kappa");
     theta_ = paras.g_VAL<double>("theta");
     epsilon_ = paras.g_VAL<double>("epsilon");
+    S0_ = -1.0;
+    V0_ = -1.0;
     para_validate();
     try
     {
@@ -74,9 +76,6 @@ void P32::post_update()
     Delta_ = 0.25 * T * eps2_; 
     delta_ = 4.0*(eps2_+kappa_)/eps2_;
     ektT_ = std::exp(kappa_*theta_*T);
-    // cout << " kappa " <<kappa_<<endl;
-    // cout << " theta " <<theta_<<endl;
-    // cout << " T "<<T<<endl;
     zp_ = eps2_*(ektT_-1.0)/(4.0*kappa_*theta_);
     if(check_loaded())
     {
@@ -96,6 +95,8 @@ void P32::para_load(Arguments& paras)
 
 double P32::simulate()
 {
+    if((S0_ < 0.0) || (V0_ < 0.0))
+        throw PRONotLoaded_Exception();
     double T = get_dt();
     double Z;
     size_t err_count = 0;
@@ -113,25 +114,14 @@ double P32::simulate()
         }
         err_count += 1;
     }
-
-
-    
     
     double XT = Z*zp_/ektT_;
-    // cout<<endl;
-    // cout<<" Z "<<Z<<endl;
-    // cout<<" delta "<< delta_<<endl;
-    // cout<<" lambda "<< lambda_ << endl;
-    // cout<<" XT "<<XT<<endl;
-    // cout<<" j "<<p_<<endl;
-    // cout<<" Delta "<<Delta_<<endl;
     double x = p_*std::sqrt(XT*X0_)/std::sinh(p_*Delta_);
     double v = v_;
-    // cout<<" v "<<v<<endl;
     double eps2 = eps2_;
     std::function<std::complex<double>(double)> Phi = [&, v, x, eps2](double a) -> std::complex<double>
     {
-        return UF::I(std::sqrt(std::complex<double>(v * v, - 8 * a / eps2)), x) / UF::I(std::abs(v), x);
+        return UF::I(std::sqrt(std::complex<double>(v * v, - 8.0 * a / eps2)), x) / UF::I(std::abs(v), x);
     };
     double mu = std::real(std::complex<double>(0.0, -1.0) * UF::numericalDiff(Phi, 0.0, 0.01));
     double sigma2 = std::real(-UF::numericalDiff2(Phi,0.0,0.01)) - mu*mu;
@@ -140,8 +130,6 @@ double P32::simulate()
     double sigma = std::sqrt(sigma2);
     double ueps = mu + 12.0*sigma;
     double h = M_PI/ueps;
-
-    // cout <<" h " << h <<endl;
 
     std::function<double(double)> F = [&, h, Phi](double x)->double
     {
@@ -155,25 +143,21 @@ double P32::simulate()
         }
         return res + res2 * 2.0 / M_PI;
     };
-    double M = 200.0;
-    double w = 0.01;
-    std::vector<double>Xs;
-    std::vector<double>FXs;
-    for(double i = 1.0; i <= M; i += 1.0)
-        Xs.push_back(w * mu + (i - 1) * (ueps - w * mu) / M);
-    // cout<<"[ "<<flush;
-    for(
-        std::vector<double>::iterator it = Xs.begin();
-        it != Xs.end();
-        it++
-        )
-    {
-        double z = F(*it);
-        FXs.push_back(z);
-        // cout<<z<<", "<<flush;
-
-    }
-    // cout<<"]"<<endl;
+    // double M = 200.0;
+    // double w = 0.01;
+    // std::vector<double>Xs;
+    // std::vector<double>FXs;
+    // for(double i = 1.0; i <= M; i += 1.0)
+    //     Xs.push_back(w * mu + (i - 1) * (ueps - w * mu) / M);
+    // for(
+    //     std::vector<double>::iterator it = Xs.begin();
+    //     it != Xs.end();
+    //     it++
+    //     )
+    // {
+    //     double z = F(*it);
+    //     FXs.push_back(z);
+    // }
 
 
     double L = UF::rvs(F, UF::uniRnd(0.0,1.0), 0.2, 0.0, UF::MAXD, mu);

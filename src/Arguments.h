@@ -1,6 +1,10 @@
 #ifndef ARGUMENTS_EX32_H
 #define ARGUMENTS_EX32_H
 
+
+#include "Exceptions.h"
+
+
 #include <map>
 #include <string>
 #include <typeinfo>
@@ -10,6 +14,8 @@
 #include <limits>
 
 
+
+
 class Arguments{
     public:
         Arguments();
@@ -17,15 +23,14 @@ class Arguments{
 
 
         bool has(std::string);
-        template<class T> T g_VAL(std::string key)
+        inline void g_CHK(std::string key)
         {
-            return (*(T*)(get(key)));
+            if(!has(key))
+                throw ARGRequiredArgNotFound_Exception(key);
         }
-        template<class T> T* g_PTR(std::string key)
-        {
-            return (T*)get(key);
-        }
-        template<class T> void g_SET(std::string key, T*val)
+        template<class T> inline T g_VAL(std::string key){return (*(T*)(get(key)));}
+        template<class T> inline T* g_PTR(std::string key){return (T*)get(key);}
+        template<class T> inline void g_SET(std::string key, T*val)
         {
             set(key,(void*)val,[&,val](void)->void{delete val;});
         }

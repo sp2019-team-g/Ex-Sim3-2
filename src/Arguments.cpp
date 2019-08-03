@@ -14,7 +14,6 @@ Arguments::~Arguments()
         it++
         )
         (it->second)();
-    
 }
 
 void Arguments::set(std::string key, void* value, std::function<void(void)>des)
@@ -34,6 +33,7 @@ void Arguments::set(std::string key, void* value, std::function<void(void)>des)
 
 void* Arguments::get(std::string key)
 {
+    g_CHK(key);
     return args_[key];
 }
 
