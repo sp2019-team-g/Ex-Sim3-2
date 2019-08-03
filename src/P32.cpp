@@ -8,8 +8,7 @@
 #include <cmath>
 #include <cassert>
 
-#include <iostream>
-using namespace std;
+
 
 
 P32::P32(

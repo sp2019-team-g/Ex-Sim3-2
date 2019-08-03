@@ -1,5 +1,5 @@
-#include "BES.h"
 #define _USE_MATH_DEFINES
+#include "BES.h"
 #include <cmath>
 
 // spouge approximation

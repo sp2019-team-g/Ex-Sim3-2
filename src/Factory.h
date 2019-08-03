@@ -13,7 +13,6 @@
 
 
 #include <iostream>
-using namespace std;
 
 template<class PS,class PE,class OP>
 class Factory
@@ -31,6 +30,8 @@ class Factory
         }
         void build()
         {
+            if(arg_.has("verbose"))
+                std::cout << "building..."<<std::endl;
             Option* op = new OP(arg_);
             arg_.g_SET<Option>("option", op);
             op_ = op;

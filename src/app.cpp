@@ -7,7 +7,8 @@
 #include <string>
 #include <iostream>
 using namespace std;
-int main(){
+int main()
+{
     Factory<P32, McPricingEng, EUCallOpt> fac = Factory<P32, McPricingEng, EUCallOpt>();
     fac.SET<double>("r", new double(0.05));
     fac.SET<double>("rho", new double(-0.5));
@@ -22,11 +23,11 @@ int main(){
     fac.SET<double>("K", new double(1.0));
     fac.SET<bool>("verbose", new bool(true));
     fac.build();
-    cout<<fac.price()<<endl;
+    fac.price();
 
     fac.SET<double>("V0", new double(0.5));
     fac.build();
-    cout<<fac.price()<<endl;
+    fac.price();
 
 
     return 0;
