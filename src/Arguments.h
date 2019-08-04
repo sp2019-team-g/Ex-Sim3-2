@@ -1,6 +1,9 @@
+//XXXXXXXXXXXXXXXXXXXXXXXXXX
+//   Arguments.h
+//XXXXXXXXXXXXXXXXXXXXXXXXXX
 #ifndef ARGUMENTS_EX32_H
 #define ARGUMENTS_EX32_H
-
+//XXXXXXXXXXXXXXXXXXXXXXXXXX
 
 #include "Exceptions.h"
 
@@ -76,6 +79,7 @@ template<class T> std::function<void(Arguments&)> g_ASK(std::string key)
 }
 
 typedef std::vector<std::function<void(Arguments&)> > PLIST;
-
-
 #endif
+//XXXXXXXXXXXXXXXXXXXXXXXXXX
+//  End
+//XXXXXXXXXXXXXXXXXXXXXXXXXX

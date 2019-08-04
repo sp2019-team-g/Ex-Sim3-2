@@ -1,5 +1,5 @@
 //XXXXXXXXXXXXXXXXXXXXXXXXXX
-//   P32.h
+//  P32.h
 //XXXXXXXXXXXXXXXXXXXXXXXXXX
 #ifndef P32_EX32_H
 #define P32_EX32_H
@@ -10,7 +10,7 @@
 
 #include <functional>
 //XXXXXXXXXXXXXXXXXXXXXXXXXX
-// class P32
+//  class P32
 //      Stochastic Process for 3/2 Model
 //      dS_t/S_t = rdt + sqrt(V_t) rho dW{1t} + sqrt(V_t(1-rho^2) dW{2t})
 //      dV_t = kappa V_t(theta - V_t)dt + epsilon (V_t)^(3/2)dW{1t}
@@ -18,7 +18,11 @@
 class P32 : public Process
 {
     public:
+        //**************************
+        // P32(r, rho, kappa, theta, epsilon, dt) : constructor for P32
+        //**************************
         P32(double, double, double, double, double, double);
+
         P32(Arguments&);
 
         void para_validate();
@@ -30,7 +34,7 @@ class P32 : public Process
         double simulate();
         double simulate(Arguments&);
         //**************************
-        // required parameters:
+        // argument requirments:
         //      r (double): groth rate
         //      rho (double): correlation between dW{1t} and d{2t}, range is [-1,1]
         //      epsilon (double): volatility in volatility, positive
@@ -78,5 +82,5 @@ class P32 : public Process
 
 #endif
 //XXXXXXXXXXXXXXXXXXXXXXXXXX
-//   End
+//  End
 //XXXXXXXXXXXXXXXXXXXXXXXXXX
