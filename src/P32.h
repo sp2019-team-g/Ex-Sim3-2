@@ -33,6 +33,7 @@ class P32 : public Process
         //**************************
         double simulate();
         double simulate(Arguments&);
+        Path * simulatePath(Arguments&);
         //**************************
         // argument requirments:
         //      r (double): groth rate
@@ -69,6 +70,8 @@ class P32 : public Process
 
         double S0_;
         double V0_;
+
+        double VT_;
 
         double eps2_;
         double p_;

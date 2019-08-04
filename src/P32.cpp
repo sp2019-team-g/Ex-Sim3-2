@@ -3,11 +3,11 @@
 #include "P32.h"
 #include "Util.h"
 #include "Exceptions.h"
-
+#include "Path.h"
 
 #include <cmath>
 #include <cassert>
-
+#include <vector>
 
 
 
@@ -39,6 +39,7 @@ P32::P32(Arguments& paras) : Process(paras)
     epsilon_ = paras.g_VAL<double>("epsilon");
     S0_ = -1.0;
     V0_ = -1.0;
+    VT_ = -1.0;
     para_validate();
     try
     {
@@ -76,6 +77,7 @@ void P32::post_update()
     delta_ = 4.0 * (eps2_ + kappa_) / eps2_;
     ektT_ = std::exp(kappa_ * theta_ * T);
     zp_ = eps2_ * (ektT_-1.0) / (4.0 * kappa_ * theta_);
+
     if(check_loaded())
     {
         X0_ = 1.0 / V0_;
@@ -115,6 +117,8 @@ double P32::simulate()
     }
     
     double XT = Z * zp_/ektT_;
+    VT_ = 1.0 / XT;
+
     double x = p_ * std::sqrt(XT * X0_)/std::sinh(p_ * Delta_);
     double v = v_;
     double eps2 = eps2_;
@@ -129,6 +133,9 @@ double P32::simulate()
     double sigma = std::sqrt(sigma2);
     double ueps = mu + 12.0*sigma;
     double h = M_PI/ueps;
+    
+
+
 
     std::function<double(double)> F = [&, h, Phi](double x)->double
     {
@@ -164,6 +171,7 @@ double P32::simulate()
 
     double m = std::log(S0_) + r_ * T - 0.5 * L + rho_ * K;
     double s = (1.0 - rho_ * rho_) * L;
+
     double ZZ = UF::normalRnd(m, s);
     return std::exp(ZZ);
 }
@@ -173,7 +181,36 @@ double P32::simulate(Arguments& paras)
     /*Assert loaded
      * */
     para_load(paras);
-    paras.g_SET<double>("ST", new double(simulate()));
-    return 0.0;
+    double* res = new double(simulate());
+    paras.g_SET<double>("ST", res);
+    return *res;
 }
 
+Path * P32::simulatePath(Arguments& paras)
+{
+    std::vector<double> path;
+    double S0_backup = S0_;
+    double V0_backup = V0_;
+    double St = S0_;
+    double Vt = V0_;
+    double T = paras.g_VAL<double>("T");
+    path.push_back(St);
+    double dt = get_dt();
+    for(double tt = 0.0; tt < T; tt += dt)
+    {
+        paras.g_SET<double>("S0", new double(St));
+        paras.g_SET<double>("V0", new double(Vt));
+        para_load(paras);
+        St = simulate();
+        path.push_back(St);
+        Vt = VT_;
+    }
+    paras.g_SET<double>("S0", new double(S0_backup));
+    paras.g_SET<double>("V0", new double(V0_backup));
+    return new Path(0.0, dt, T, path);
+}
+
+
+//XXXXXXXXXXXXXXXXXXXXXXXXXX
+//  End
+//XXXXXXXXXXXXXXXXXXXXXXXXXX
