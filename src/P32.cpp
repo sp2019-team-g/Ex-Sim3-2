@@ -163,7 +163,7 @@ double P32::simulate()
     double K = 1.0/epsilon_ *(std::log(X0_/XT) + (kappa_+0.5*eps2_)*L - T*kappa_*theta_);
 
     double m = std::log(S0_) + r_*T-0.5*L+rho_*K;
-    double s = (1.0-rho_*rho_)*K;
+    double s = (1.0-rho_*rho_)*L;
     double ZZ = UF::normalRnd(m,s);
     return std::exp(ZZ);
 }

@@ -17,7 +17,7 @@ class McPricingEng : public PricingEng
         static PLIST plist()
         {
             PLIST res;
-            res.push_back(g_ASK<size_t>("batch_size"));
+            res.push_back(g_ASK<size_t>("nos"));
             res.push_back(g_ASK<double>("T"));
             return res;
         }

@@ -29,7 +29,7 @@ double McPricingEng::price()
 double McPricingEng::price(Arguments& paras)
 {
     clock_t t0 = std::clock();
-    size_t bsize = paras.g_VAL<size_t>("batch_size");
+    size_t bsize = paras.g_VAL<size_t>("nos");
     double T = paras.g_VAL<double>("T");
     double res = 0.0;
     bool verbose = false;
