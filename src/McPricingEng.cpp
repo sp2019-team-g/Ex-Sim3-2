@@ -31,6 +31,7 @@ double McPricingEng::price(Arguments& paras)
     clock_t t0 = std::clock();
     size_t bsize = paras.g_VAL<size_t>("nos");
     double T = paras.g_VAL<double>("T");
+    double r = paras.g_VAL<double>("r");
     double res = 0.0;
     bool verbose = false;
     double var2 = 0.0;
@@ -64,7 +65,7 @@ double McPricingEng::price(Arguments& paras)
             );
         res += poff;
     }
-    res = res * std::exp(-T) / (double) bsize;
+    res = res * std::exp(-r * T) / (double) bsize;
     clock_t dt = std::clock() - t0;
     if(verbose)
     {

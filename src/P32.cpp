@@ -69,17 +69,17 @@ void P32::post_update()
 {
 
     double T = get_dt();
-    eps2_ = epsilon_*epsilon_;
-    p_ = - (2.0*kappa_*theta_)/eps2_;
-    v_ = 2.0 * kappa_*theta_*(kappa_+eps2_)/(eps2_*kappa_*theta_) - 1.0;
+    eps2_ = epsilon_ * epsilon_;
+    p_ = - (2.0 * kappa_ * theta_) / eps2_;
+    v_ = 2.0 * kappa_ * theta_ * (kappa_ + eps2_) / (eps2_ * kappa_ * theta_) - 1.0;
     Delta_ = 0.25 * T * eps2_; 
-    delta_ = 4.0*(eps2_+kappa_)/eps2_;
-    ektT_ = std::exp(kappa_*theta_*T);
-    zp_ = eps2_*(ektT_-1.0)/(4.0*kappa_*theta_);
+    delta_ = 4.0 * (eps2_ + kappa_) / eps2_;
+    ektT_ = std::exp(kappa_ * theta_ * T);
+    zp_ = eps2_ * (ektT_-1.0) / (4.0 * kappa_ * theta_);
     if(check_loaded())
     {
-        X0_ = 1.0/V0_;
-        lambda_ = X0_/zp_;
+        X0_ = 1.0 / V0_;
+        lambda_ = X0_ / zp_;
     }
 
 }
@@ -114,8 +114,8 @@ double P32::simulate()
         err_count += 1;
     }
     
-    double XT = Z*zp_/ektT_;
-    double x = p_*std::sqrt(XT*X0_)/std::sinh(p_*Delta_);
+    double XT = Z * zp_/ektT_;
+    double x = p_ * std::sqrt(XT * X0_)/std::sinh(p_ * Delta_);
     double v = v_;
     double eps2 = eps2_;
     std::function<std::complex<double>(double)> Phi = [&, v, x, eps2](double a) -> std::complex<double>
@@ -123,7 +123,7 @@ double P32::simulate()
         return UF::I(std::sqrt(std::complex<double>(v * v, - 8.0 * a / eps2)), x) / UF::I(std::abs(v), x);
     };
     double mu = std::real(std::complex<double>(0.0, -1.0) * UF::numericalDiff(Phi, 0.0, 0.01));
-    double sigma2 = std::real(-UF::numericalDiff2(Phi,0.0,0.01)) - mu*mu;
+    double sigma2 = std::real(-UF::numericalDiff2(Phi, 0.0, 0.01)) - mu * mu;
 
 
     double sigma = std::sqrt(sigma2);
@@ -135,7 +135,7 @@ double P32::simulate()
         double res = h*x/M_PI;
         double i = 1.0;
         double res2 = 0.0;
-        while(std::abs(Phi(h*i))/i > M_PI*epsilon_/2.0 )
+        while(std::abs(Phi(h * i)) / i > M_PI * epsilon_ / 2.0 )
         {
             res2 += std::sin(h * i * x) / i * std::real(Phi(h * i));
             i += 1.0;
@@ -159,12 +159,12 @@ double P32::simulate()
     // }
 
 
-    double L = UF::rvs(F, UF::uniRnd(0.0,1.0), 0.2, 0.0, UF::MAXD, mu);
-    double K = 1.0/epsilon_ *(std::log(X0_/XT) + (kappa_+0.5*eps2_)*L - T*kappa_*theta_);
+    double L = UF::rvs(F, UF::uniRnd(0.0, 1.0), 0.2, 0.0, UF::MAXD, mu);
+    double K = 1.0 / epsilon_ * (std::log(X0_ / XT) + (kappa_ + 0.5 * eps2_) * L - T * kappa_ * theta_);
 
-    double m = std::log(S0_) + r_*T-0.5*L+rho_*K;
-    double s = (1.0-rho_*rho_)*L;
-    double ZZ = UF::normalRnd(m,s);
+    double m = std::log(S0_) + r_ * T - 0.5 * L + rho_ * K;
+    double s = (1.0 - rho_ * rho_) * L;
+    double ZZ = UF::normalRnd(m, s);
     return std::exp(ZZ);
 }
 

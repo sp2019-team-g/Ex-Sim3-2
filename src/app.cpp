@@ -22,43 +22,19 @@ int main()
     fac.SET<double>("T", new double(1.0));
     fac.SET<double>("K", new double(1.0));
     fac.SET<bool>("verbose", new bool(true));
+    
     fac.build();
-    cout<<"Case V0 = 1"<<endl;
+    cout << "Case V0 = 1" << endl;
     fac.price();
 
-    fac.SET<double>("V0", new double(0.5));
+    fac.SET<double>("V0", new double(0.75));
     fac.build();
-    cout<<"Case V0 = 0.5"<<endl;
+    cout<<"Case V0 = 0.75"<<endl;
     fac.price();
 
-    fac.SET<double>("V0", new double(0.6));
+    fac.SET<double>("V0", new double(0.875));
     fac.build();
-    cout<<"Case V0 = 0.6"<<endl;
-    fac.price();
-
-    fac.SET<double>("V0", new double(0.7));
-    fac.build();
-    cout<<"Case V0 = 0.7"<<endl;
-    fac.price();
-
-    fac.SET<double>("V0", new double(0.8));
-    fac.build();
-    cout<<"Case V0 = 0.8"<<endl;
-    fac.price();
-
-    fac.SET<double>("V0", new double(0.9));
-    fac.build();
-    cout<<"Case V0 = 0.9"<<endl;
-    fac.price();
-
-    fac.SET<double>("V0", new double(1.5));
-    fac.build();
-    cout<<"Case V0 = 1.5"<<endl;
-    fac.price();
-
-    fac.SET<double>("V0", new double(2.0));
-    fac.build();
-    cout<<"Case V0 = 2.0"<<endl;
+    cout << "Case V0 = 0.875" << endl;
     fac.price();
 
 
