@@ -6,7 +6,7 @@ TSTS2=tmp/testbes tmp/testrv
 TSTS=$(TSTS1) $(TSTS2)
 OBJS1=obj/Arguments.o obj/Util.o obj/Process.o obj/Option.o obj/Input.o obj/Factory.o
 OBJS2=obj/PGBM.o obj/PricingEng.o obj/McPricingEng.o obj/EUCallOpt.o obj/EUPutOpt.o obj/P32.o
-OBJS3=obj/rv_library.o obj/BES.o
+OBJS3=obj/rv_library.o obj/BES.o obj/EUBarrierUpOutCallOpt.o obj/EUBarrierUpOutPutOpt.o obj/ASPutOpt.o obj/ASCallOpt.o
 OBJS=$(OBJS1) $(OBJS2) $(OBJS3)
 test : $(TSTS)
 clean :
@@ -73,6 +73,18 @@ obj/EUCallOpt.o : src/EUCallOpt.cpp src/EUCallOpt.h
 
 obj/EUPutOpt.o : src/EUPutOpt.cpp src/EUPutOpt.h
 	$(CC) $(CPPFLAGS) -c -o obj/EUPutOpt.o src/EUPutOpt.cpp
+
+obj/ASCallOpt.o : src/ASCallOpt.cpp src/ASCallOpt.h
+	$(CC) $(CPPFLAGS) -c -o obj/ASCallOpt.o src/ASCallOpt.cpp
+
+obj/ASPutOpt.o : src/ASPutOpt.cpp src/ASPutOpt.h
+	$(CC) $(CPPFLAGS) -c -o obj/ASPutOpt.o src/ASPutOpt.cpp
+
+obj/EUBarrierUpOutCallOpt.o : src/EUBarrierUpOutCallOpt.cpp src/EUBarrierUpOutCallOpt.h
+	$(CC) $(CPPFLAGS) -c -o obj/EUBarrierUpOutCallOpt.o src/EUBarrierUpOutCallOpt.cpp
+
+obj/EUBarrierUpOutPutOpt.o : src/EUBarrierUpOutPutOpt.cpp src/EUBarrierUpOutPutOpt.h
+	$(CC) $(CPPFLAGS) -c -o obj/EUBarrierUpOutPutOpt.o src/EUBarrierUpOutPutOpt.cpp
 
 obj/PricingEng.o : src/PricingEng.cpp src/PricingEng.h
 	$(CC) $(CPPFLAGS) -c -o obj/PricingEng.o src/PricingEng.cpp

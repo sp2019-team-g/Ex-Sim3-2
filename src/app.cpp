@@ -4,7 +4,7 @@
 #include "ASCallOpt.h"
 #include "ASPutOpt.h"
 #include "EUBarrierUpOutCallOpt.h"
-#include "EUBarrierUpOutputOpt.h"
+#include "EUBarrierUpOutPutOpt.h"
 #include "P32.h"
 #include "McPricingEng.h"
 
@@ -13,7 +13,7 @@
 using namespace std;
 int main()
 {
-	if (0)
+	if (1)
 	{
 		Factory<P32, McPricingEng, EUCallOpt> fac = Factory<P32, McPricingEng, EUCallOpt>();
 		fac.SET<double>("r", new double(0.05));
@@ -24,19 +24,19 @@ int main()
 		fac.SET<double>("dt", new double(1.0));
 		fac.SET<double>("S0", new double(1.0));
 		fac.SET<double>("V0", new double(1.0));
-		fac.SET<size_t>("nos", new size_t(2560));
+		fac.SET<size_t>("nos", new size_t(1));
 		fac.SET<double>("T", new double(1.0));
 		fac.SET<double>("K", new double(1.0));
 		fac.SET<bool>("verbose", new bool(true));
 
-		fac.build();
-		cout << "Case V0 = 1" << endl;
-		fac.price();
+		// fac.build();
+		// cout << "Case V0 = 1" << endl;
+		// fac.price();
 
-		fac.SET<double>("V0", new double(0.75));
-		fac.build();
-		cout << "Case V0 = 0.75" << endl;
-		fac.price();
+		// fac.SET<double>("V0", new double(0.75));
+		// fac.build();
+		// cout << "Case V0 = 0.75" << endl;
+		// fac.price();
 
 		fac.SET<double>("V0", new double(0.875));
 		fac.build();
