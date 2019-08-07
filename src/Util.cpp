@@ -29,25 +29,6 @@ std::complex<double> UF::I(std::complex<double> v, double x){
 std::complex<double> UF::I(std::complex<double> v, std::complex<double> x)
 {
     throw BadAccess_Exception();
-    // double tol = 1e-10;
-    // double dt = 1e-7;
-    // std::complex<double> p1 = std::complex<double>(0.0, 0.0);
-    // for(double t = 0.0; t < M_PI; t += dt)
-    //     p1 += std::exp(x * std::cos(t))*std::cos(v*t) * dt;
-    // p1 = p1/M_PI;
-
-    // std::complex<double> pp = std::complex<double>(tol + 0.01, 0.0);
-    // std::complex<double> p2 = std::complex<double>(0.0, 0.0);
-    // double t = 0.0;
-    // while(std::abs(pp) > tol)
-    // {
-    //     pp = std::exp(-x * std::cosh(t) - v*t);
-    //     p2 += pp*dt;
-    //     t += dt;
-    // }
-    // p2 = p2 * std::sin(v * M_PI)/M_PI;
-    // return p1-p2;
-
 }
 
 double UtilFunc::Diff(std::function<double(double)> f, double x, double dx)
@@ -96,20 +77,14 @@ double UF::ncChi2Rnd(double delta, double lambda)
     {
         res = UF::rvs(f, a, 0.2, 0.0, UF::MAXD, delta + lambda);
     }
-    catch(...)
-    {
-        throw NC_Exception();
-    }
-
-    
-
+    catch(...){throw NC_Exception();}
     return res;
 }
 
 double UF::uniRnd(double a, double b)
 {
     re.seed(rd());
-    return U(re)*(b - a) + a;
+    return U(re) * (b - a) + a;
 }
 
 
@@ -119,7 +94,7 @@ double numericalDiffDouble(
         double dx
         )
 {
-    return (f(x + dx) - f(x - dx))/(2.0 * dx);
+    return (f(x + dx) - f(x - dx)) / (2.0 * dx);
 }
 
 
@@ -158,8 +133,6 @@ double UF::rvs(
             a1 = UF::uniRnd(b1, a0);
         else if(a1 > b2)
             a1 = UF::uniRnd(a0, b2);
-
-        
         delta = a1 - a0;
         a0 = a1;
         num++;
@@ -185,3 +158,9 @@ double UF::rvs(std::function<double(double)> f, double x)
 {
     return UF::rvs(f, x, 1.0, -UF::MAXD, UF::MAXD);
 }
+
+// std::complex<double> operator/(std::complex<double> z, double x)
+// {
+//     return std::complex<double>(z.real()/x, z.imag()/x);
+// }
+

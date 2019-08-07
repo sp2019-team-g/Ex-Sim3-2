@@ -11,7 +11,10 @@
 
 #include <iostream>
 #include <fstream>
-
+const double pidd2 = 0.63661977236758134307553505349005744813783858296182579499066937623;
+// const double tol_eps = 0.028274333882308139146163790449515525957774524594375952388;//0.009 * M_PI;
+// const double tol_eps = 0.00628318530717958647692528676655900576839433879875021164194988;
+const double tol_eps = 0.001570796326794896619231321691639751442098584699687552910487472296;
 P32::P32(
         double r,
         double rho,
@@ -48,10 +51,7 @@ P32::P32(Arguments& paras) : Process(paras)
         V0_ = paras.g_VAL<double>("V0");
         set_loaded(true);
     }
-    catch(...)
-    {
-        set_loaded(false);
-    }
+    catch(...){set_loaded(false);}
     post_update();
 }
 
@@ -97,8 +97,7 @@ void P32::para_load(Arguments& paras)
 
 double P32::simulate()
 {
-    if((S0_ < 0.0) || (V0_ < 0.0))
-        throw PRONotLoaded_Exception();
+    if((S0_ < 0.0) || (V0_ < 0.0)) throw PRONotLoaded_Exception();
     double T = get_dt();
     double Z;
     size_t err_count = 0;
@@ -111,7 +110,7 @@ double P32::simulate()
         }
         catch(NC_Exception& e)
         {
-            if(err_count >= 100)
+            if(err_count >= 98)
                 throw NCDead_Exception(delta_, lambda_);
         }
         err_count += 1;
@@ -141,36 +140,19 @@ double P32::simulate()
         double res = h * x / M_PI;
         double i = 1.0;
         double res2 = 0.0;
-        while(std::abs(Phi(h * i)) / i > 0.4 * M_PI * epsilon_ / 2.0 )
+        std::complex<double> phidi;
+        do
         {
-            res2 += 2.0 / M_PI * std::sin(h * i * x) * std::real(Phi(h * i)) / i;
+            phidi = Phi(h * i) / i;
+            res2 += std::sin(h * i * x) * std::real(phidi);
             i += 1.0;
         }
-        return res + res2 ;
+        while(std::abs(phidi) / i > tol_eps);
+        return res + pidd2 * res2;
     };
- 
-    // double M = 200.0;
-    // double w = 0.01;
-
-    // std::vector<double>FXs;
-    // for(double i = 1.0; i <= M; i += 1.0)
-    //     FXs.push_back(F(w * mu + (i - 1) * (ueps - w * mu) / M));
-
-    // std::function<double(double)> IPF = [&, M, w, FXs, ueps, mu](double x) -> double
-    // {
-    //     if(x <= w*mu)
-    //         return 0.0;
-    //     if(x >= ueps)
-    //         return 1.0;
-    //     size_t i = (size_t)std::floor(x * M / (ueps - w * mu));
-    //     double x0 = w * mu + (double)(i - 1) * (ueps - w * mu) / M;
-    //     double x1 = w * mu + (double)i * (ueps - w * mu) / M;
-    //     std::cout << __LINE__ <<std::endl;
-    //     return (FXs[i + 1] - FXs[i]) * (x - x0) / (x1 - x0);
-    // };
 
 
-    double L = UF::rvs(F, UF::uniRnd(0.0, 1.0), 0.2, 0.0, UF::MAXD, mu);
+    double L = UF::rvs(F, UF::uniRnd(0.0, 1.0), 1.0, 0.0, ueps, mu);
     double K = 1.0 / epsilon_ * (std::log(X0_ / XT) + (kappa_ + 0.5 * eps2_) * L - T * kappa_ * theta_);
 
     double m = std::log(S0_) + r_ * T - 0.5 * L + rho_ * K;
@@ -182,8 +164,6 @@ double P32::simulate()
 
 double P32::simulate(Arguments& paras)
 {
-    /*Assert loaded
-     * */
     para_load(paras);
     double* res = new double(simulate());
     paras.g_SET<double>("ST", res);
@@ -208,8 +188,7 @@ Path * P32::simulatePath(Arguments& paras)
         St = simulate();
         path.push_back(St);
         Vt = VT_;
-        if((St != St) || (Vt != Vt))
-            throw PTHAbnormal_Exception();
+        if((St != St) || (Vt != Vt)) throw PTHAbnormal_Exception();
     }
     paras.g_SET<double>("S0", new double(S0_backup));
     paras.g_SET<double>("V0", new double(V0_backup));

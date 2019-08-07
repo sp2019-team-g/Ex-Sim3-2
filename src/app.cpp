@@ -24,8 +24,6 @@ int main()
     fac.SET<double>("K", new double(1.0));
     fac.SET<bool>("verbose", new bool(true));
     ofstream* offs = new ofstream("dbg.log", ofstream::out); 
-    // fac.SET<ofstream>("dbg", offs);
-
 
     fac.build();
     cout << "Case V0 = 1" << endl;
@@ -46,8 +44,6 @@ int main()
     fac.build();
     cout<<"Case V0 = 1.75"<<endl;
     fac.price();
-
-
 
     offs -> close();
 

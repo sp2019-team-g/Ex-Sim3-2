@@ -1,4 +1,4 @@
-CPPFLAGS=-std=c++11 -Wall -pedantic
+CPPFLAGS=-std=c++11 -Wall -pedantic -O3
 TESTFLAG=-Isrc -o
 CC=g++
 TSTS1=tmp/testarg tmp/testp32 tmp/testproc tmp/testutl tmp/testopt tmp/testeuc tmp/testinp tmp/testfac

@@ -21,10 +21,7 @@ McPricingEng::McPricingEng(Arguments& paras) : PricingEng(paras)
     pro_ = paras.g_PTR<Process>("process");
 }
 
-double McPricingEng::price()
-{
-    throw BadAccess_Exception();
-}
+double McPricingEng::price(){throw BadAccess_Exception();}
 
 double McPricingEng::price(Arguments& paras)
 {
