@@ -84,7 +84,7 @@ double McPricingEng::price(Arguments& paras)
         std::cout << "100%--" << std::endl;
         std::cout << "done." << std::endl;
         std::cout << "result: " << res << std::endl;
-        std::cout << "std err: " << std::sqrt(var2) * std::exp(-r * T) << std::endl;
+        std::cout << "std err: " << std::sqrt(var2) * std::exp(-r * T) / std::sqrt(bsize) << std::endl;
         std::cout << "time usage: " << (double)dt / CLOCKS_PER_SEC << std::endl;
         std::cout << "avg sims per sec: " << (double)bsize * CLOCKS_PER_SEC / (double)dt;
         std::cout << std::endl;
