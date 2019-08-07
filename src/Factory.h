@@ -1,9 +1,9 @@
-//XXXXXXXXXXXXXXXXXXXXXXXXXX
+//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 //  Factory.h
-//XXXXXXXXXXXXXXXXXXXXXXXXXX
+//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 #ifndef FACTORY_EX32_H
 #define FACTORY_EX32_H
-//XXXXXXXXXXXXXXXXXXXXXXXXXX
+//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 #include "Arguments.h"
 #include "Process.h"
 #include "PricingEng.h"
@@ -16,14 +16,14 @@
 
 
 #include <iostream>
-//XXXXXXXXXXXXXXXXXXXXXXXXXX
+//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 //  Factory class : 
 //      build necessary parts for pricing an option
 //      template requirements:
 //          PS, a class derived from Process
 //          PE, a class derived from PricingEng
 //          OP, a class derived from Option
-//XXXXXXXXXXXXXXXXXXXXXXXXXX
+//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 template<class PS,class PE,class OP> class Factory
 {
     public:
@@ -60,6 +60,7 @@ template<class PS,class PE,class OP> class Factory
             pe_ = new PE(arg_);
             done_ = true;
         }
+    
         //**************************
         //  SET(string key, T* a): insert a key, value pair into arguments
         //      key (string): name of the variable
@@ -76,32 +77,39 @@ template<class PS,class PE,class OP> class Factory
         //  get_ps(): getter for process
         //      return (Process*): pointer to the built process
         //**************************
+    
         Process* get_ps()
         {
             if(!done_)
                 throw FACNotFinished_Exception();
             return ps_;
         }
+    
         //**************************
         //  get_op(): getter for option
         //      return (Option*): pointer to the built option
         //**************************
+    
         Option* get_op()
         {
             if(!done_)
                 throw FACNotFinished_Exception();
             return op_;
         }
+    
         //**************************
         //  get_pe(): getter for pricing engine
         //      return (PricingEng*): pointer to the built pricing engine
         //**************************
-        PricingEng* get_pe(){return pe_;}
+       
+    PricingEng* get_pe(){return pe_;}
+    
         //**************************
         //  price(): pricing the option base on pe and ps
         //      return (double): price
         //**************************
-        double price()
+        
+    double price()
         {
             if(!done_)
                 throw FACNotFinished_Exception();
@@ -121,6 +129,7 @@ template<class PS,class PE,class OP> class Factory
 
 
 #endif
-//XXXXXXXXXXXXXXXXXXXXXXXXXX
+
+//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 //  End
-//XXXXXXXXXXXXXXXXXXXXXXXXXX
+//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
