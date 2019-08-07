@@ -36,7 +36,7 @@ struct NCDead_Exception : public std::exception
         double lambda_;
 };
 //XXXXXXXXXXXXXXXXXXXXXXXXXX
-//  some methods of factory are called before the factory fully built everything
+//  when some methods of factory are called before the factory fully built everything
 //  this exception should be throwed
 //XXXXXXXXXXXXXXXXXXXXXXXXXX
 struct FACNotFinished_Exception : public std::exception
@@ -73,6 +73,19 @@ struct BadAccess_Exception : public std::exception
         const char * what() const throw(){return "---";}
 };
 
+
+struct PTHAbnormal_Exception : public std::exception
+{
+    public:
+        const char * what() const throw(){return " nan encountered during path generating";}
+};
+
+
+struct UFBadRVLib_Exception : public std::exception
+{
+    public:
+        const char * what() const throw(){return "rv_library broken";}
+};
 #endif
 //XXXXXXXXXXXXXXXXXXXXXXXXXX
 //  End

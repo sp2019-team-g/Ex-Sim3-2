@@ -13,7 +13,7 @@
 #include <stdio.h>
 
 #include <iostream>
-
+#include <fstream>
 McPricingEng::McPricingEng(Option*opt, Process*pro) : PricingEng(opt){pro_ = pro;}
 
 McPricingEng::McPricingEng(Arguments& paras) : PricingEng(paras)
@@ -36,6 +36,8 @@ double McPricingEng::price(Arguments& paras)
     bool verbose = false;
     double var2 = 0.0;
     double poff = 0.0;
+    bool dbg = false;
+    std::ofstream* dbgofs = nullptr;
     if(paras.has("verbose"))
         verbose = paras.g_VAL<bool>("verbose");
 
@@ -45,7 +47,12 @@ double McPricingEng::price(Arguments& paras)
         printf("------");
         std::cout<<std::flush;
     }
-
+    if(paras.has("dbg"))
+    {
+        dbg = true;
+        dbgofs = paras.g_PTR<std::ofstream>("dbg");
+        (*dbgofs) << "[";
+    }
     for(size_t i = 0; i < bsize; i++)
     {
         if(verbose && (!(i%50)))
@@ -59,13 +66,17 @@ double McPricingEng::price(Arguments& paras)
         poff = opt_ -> payoff(paras);
         if(i > 1)
             var2 = (
-                ((double)i - 2.0) / ((double)i - 1.0) * var2 
+                ((double)i - 1.0) / ((double)i) * var2 
                 +
-                1.0 / (double)i * (poff - res / (double)i) * (poff - res / (double)i)
+                (poff - res / (double)(i)) * (poff - res / (double)(i)) / (double)(i + 1)
             );
         res += poff;
+        if(dbg)
+            (*dbgofs) << poff << ",";
     }
-    res = res * std::exp(-r * T) / (double) bsize;
+    if(dbg)
+        (*dbgofs) << "]" << std::endl << std::endl;
+    res = res * std::exp(-r * T) / (double) (bsize);
     clock_t dt = std::clock() - t0;
     if(verbose)
     {
@@ -73,7 +84,7 @@ double McPricingEng::price(Arguments& paras)
         std::cout << "100%--" << std::endl;
         std::cout << "done." << std::endl;
         std::cout << "result: " << res << std::endl;
-        std::cout << "std err: " << std::sqrt(var2) * std::exp(-T) / (double) bsize << std::endl;
+        std::cout << "std err: " << std::sqrt(var2) * std::exp(-r * T) << std::endl;
         std::cout << "time usage: " << (double)dt / CLOCKS_PER_SEC << std::endl;
         std::cout << "avg sims per sec: " << (double)bsize * CLOCKS_PER_SEC / (double)dt;
         std::cout << std::endl;

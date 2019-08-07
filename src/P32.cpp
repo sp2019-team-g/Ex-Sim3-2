@@ -9,7 +9,8 @@
 #include <cassert>
 #include <vector>
 
-
+#include <iostream>
+#include <fstream>
 
 P32::P32(
         double r,
@@ -116,54 +117,57 @@ double P32::simulate()
         err_count += 1;
     }
     
-    double XT = Z * zp_/ektT_;
-    VT_ = 1.0 / XT;
+    double XT = Z * zp_/ektT_; //(x)
+    VT_ = 1.0 / XT; //(x)
 
-    double x = p_ * std::sqrt(XT * X0_)/std::sinh(p_ * Delta_);
-    double v = v_;
-    double eps2 = eps2_;
+    double x = p_ * std::sqrt(XT * X0_)/std::sinh(p_ * Delta_); //(x)
+    double v = v_; //(x)
+    double eps2 = eps2_; //(x)
+
     std::function<std::complex<double>(double)> Phi = [&, v, x, eps2](double a) -> std::complex<double>
     {
         return UF::I(std::sqrt(std::complex<double>(v * v, - 8.0 * a / eps2)), x) / UF::I(std::abs(v), x);
     };
-    double mu = std::real(std::complex<double>(0.0, -1.0) * UF::numericalDiff(Phi, 0.0, 0.01));
-    double sigma2 = std::real(-UF::numericalDiff2(Phi, 0.0, 0.01)) - mu * mu;
+    double mu = std::real(std::complex<double>(0.0, -1.0) * UF::numericalDiff(Phi, 0.0, 0.01)); // (x)
+    double sigma2 = std::real(-UF::numericalDiff2(Phi, 0.0, 0.01)) - mu * mu; // (x)
 
 
-    double sigma = std::sqrt(sigma2);
-    double ueps = mu + 12.0*sigma;
-    double h = M_PI/ueps;
-    
-
-
+    double sigma = std::sqrt(sigma2); // (x)
+    double ueps = mu + 12.0 * sigma; // (x)
+    double h = M_PI / ueps; // (x)
 
     std::function<double(double)> F = [&, h, Phi](double x)->double
     {
-        double res = h*x/M_PI;
+        double res = h * x / M_PI;
         double i = 1.0;
         double res2 = 0.0;
-        while(std::abs(Phi(h * i)) / i > M_PI * epsilon_ / 2.0 )
+        while(std::abs(Phi(h * i)) / i > 0.4 * M_PI * epsilon_ / 2.0 )
         {
-            res2 += std::sin(h * i * x) / i * std::real(Phi(h * i));
+            res2 += 2.0 / M_PI * std::sin(h * i * x) * std::real(Phi(h * i)) / i;
             i += 1.0;
         }
-        return res + res2 * 2.0 / M_PI;
+        return res + res2 ;
     };
+ 
     // double M = 200.0;
     // double w = 0.01;
-    // std::vector<double>Xs;
+
     // std::vector<double>FXs;
     // for(double i = 1.0; i <= M; i += 1.0)
-    //     Xs.push_back(w * mu + (i - 1) * (ueps - w * mu) / M);
-    // for(
-    //     std::vector<double>::iterator it = Xs.begin();
-    //     it != Xs.end();
-    //     it++
-    //     )
+    //     FXs.push_back(F(w * mu + (i - 1) * (ueps - w * mu) / M));
+
+    // std::function<double(double)> IPF = [&, M, w, FXs, ueps, mu](double x) -> double
     // {
-    //     double z = F(*it);
-    //     FXs.push_back(z);
-    // }
+    //     if(x <= w*mu)
+    //         return 0.0;
+    //     if(x >= ueps)
+    //         return 1.0;
+    //     size_t i = (size_t)std::floor(x * M / (ueps - w * mu));
+    //     double x0 = w * mu + (double)(i - 1) * (ueps - w * mu) / M;
+    //     double x1 = w * mu + (double)i * (ueps - w * mu) / M;
+    //     std::cout << __LINE__ <<std::endl;
+    //     return (FXs[i + 1] - FXs[i]) * (x - x0) / (x1 - x0);
+    // };
 
 
     double L = UF::rvs(F, UF::uniRnd(0.0, 1.0), 0.2, 0.0, UF::MAXD, mu);
@@ -204,6 +208,8 @@ Path * P32::simulatePath(Arguments& paras)
         St = simulate();
         path.push_back(St);
         Vt = VT_;
+        if((St != St) || (Vt != Vt))
+            throw PTHAbnormal_Exception();
     }
     paras.g_SET<double>("S0", new double(S0_backup));
     paras.g_SET<double>("V0", new double(V0_backup));

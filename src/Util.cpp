@@ -88,6 +88,8 @@ double UF::ncChi2Rnd(double delta, double lambda)
     {
         return rv::NC_Chi_squ_cdf(x, delta, lambda);
     };
+    if(f(delta + lambda) < 0.1)
+        throw UFBadRVLib_Exception();
     double a = UF::uniRnd(0.0, 1.0);
     double res = 0.0;
     try

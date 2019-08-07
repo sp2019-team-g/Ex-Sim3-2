@@ -6,6 +6,7 @@
 
 #include <string>
 #include <iostream>
+#include <fstream>
 using namespace std;
 int main()
 {
@@ -22,22 +23,33 @@ int main()
     fac.SET<double>("T", new double(1.0));
     fac.SET<double>("K", new double(1.0));
     fac.SET<bool>("verbose", new bool(true));
-    
+    ofstream* offs = new ofstream("dbg.log", ofstream::out); 
+    // fac.SET<ofstream>("dbg", offs);
+
+
     fac.build();
     cout << "Case V0 = 1" << endl;
     fac.price();
 
-    fac.SET<double>("V0", new double(0.75));
+    fac.SET<double>("V0", new double(1.25));
     fac.build();
-    cout<<"Case V0 = 0.75"<<endl;
+    cout << "Case V0 = 1.25" << endl;
     fac.price();
 
-    fac.SET<double>("V0", new double(0.875));
+    fac.SET<double>("V0", new double(1.5));
     fac.build();
-    cout << "Case V0 = 0.875" << endl;
+    cout<<"Case V0 = 1.5"<<endl;
     fac.price();
 
 
+    fac.SET<double>("V0", new double(1.75));
+    fac.build();
+    cout<<"Case V0 = 1.75"<<endl;
+    fac.price();
+
+
+
+    offs -> close();
 
     return 0;
 }
