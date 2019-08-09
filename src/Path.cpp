@@ -25,6 +25,7 @@ double Path::arithmeticAvg()
     ant = ant/cnt;
     return ant;
 }
+
 double Path::geometricAbg()
 {
     double ant = 1.0;
@@ -34,20 +35,29 @@ double Path::geometricAbg()
     ant = exp(log(ant)/cnt);
     return ant;
 }
+
 bool Path::break_up(double level)
 {
+    double t = Path::min();
+    if(t>level)
+        return false;
     for(std::vector<double>::iterator it = Path::path_.begin();it != Path::path_.end();it++)
         if(*it >= level)
             return true;
     return false;
 }
+
 bool Path::break_down(double level)
 {
+    double t = Path::max();
+    if(t<level)
+        return false;
     for(std::vector<double>::iterator it = Path::path_.begin();it != Path::path_.end();it++)
         if(*it < level)
             return true;
     return false;
 }
+
 double Path::max()
 {
     double maxx = 0.0;
@@ -56,6 +66,7 @@ double Path::max()
             maxx = *it;
     return maxx;
 }
+
 double Path::min()
 {
     double minn = double(RAND_MAX);
