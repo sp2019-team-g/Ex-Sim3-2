@@ -1,6 +1,5 @@
 
 #include "Util.h"
-#include "rv_library.h"
 #include "BES.h"
 #include "Exceptions.h"
 
@@ -52,7 +51,7 @@ std::complex<double> UF::numericalDiff2(
         double dx
         )
 {
-    return (f(x - dx) - 2.0*f(x) + f(x + dx))/(dx*dx);
+    return (f(x - dx) - 2.0 * f(x) + f(x + dx))/(dx*dx);
 }
 
 double UF::normalRnd(double mean, double std)
@@ -63,22 +62,20 @@ double UF::normalRnd(double mean, double std)
     return dist(re);
 }
 
+double UF::chi2Rnd(double delta)
+{
+    re.seed(rd());
+    std::chi_squared_distribution<double> dist(delta);
+    return dist(re);
+}
+
 double UF::ncChi2Rnd(double delta, double lambda)
 {
-    std::function<double(double)> f = [&, delta, lambda](double x)
-    {
-        return rv::NC_Chi_squ_cdf(x, delta, lambda);
-    };
-    if(f(delta + lambda) < 0.1)
-        throw UFBadRVLib_Exception();
-    double a = UF::uniRnd(0.0, 1.0);
-    double res = 0.0;
-    try
-    {
-        res = UF::rvs(f, a, 0.2, 0.0, UF::MAXD, delta + lambda);
-    }
-    catch(...){throw NC_Exception();}
-    return res;
+    if(delta <= 1.0) throw NC_Exception();
+    if(lambda < 0.0) throw NC_Exception();
+    double Y = UF::chi2Rnd(delta - 1.0);
+    double Z = UF::normalRnd(std::sqrt(lambda), 1.0);
+    return Y + Z * Z;
 }
 
 double UF::uniRnd(double a, double b)

@@ -18,7 +18,7 @@ int main()
     fac.SET<double>("epsilon", new double(0.2));
     fac.SET<double>("dt", new double(1.0));
     fac.SET<double>("S0", new double(1.0));
-    fac.SET<double>("V0", new double(1.0));
+    fac.SET<double>("V0", new double(1.125));
     fac.SET<size_t>("nos", new size_t(2560));
     fac.SET<double>("T", new double(1.0));
     fac.SET<double>("K", new double(1.0));
@@ -26,23 +26,17 @@ int main()
     ofstream* offs = new ofstream("dbg.log", ofstream::out); 
 
     fac.build();
-    cout << "Case V0 = 1" << endl;
+    cout << "Case : 2560 sims" << endl;
     fac.price();
 
-    fac.SET<double>("V0", new double(1.25));
+    fac.SET<size_t>("nos", new size_t(10240));
     fac.build();
-    cout << "Case V0 = 1.25" << endl;
+    cout << "Case : 10240 sims" << endl;
     fac.price();
 
-    fac.SET<double>("V0", new double(1.5));
+    fac.SET<size_t>("nos", new size_t(40960));
     fac.build();
-    cout<<"Case V0 = 1.5"<<endl;
-    fac.price();
-
-
-    fac.SET<double>("V0", new double(1.75));
-    fac.build();
-    cout<<"Case V0 = 1.75"<<endl;
+    cout<<"Case : 40960 sims"<<endl;
     fac.price();
 
     offs -> close();

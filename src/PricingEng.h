@@ -9,6 +9,7 @@ class PricingEng
     public:
         PricingEng(Option*);
         PricingEng(Arguments&);
+        virtual ~PricingEng(){};
         virtual double price(){return 0.0;}
         virtual double price(Arguments&){return 0.0;}
     protected:

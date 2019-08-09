@@ -2,11 +2,11 @@ CPPFLAGS=-std=c++11 -Wall -pedantic -O3
 TESTFLAG=-Isrc -o
 CC=g++
 TSTS1=tmp/testarg tmp/testp32 tmp/testproc tmp/testutl tmp/testopt tmp/testeuc tmp/testinp tmp/testfac
-TSTS2=tmp/testbes tmp/testrv tmp/testpth
+TSTS2=tmp/testbes tmp/testpth
 TSTS=$(TSTS1) $(TSTS2)
 OBJS1=obj/Arguments.o obj/Util.o obj/Process.o obj/Option.o obj/Input.o obj/Factory.o
 OBJS2=obj/PGBM.o obj/PricingEng.o obj/McPricingEng.o obj/EUCallOpt.o obj/EUPutOpt.o obj/P32.o
-OBJS3=obj/rv_library.o obj/BES.o obj/Path.o
+OBJS3=obj/BES.o obj/Path.o
 OBJS=$(OBJS1) $(OBJS2) $(OBJS3)
 test : $(TSTS)
 clean :
@@ -43,9 +43,6 @@ tmp/testfac : test/FACtest.cpp src/Factory.h src/PGBM.h src/EUCallOpt.h src/McPr
 
 tmp/testbsi : test/BSItest.cpp src/Besseli.h obj/Besseli.o
 	$(CC) $(CPPFLAGS) $(TESTFLAG) tmp/testbsi obj/Besseli.o test/BSItest.cpp
-
-tmp/testrv : test/RVtest.cpp src/rv_library.h obj/rv_library.o
-	$(CC) $(CPPFLAGS) $(TESTFLAG) tmp/testrv obj/rv_library.o test/RVtest.cpp
 
 tmp/testbes : test/BEStest.cpp src/BES.h obj/BES.o
 	$(CC) $(CPPFLAGS) $(TESTFLAG) tmp/testbes obj/BES.o test/BEStest.cpp
@@ -88,9 +85,6 @@ obj/Input.o : src/Input.cpp src/Input.h
 
 obj/Factory.o : src/Factory.cpp src/Factory.h
 	$(CC) $(CPPFLAGS) -c -o obj/Factory.o src/Factory.cpp
-
-obj/rv_library.o : src/rv_library.cpp src/rv_library.h
-	$(CC) $(CPPFLAGS) -c -o obj/rv_library.o src/rv_library.cpp
 
 obj/BES.o : src/BES.cpp src/BES.h
 	$(CC) $(CPPFLAGS) -c -o obj/BES.o src/BES.cpp

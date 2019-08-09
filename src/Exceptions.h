@@ -86,6 +86,22 @@ struct UFBadRVLib_Exception : public std::exception
     public:
         const char * what() const throw(){return "rv_library broken";}
 };
+
+struct BESBadInput_Exception : public std::exception
+{
+    public:
+        BESBadInput_Exception(const char * name, double value) : name_(name), value_(value){}
+        const char * what() const throw()
+        {
+            std::cerr << name_ << " = " << value_ << std::endl;
+            return name_;
+        }
+    private:
+        const char * name_;
+        double value_;
+};
+
+
 #endif
 //XXXXXXXXXXXXXXXXXXXXXXXXXX
 //  End
