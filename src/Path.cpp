@@ -41,8 +41,8 @@ bool Path::break_up(double level)
     double t = Path::min();
     if(t>level)
         return false;
-    for(std::vector<double>::iterator it = Path::path_.begin();it != Path::path_.end();it++)
-        if(*it >= level)
+    for(std::vector<double>::iterator it = Path::path_.begin();it+1 != Path::path_.end();it++)
+        if(*it > level && *(it+1) < level)
             return true;
     return false;
 }
@@ -52,8 +52,8 @@ bool Path::break_down(double level)
     double t = Path::max();
     if(t<level)
         return false;
-    for(std::vector<double>::iterator it = Path::path_.begin();it != Path::path_.end();it++)
-        if(*it < level)
+    for(std::vector<double>::iterator it = Path::path_.begin();it+1 != Path::path_.end();it++)
+        if(*it < level && *(it+1) > level)
             return true;
     return false;
 }
