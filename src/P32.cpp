@@ -1,4 +1,4 @@
-
+#define _USE_MATH_DEFINES
 
 #include "P32.h"
 #include "Util.h"
@@ -192,8 +192,15 @@ Path * P32::simulatePath(Arguments& paras)
     }
     paras.g_SET<double>("S0", new double(S0_backup));
     paras.g_SET<double>("V0", new double(V0_backup));
-    return new Path(0.0, dt, T, path);
+	paras.g_SET<double>("ST", new double(St));
+
+	Path* path_ = new Path(0.0, dt, T, path);
+	paras.g_SET<Path>("path", path_);
+
+	return path_;
 }
+
+
 
 
 //XXXXXXXXXXXXXXXXXXXXXXXXXX

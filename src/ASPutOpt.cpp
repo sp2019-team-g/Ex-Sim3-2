@@ -1,5 +1,6 @@
 #include "ASPutOpt.h"
 
+#include "Path.h"
 #include "Util.h"
 ASPutOpt::ASPutOpt(double T, double K) : Option(T)
 {
@@ -17,3 +18,4 @@ double ASPutOpt::payoff(Arguments &paras)
 	double t = path->arithmeticAvg();
 	return UF::max(K_ - t, 0.0);
 }
+
