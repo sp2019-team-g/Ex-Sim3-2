@@ -11,7 +11,11 @@ ASPutOpt::ASPutOpt(Arguments& paras) : Option(paras)
 	K_ = paras.g_VAL<double>("K");
 }
 
-double ASPutOpt::payoff(Arguments& paras)
+double ASPutOpt::payoff(Arguments &paras)
 {
-	return UF::max(0.0, K_ - paras.g_VAL<double>("ST_AVER"));
+    Path *path = new Path(paras);
+	double t = path->arithmeticAvg();
+	return UF::max(K_ - t, 0.0);
 }
+
+   
