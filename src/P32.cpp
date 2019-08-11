@@ -200,6 +200,39 @@ Path * P32::simulatePath(Arguments& paras)
 	return path_;
 }
 
+double P32::simulate(Arguments& paras)
+{
+    para_load(paras);
+    double* res = new double(simulate());
+    paras.g_SET<double>("ST", res);
+    return *res;
+}
+
+Path * P32::simulatePath(Arguments& paras)
+{
+    std::vector<double> path;
+    double S0_backup = S0_;
+    double V0_backup = V0_;
+    double St = S0_;
+    double Vt = V0_;
+    double T = paras.g_VAL<double>("T");
+    path.push_back(St);
+    double dt = get_dt();
+    for(double tt = 0.0; tt < T; tt += dt)
+    {
+        paras.g_SET<double>("S0", new double(St));
+        paras.g_SET<double>("V0", new double(Vt));
+        para_load(paras);
+        St = simulate();
+        path.push_back(St);
+        Vt = VT_;
+        if((St != St) || (Vt != Vt)) throw PTHAbnormal_Exception();
+    }
+    paras.g_SET<double>("S0", new double(S0_backup));
+    paras.g_SET<double>("V0", new double(V0_backup));
+    return new Path(0.0, dt, T, path);
+}
+
 
 //XXXXXXXXXXXXXXXXXXXXXXXXXX
 //  End

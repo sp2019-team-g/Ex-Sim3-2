@@ -1,6 +1,7 @@
 #include "Path.h"
 #include "Arguments.h"
 #include "Process.h"
+#include <cmath>
 Path::Path(double t, double dt, double T, std::vector<double>& path)
 {
     t_ = t;
@@ -13,7 +14,7 @@ Path::Path(Arguments& paras)
 {
     T_ = paras.g_VAL<double>("T");
     dt_ = paras.g_VAL<double>("dt");
-    //path_ = std::vector<double>(*paras.g_PTR<std::vector<double> >("path")); 
+    path_ = std::vector<double>(*paras.g_PTR<std::vector<double> >("path")); 
 }
 
 double Path::arithmeticAvg()
@@ -32,22 +33,30 @@ double Path::geometricAbg()
     double cnt = Path::T_/Path::dt_;
     for(std::vector<double>::iterator it = Path::path_.begin();it != Path::path_.end();it++)
         ant *= *it;
-    ant = exp(log(ant)/cnt);
+    ant = std::exp(std::log(ant)/cnt);
     return ant;
 }
 
 bool Path::break_up(double level)
 {
-    for(std::vector<double>::iterator it = Path::path_.begin();it != Path::path_.end();it++)
-        if(*it >= level)
+
+    double t = Path::min();
+    if(t>level)
+        return false;
+    for(std::vector<double>::iterator it = Path::path_.begin();it+1 != Path::path_.end();it++)
+        if(*it > level && *(it+1) < level)
             return true;
     return false;
 }
 
 bool Path::break_down(double level)
 {
-    for(std::vector<double>::iterator it = Path::path_.begin();it != Path::path_.end();it++)
-        if(*it < level)
+
+    double t = Path::max();
+    if(t<level)
+        return false;
+    for(std::vector<double>::iterator it = Path::path_.begin();it+1 != Path::path_.end();it++)
+        if(*it < level && *(it+1) > level)
             return true;
     return false;
 }
