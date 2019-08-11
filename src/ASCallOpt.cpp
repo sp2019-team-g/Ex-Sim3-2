@@ -11,7 +11,9 @@ ASCallOpt::ASCallOpt(Arguments& paras) : Option(paras)
 	K_ = paras.g_VAL<double>("K");
 }
 
-double ASCallOpt::payoff(Arguments& paras)
+double ASCallOpt::payoff(Arguments &paras)
 {
-	return UF::max(0.0, paras.g_VAL<double>("ST_AVER") - K_);
+    Path *path = new Path(paras);
+	double t = path->arithmeticAvg();
+	return UF::max(t - K_, 0.0);
 }
