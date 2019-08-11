@@ -1,6 +1,7 @@
 #include "Path.h"
 #include "Arguments.h"
 #include "Process.h"
+#include <cmath>
 Path::Path(double t, double dt, double T, std::vector<double>& path)
 {
     t_ = t;
@@ -32,7 +33,7 @@ double Path::geometricAbg()
     double cnt = Path::T_/Path::dt_;
     for(std::vector<double>::iterator it = Path::path_.begin();it != Path::path_.end();it++)
         ant *= *it;
-    ant = exp(log(ant)/cnt);
+    ant = std::exp(std::log(ant)/cnt);
     return ant;
 }
 

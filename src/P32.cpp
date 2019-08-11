@@ -1,4 +1,4 @@
-
+#define _USE_MATH_DEFINES // This, together with cmath, ensures we can use M_PI = 3.14...
 
 #include "P32.h"
 #include "Util.h"
@@ -160,6 +160,170 @@ double P32::simulate()
 
     double ZZ = UF::normalRnd(m, s);
     return std::exp(ZZ);
+}
+
+double P32::simulate_aver()
+{
+	double T0 = get_dt();
+	int days = T0 * 365;
+	double ST_aver = 0.0;
+
+	for (int iDay = 1; iDay <= days; iDay++)
+	{
+		if ((S0_ < 0.0) || (V0_ < 0.0))
+			throw PRONotLoaded_Exception();
+		//double T = get_dt();
+		double T = iDay / 365.0;
+		double Z;
+		size_t err_count = 0;
+		while (err_count < 100)
+		{
+			try
+			{
+				Z = UF::ncChi2Rnd(delta_, lambda_);
+				break;
+			}
+			catch (NC_Exception& e)
+			{
+				if (err_count >= 100)
+					throw NCDead_Exception(delta_, lambda_);
+			}
+			err_count += 1;
+		}
+
+		double XT = Z * zp_ / ektT_;
+		double x = p_ * std::sqrt(XT * X0_) / std::sinh(p_ * Delta_);
+		double v = v_;
+		double eps2 = eps2_;
+		std::function<std::complex<double>(double)> Phi = [&, v, x, eps2](double a) -> std::complex<double>
+		{
+			return UF::I(std::sqrt(std::complex<double>(v * v, -8.0 * a / eps2)), x) / UF::I(std::abs(v), x);
+		};
+		double mu = std::real(std::complex<double>(0.0, -1.0) * UF::numericalDiff(Phi, 0.0, 0.01));
+		double sigma2 = std::real(-UF::numericalDiff2(Phi, 0.0, 0.01)) - mu * mu;
+
+
+		double sigma = std::sqrt(sigma2);
+		double ueps = mu + 12.0 * sigma;
+		double h = M_PI / ueps;
+
+		std::function<double(double)> F = [&, h, Phi](double x)->double
+		{
+			double res = h * x / M_PI;
+			double i = 1.0;
+			double res2 = 0.0;
+			while (std::abs(Phi(h * i)) / i > M_PI * epsilon_ / 2.0)
+			{
+				res2 += std::sin(h * i * x) / i * std::real(Phi(h * i));
+				i += 1.0;
+			}
+			return res + res2 * 2.0 / M_PI;
+		};
+		// double M = 200.0;
+		// double w = 0.01;
+		// std::vector<double>Xs;
+		// std::vector<double>FXs;
+		// for(double i = 1.0; i <= M; i += 1.0)
+		//     Xs.push_back(w * mu + (i - 1) * (ueps - w * mu) / M);
+		// for(
+		//     std::vector<double>::iterator it = Xs.begin();
+		//     it != Xs.end();
+		//     it++
+		//     )
+		// {
+		//     double z = F(*it);
+		//     FXs.push_back(z);
+		// }
+
+
+		double L = UF::rvs(F, UF::uniRnd(0.0, 1.0), 0.2, 0.0, UF::MAXD, mu);
+		double K = 1.0 / epsilon_ * (std::log(X0_ / XT) + (kappa_ + 0.5 * eps2_) * L - T * kappa_ * theta_);
+
+		double m = std::log(S0_) + r_ * T - 0.5 * L + rho_ * K;
+		double s = (1.0 - rho_ * rho_) * L;
+		double ZZ = UF::normalRnd(m, s);
+
+		ST_aver += std::exp(ZZ);
+	}
+
+	ST_aver = ST_aver / days;
+}
+
+bool P32::simulate_time(double time)
+{
+	if ((S0_ < 0.0) || (V0_ < 0.0))
+		throw PRONotLoaded_Exception();
+	//double T = get_dt();
+	double T = time;
+	double Z;
+	size_t err_count = 0;
+	while (err_count < 100)
+	{
+		try
+		{
+			Z = UF::ncChi2Rnd(delta_, lambda_);
+			break;
+		}
+		catch (NC_Exception& e)
+		{
+			if (err_count >= 100)
+				throw NCDead_Exception(delta_, lambda_);
+		}
+		err_count += 1;
+	}
+
+	double XT = Z * zp_ / ektT_;
+	double x = p_ * std::sqrt(XT * X0_) / std::sinh(p_ * Delta_);
+	double v = v_;
+	double eps2 = eps2_;
+	std::function<std::complex<double>(double)> Phi = [&, v, x, eps2](double a) -> std::complex<double>
+	{
+		return UF::I(std::sqrt(std::complex<double>(v * v, -8.0 * a / eps2)), x) / UF::I(std::abs(v), x);
+	};
+	double mu = std::real(std::complex<double>(0.0, -1.0) * UF::numericalDiff(Phi, 0.0, 0.01));
+	double sigma2 = std::real(-UF::numericalDiff2(Phi, 0.0, 0.01)) - mu * mu;
+
+
+	double sigma = std::sqrt(sigma2);
+	double ueps = mu + 12.0 * sigma;
+	double h = M_PI / ueps;
+
+	std::function<double(double)> F = [&, h, Phi](double x)->double
+	{
+		double res = h * x / M_PI;
+		double i = 1.0;
+		double res2 = 0.0;
+		while (std::abs(Phi(h * i)) / i > M_PI * epsilon_ / 2.0)
+		{
+			res2 += std::sin(h * i * x) / i * std::real(Phi(h * i));
+			i += 1.0;
+		}
+		return res + res2 * 2.0 / M_PI;
+	};
+	// double M = 200.0;
+	// double w = 0.01;
+	// std::vector<double>Xs;
+	// std::vector<double>FXs;
+	// for(double i = 1.0; i <= M; i += 1.0)
+	//     Xs.push_back(w * mu + (i - 1) * (ueps - w * mu) / M);
+	// for(
+	//     std::vector<double>::iterator it = Xs.begin();
+	//     it != Xs.end();
+	//     it++
+	//     )
+	// {
+	//     double z = F(*it);
+	//     FXs.push_back(z);
+	// }
+
+
+	double L = UF::rvs(F, UF::uniRnd(0.0, 1.0), 0.2, 0.0, UF::MAXD, mu);
+	double K = 1.0 / epsilon_ * (std::log(X0_ / XT) + (kappa_ + 0.5 * eps2_) * L - T * kappa_ * theta_);
+
+	double m = std::log(S0_) + r_ * T - 0.5 * L + rho_ * K;
+	double s = (1.0 - rho_ * rho_) * L;
+	double ZZ = UF::normalRnd(m, s);
+	return std::exp(ZZ);
 }
 
 double P32::simulate(Arguments& paras)

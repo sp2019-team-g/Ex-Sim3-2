@@ -74,6 +74,18 @@ obj/EUCallOpt.o : src/EUCallOpt.cpp src/EUCallOpt.h
 obj/EUPutOpt.o : src/EUPutOpt.cpp src/EUPutOpt.h
 	$(CC) $(CPPFLAGS) -c -o obj/EUPutOpt.o src/EUPutOpt.cpp
 
+obj/ASCallOpt.o : src/ASCallOpt.cpp src/ASCallOpt.h
+	$(CC) $(CPPFLAGS) -c -o obj/ASCallOpt.o src/ASCallOpt.cpp
+
+obj/ASPutOpt.o : src/ASPutOpt.cpp src/ASPutOpt.h
+	$(CC) $(CPPFLAGS) -c -o obj/ASPutOpt.o src/ASPutOpt.cpp
+
+obj/EUBarrierUpOutCallOpt.o : src/EUBarrierUpOutCallOpt.cpp src/EUBarrierUpOutCallOpt.h
+	$(CC) $(CPPFLAGS) -c -o obj/EUBarrierUpOutCallOpt.o src/EUBarrierUpOutCallOpt.cpp
+
+obj/EUBarrierUpOutPutOpt.o : src/EUBarrierUpOutPutOpt.cpp src/EUBarrierUpOutPutOpt.h
+	$(CC) $(CPPFLAGS) -c -o obj/EUBarrierUpOutPutOpt.o src/EUBarrierUpOutPutOpt.cpp
+
 obj/PricingEng.o : src/PricingEng.cpp src/PricingEng.h
 	$(CC) $(CPPFLAGS) -c -o obj/PricingEng.o src/PricingEng.cpp
 

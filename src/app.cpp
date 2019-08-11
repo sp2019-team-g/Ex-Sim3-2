@@ -1,6 +1,10 @@
 #include "Factory.h"
 #include "EUCallOpt.h"
 #include "EUPutOpt.h"
+#include "ASCallOpt.h"
+#include "ASPutOpt.h"
+#include "EUBarrierUpOutCallOpt.h"
+#include "EUBarrierUpOutPutOpt.h"
 #include "P32.h"
 #include "McPricingEng.h"
 
@@ -40,7 +44,7 @@ int main()
     fac.price();
 
     offs -> close();
-
+	
     return 0;
 }
 
