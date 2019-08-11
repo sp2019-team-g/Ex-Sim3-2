@@ -14,10 +14,10 @@ int main(){
 
     cout << "I test"<<endl;
 
-    cout << UF::I(complex<double>(0.33,0.12), complex<double>(4.11,0.0) )<<endl;
-    cout << UF::I(complex<double>(-0.24,1.32), complex<double>(2.51,0.0) )<<endl;
-    cout << UF::I(complex<double>(3.53,2.62), complex<double>(1.17,0.0) )<<endl;
-    cout << UF::I(complex<double>(0.73,1.22), complex<double>(0.61,0.0) )<<endl;
+    cout << UF::I(complex<double>(0.33,0.12), 4.11 )<<endl;
+    cout << UF::I(complex<double>(-0.24,1.32), 2.51 )<<endl;
+    cout << UF::I(complex<double>(3.53,2.62), 1.17 )<<endl;
+    cout << UF::I(complex<double>(0.73,1.22), 0.61 )<<endl;
     cout<<" b "<<endl;
     cout << "12.259486134636589, -0.13998460121961476"<<endl;
     cout << "5.4489272839914769, 0.5130476413585956" <<endl;
@@ -47,11 +47,15 @@ int main(){
     cout << "nE test:" << endl;
     cout << UF::normalRnd(0,1)<<endl;
 
-    cout << "c2E test:" <<endl;
+    cout << "c2E test:" << endl;
+    cout << UF::chi2Rnd(4.33) << endl;
+
+    cout << "nc2E test:" <<endl;
     cout << UF::ncChi2Rnd(4.1,3.2)<<endl;
 
 
-	auto f1 = [](double x)->double {
+	auto f1 = [](double x)->double 
+    {
 		return x*x*x + 2*x +1;
 	};
 	cout << "rvs test:" << endl;

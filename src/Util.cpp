@@ -1,6 +1,5 @@
 
 #include "Util.h"
-#include "rv_library.h"
 #include "BES.h"
 #include "Exceptions.h"
 
@@ -29,25 +28,6 @@ std::complex<double> UF::I(std::complex<double> v, double x){
 std::complex<double> UF::I(std::complex<double> v, std::complex<double> x)
 {
     throw BadAccess_Exception();
-    // double tol = 1e-10;
-    // double dt = 1e-7;
-    // std::complex<double> p1 = std::complex<double>(0.0, 0.0);
-    // for(double t = 0.0; t < M_PI; t += dt)
-    //     p1 += std::exp(x * std::cos(t))*std::cos(v*t) * dt;
-    // p1 = p1/M_PI;
-
-    // std::complex<double> pp = std::complex<double>(tol + 0.01, 0.0);
-    // std::complex<double> p2 = std::complex<double>(0.0, 0.0);
-    // double t = 0.0;
-    // while(std::abs(pp) > tol)
-    // {
-    //     pp = std::exp(-x * std::cosh(t) - v*t);
-    //     p2 += pp*dt;
-    //     t += dt;
-    // }
-    // p2 = p2 * std::sin(v * M_PI)/M_PI;
-    // return p1-p2;
-
 }
 
 double UtilFunc::Diff(std::function<double(double)> f, double x, double dx)
@@ -71,7 +51,7 @@ std::complex<double> UF::numericalDiff2(
         double dx
         )
 {
-    return (f(x - dx) - 2.0*f(x) + f(x + dx))/(dx*dx);
+    return (f(x - dx) - 2.0 * f(x) + f(x + dx))/(dx*dx);
 }
 
 double UF::normalRnd(double mean, double std)
@@ -82,32 +62,26 @@ double UF::normalRnd(double mean, double std)
     return dist(re);
 }
 
+double UF::chi2Rnd(double delta)
+{
+    re.seed(rd());
+    std::chi_squared_distribution<double> dist(delta);
+    return dist(re);
+}
+
 double UF::ncChi2Rnd(double delta, double lambda)
 {
-    std::function<double(double)> f = [&, delta, lambda](double x)
-    {
-        return rv::NC_Chi_squ_cdf(x, delta, lambda);
-    };
-    double a = UF::uniRnd(0.0, 1.0);
-    double res = 0.0;
-    try
-    {
-        res = UF::rvs(f, a, 0.2, 0.0, UF::MAXD, delta + lambda);
-    }
-    catch(...)
-    {
-        throw NC_Exception();
-    }
-
-    
-
-    return res;
+    if(delta <= 1.0) throw NC_Exception();
+    if(lambda < 0.0) throw NC_Exception();
+    double Y = UF::chi2Rnd(delta - 1.0);
+    double Z = UF::normalRnd(std::sqrt(lambda), 1.0);
+    return Y + Z * Z;
 }
 
 double UF::uniRnd(double a, double b)
 {
     re.seed(rd());
-    return U(re)*(b - a) + a;
+    return U(re) * (b - a) + a;
 }
 
 
@@ -117,7 +91,7 @@ double numericalDiffDouble(
         double dx
         )
 {
-    return (f(x + dx) - f(x - dx))/(2.0 * dx);
+    return (f(x + dx) - f(x - dx)) / (2.0 * dx);
 }
 
 
@@ -156,8 +130,6 @@ double UF::rvs(
             a1 = UF::uniRnd(b1, a0);
         else if(a1 > b2)
             a1 = UF::uniRnd(a0, b2);
-
-        
         delta = a1 - a0;
         a0 = a1;
         num++;
@@ -183,3 +155,9 @@ double UF::rvs(std::function<double(double)> f, double x)
 {
     return UF::rvs(f, x, 1.0, -UF::MAXD, UF::MAXD);
 }
+
+// std::complex<double> operator/(std::complex<double> z, double x)
+// {
+//     return std::complex<double>(z.real()/x, z.imag()/x);
+// }
+
