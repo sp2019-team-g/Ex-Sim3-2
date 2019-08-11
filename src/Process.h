@@ -18,7 +18,7 @@ class Process
         bool check_loaded();
         virtual double simulate(){throw BadAccess_Exception();}
         virtual double simulate(Arguments&){throw BadAccess_Exception();};
-        virtual Path * simulatePath(Arguments&, double, double, double){throw BadAccess_Exception();}
+        virtual Path * simulatePath(Arguments&){throw BadAccess_Exception();}r
         virtual void para_load(Arguments&){throw BadAccess_Exception();}
 
     private:

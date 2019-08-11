@@ -1,5 +1,5 @@
 #include "EUBarrierUpOutCallOpt.h"
-
+#include "Path.h"
 #include "Util.h"
 EUBarrierUpOutCallOpt::EUBarrierUpOutCallOpt(double T, double K) : Option(T)
 {
@@ -13,9 +13,13 @@ EUBarrierUpOutCallOpt::EUBarrierUpOutCallOpt(Arguments& paras) : Option(paras)
 
 double EUBarrierUpOutCallOpt::payoff(Arguments& paras)
 {
-	if (paras.has("UP_REACH") && paras.g_VAL<bool>("UP_REACH"))
+	double barrier = paras.g_VAL<double>("barrier");
+	Path* path_ = paras.g_PTR<Path>("path");
+	bool bTriggerBarrier = path_->break_up(barrier);
+
+	if (bTriggerBarrier)
 	{
-		return 0.0;
+		return 0.0; 
 	}
 	else
 	{

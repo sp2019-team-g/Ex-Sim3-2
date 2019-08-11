@@ -59,7 +59,8 @@ double McPricingEng::price(Arguments& paras)
             std::cout << std::flush;
         }
 
-        pro_ -> simulate(paras);
+        //pro_ -> simulate(paras);
+		pro_->simulatePath(paras);
         poff = opt_ -> payoff(paras);
         if(i > 1)
             var2 = (

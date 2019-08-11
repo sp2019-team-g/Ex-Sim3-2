@@ -1,5 +1,5 @@
 #include "ASCallOpt.h"
-
+#include "Path.h"
 #include "Util.h"
 ASCallOpt::ASCallOpt(double T, double K) : Option(T)
 {
@@ -13,5 +13,7 @@ ASCallOpt::ASCallOpt(Arguments& paras) : Option(paras)
 
 double ASCallOpt::payoff(Arguments& paras)
 {
-	return UF::max(0.0, paras.g_VAL<double>("ST_AVER") - K_);
+	Path* path_ = paras.g_PTR<Path>("path");
+
+	return UF::max(0.0, path_->arithmeticAvg() - K_);
 }

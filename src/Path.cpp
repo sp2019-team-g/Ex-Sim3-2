@@ -39,6 +39,7 @@ double Path::geometricAbg()
 
 bool Path::break_up(double level)
 {
+
     double t = Path::min();
     if(t>level)
         return false;
@@ -50,6 +51,7 @@ bool Path::break_up(double level)
 
 bool Path::break_down(double level)
 {
+
     double t = Path::max();
     if(t<level)
         return false;

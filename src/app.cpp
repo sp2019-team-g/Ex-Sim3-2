@@ -14,6 +14,7 @@
 using namespace std;
 int main()
 {
+
     Factory<P32, McPricingEng, EUCallOpt> fac = Factory<P32, McPricingEng, EUCallOpt>();
     fac.SET<double>("r", new double(0.05));
     fac.SET<double>("rho", new double(-0.5));

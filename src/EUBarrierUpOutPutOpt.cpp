@@ -1,5 +1,5 @@
 #include "EUBarrierUpOutPutOpt.h"
-
+#include "Path.h"
 #include "Util.h"
 EUBarrierUpOutPutOpt::EUBarrierUpOutPutOpt(double T, double K) : Option(T)
 {
@@ -13,7 +13,10 @@ EUBarrierUpOutPutOpt::EUBarrierUpOutPutOpt(Arguments& paras) : Option(paras)
 
 double EUBarrierUpOutPutOpt::payoff(Arguments& paras)
 {
-	if (paras.has("UP_REACH") && paras.g_VAL<bool>("UP_REACH"))
+	double barrier = paras.g_VAL<double>("barrier");
+	Path* path_ = paras.g_PTR<Path>("path");
+	bool bTriggerBarrier = path_->break_up(barrier);
+	if (bTriggerBarrier)
 	{
 		return 0.0;
 	}
