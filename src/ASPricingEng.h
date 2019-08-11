@@ -1,5 +1,5 @@
-#ifndef MCPRICINGENG_EX32_H
-#define MCPRICINGENG_EX32_H
+#ifndef ASPRICINGENG_EX32_H
+#define ASPRICINGENG_EX32_H
 
 #include "PricingEng.h"
 #include "Arguments.h"
@@ -7,11 +7,11 @@
 class Option;
 class Process;
 
-class McPricingEng : public PricingEng
+class McPricingAS : public PricingEng
 {
     public:
-        McPricingEng(Option*, Process*);
-        McPricingEng(Arguments&);
+        McPricingAS(Option*, Process*);
+        McPricingAS(Arguments&);
         double price();
         double price(Arguments&);
         static PLIST plist()
