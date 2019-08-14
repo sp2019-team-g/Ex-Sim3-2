@@ -10,6 +10,7 @@ EUCallOpt::EUCallOpt(double T, double K) : Option(T)
 EUCallOpt::EUCallOpt(Arguments& paras) : Option(paras)
 {
     K_ = paras.g_VAL<double>("K");
+    paras.g_SET<bool>("simp", new bool(true));
 }
 
 double EUCallOpt::payoff(Arguments& paras)

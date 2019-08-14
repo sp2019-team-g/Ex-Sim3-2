@@ -118,6 +118,7 @@ double UF::rvs(
     )
 {   
     assert(b2 > b1);
+
     assert(eta > 0);
     double a0 = inig;
     double a1 = inig;

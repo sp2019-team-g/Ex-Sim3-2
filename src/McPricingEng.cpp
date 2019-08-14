@@ -34,6 +34,10 @@ double McPricingEng::price(Arguments& paras)
     double var2 = 0.0;
     double poff = 0.0;
     bool dbg = false;
+    bool simp = false;
+    if(paras.has("simp"))
+        simp = paras.g_VAL<bool>("simp");
+
     std::ofstream* dbgofs = nullptr;
     if(paras.has("verbose"))
         verbose = paras.g_VAL<bool>("verbose");
@@ -58,9 +62,8 @@ double McPricingEng::price(Arguments& paras)
             printf("%05.2f%%", (double)i / (double)bsize * 100.0);
             std::cout << std::flush;
         }
-
-        //pro_ -> simulate(paras);
-		pro_->simulatePath(paras);
+        if(simp) pro_ -> simulate(paras);
+        else pro_->simulatePath(paras);
         poff = opt_ -> payoff(paras);
         if(i > 1)
             var2 = (

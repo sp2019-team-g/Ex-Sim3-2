@@ -6,7 +6,7 @@ TSTS2=tmp/testbes tmp/testpth
 TSTS=$(TSTS1) $(TSTS2)
 OBJS1=obj/Arguments.o obj/Util.o obj/Process.o obj/Option.o obj/Input.o obj/Factory.o
 OBJS2=obj/PGBM.o obj/PricingEng.o obj/McPricingEng.o obj/EUCallOpt.o obj/EUPutOpt.o obj/P32.o
-OBJS3=obj/BES.o obj/Path.o
+OBJS3=obj/BES.o obj/Path.o obj/EUBarrierUpOutCallOpt.o obj/EUBarrierUpOutPutOpt.o
 OBJS=$(OBJS1) $(OBJS2) $(OBJS3)
 test : $(TSTS)
 clean :
