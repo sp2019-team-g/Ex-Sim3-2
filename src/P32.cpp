@@ -122,7 +122,6 @@ double P32::simulate()
     double x = p_ * std::sqrt(XT * X0_)/std::sinh(p_ * Delta_); //(x)
     double v = v_; //(x)
     double eps2 = eps2_; //(x)
-    // std::cout << v << " | " << x << std::endl;
     double duii = std::real(UF::I(std::abs(v), x));
     double dui = 1.0 / duii;
 
