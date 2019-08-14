@@ -1,6 +1,5 @@
 #include "Factory.h"
-#include "EUCallOpt.h"
-#include "EUPutOpt.h"
+#include "EUOption.h"
 #include "ASCallOpt.h"
 #include "ASPutOpt.h"
 #include "EUBarrierUpOutCallOpt.h"
@@ -15,7 +14,8 @@ using namespace std;
 int main()
 {
 
-    Factory<P32, McPricingEng, EUCallOpt> fac = Factory<P32, McPricingEng, EUCallOpt>();
+    Factory<P32, McPricingEng, EUOption> fac = Factory<P32, McPricingEng, EUOption>();
+    fac.SET<string>("CP", new string("CALL"));
     fac.SET<double>("r", new double(0.05));
     fac.SET<double>("rho", new double(-0.5));
     fac.SET<double>("kappa", new double(2.0));
@@ -28,6 +28,7 @@ int main()
     fac.SET<double>("T", new double(1.0));
     fac.SET<double>("K", new double(1.0));
     fac.SET<bool>("verbose", new bool(true));
+
     ofstream* offs = new ofstream("dbg.log", ofstream::out); 
 
     fac.build();

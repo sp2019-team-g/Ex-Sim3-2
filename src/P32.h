@@ -1,49 +1,66 @@
-//XXXXXXXXXXXXXXXXXXXXXXXXXX
+//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 //  P32.h
-//XXXXXXXXXXXXXXXXXXXXXXXXXX
+//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 #ifndef P32_EX32_H
 #define P32_EX32_H
-//XXXXXXXXXXXXXXXXXXXXXXXXXX
+//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 #include "Process.h"
 #include "Arguments.h"
 
 #include <functional>
-//XXXXXXXXXXXXXXXXXXXXXXXXXX
+//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 //  class P32
 //      Stochastic Process for 3/2 Model
 //      dS_t/S_t = rdt + sqrt(V_t) rho dW{1t} + sqrt(V_t(1-rho^2) dW{2t})
 //      dV_t = kappa V_t(theta - V_t)dt + epsilon (V_t)^(3/2)dW{1t}
-//XXXXXXXXXXXXXXXXXXXXXXXXXX
+//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 class P32 : public Process
 {
     public:
-        //**************************
+        //**********************************************************************
         // P32(r, rho, kappa, theta, epsilon, dt) : constructor for P32
-        //**************************
+        //**********************************************************************
         P32(double, double, double, double, double, double);
-
+        //**********************************************************************
+        // P32
+        //**********************************************************************
         P32(Arguments&);
-
+        //**********************************************************************
+        // para_validate
+        //**********************************************************************
         void para_validate();
+        //**********************************************************************
+        // post_update
+        //**********************************************************************
         void post_update();
+        //**********************************************************************
+        // para_load
+        //**********************************************************************
         void para_load(Arguments&);
-        //**************************
-        // simulate()
-        //**************************
+        //**********************************************************************
+        // simulate
+        //**********************************************************************
         double simulate();
+        //**********************************************************************
+        // simulate
+        //**********************************************************************
         double simulate(Arguments&);
+        //**********************************************************************
+        // simulatePath
+        //**********************************************************************
         Path * simulatePath(Arguments&);
-        //**************************
+        //**********************************************************************
         // argument requirments:
         //      r (double): groth rate
-        //      rho (double): correlation between dW{1t} and d{2t}, range is [-1,1]
+        //      rho (double): correlation between dW{1t} and d{2t}, 
+        //          range is [-1,1]
         //      epsilon (double): volatility in volatility, positive
         //      theta (double): long term average of volatility, non-negative
         //      dt (double): time gap for simulation, non-negative
         //      S0 (double): initial stock price, non-negative
         //      V0 (double): initial volatility, non-negative
-        //**************************
+        //**********************************************************************
         static PLIST plist()
         {
             PLIST res;
@@ -84,6 +101,6 @@ class P32 : public Process
 };
 
 #endif
-//XXXXXXXXXXXXXXXXXXXXXXXXXX
+//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 //  End
-//XXXXXXXXXXXXXXXXXXXXXXXXXX
+//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX

@@ -101,6 +101,11 @@ struct BESBadInput_Exception : public std::exception
         double value_;
 };
 
+struct OPTCPException : public std::exception
+{
+    public:
+        const char * what() const throw(){return "wrong option type";}
+};
 
 #endif
 //XXXXXXXXXXXXXXXXXXXXXXXXXX
