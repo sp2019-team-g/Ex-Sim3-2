@@ -122,10 +122,13 @@ double P32::simulate()
     double x = p_ * std::sqrt(XT * X0_)/std::sinh(p_ * Delta_); //(x)
     double v = v_; //(x)
     double eps2 = eps2_; //(x)
+    // std::cout << v << " | " << x << std::endl;
+    double duii = std::real(UF::I(std::abs(v), x));
+    double dui = 1.0 / duii;
 
-    std::function<std::complex<double>(double)> Phi = [&, v, x, eps2](double a) -> std::complex<double>
+    std::function<std::complex<double>(double)> Phi = [&, v, x, eps2, dui](double a) -> std::complex<double>
     {
-        return UF::I(std::sqrt(std::complex<double>(v * v, - 8.0 * a / eps2)), x) / UF::I(std::abs(v), x);
+        return UF::I(std::sqrt(std::complex<double>(v * v, - 8.0 * a / eps2)), x) * dui;
     };
     double mu = std::real(std::complex<double>(0.0, -1.0) * UF::numericalDiff(Phi, 0.0, 0.01)); // (x)
     double sigma2 = std::real(-UF::numericalDiff2(Phi, 0.0, 0.01)) - mu * mu; // (x)
@@ -192,12 +195,12 @@ Path * P32::simulatePath(Arguments& paras)
     }
     paras.g_SET<double>("S0", new double(S0_backup));
     paras.g_SET<double>("V0", new double(V0_backup));
-	paras.g_SET<double>("ST", new double(St));
+    paras.g_SET<double>("ST", new double(St));
 
-	Path* path_ = new Path(0.0, dt, T, path);
-	paras.g_SET<Path>("path", path_);
+    Path* path_ = new Path(0.0, dt, T, path);
+    paras.g_SET<Path>("path", path_);
 
-	return path_;
+    return path_;
 }
 
 
