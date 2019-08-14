@@ -26,8 +26,8 @@ class ASOption : public Option
     private:
         double K_;
         std::string cp_;//CALL PUT
-        std::string ff_;//FIXED FLOATING
-        std::string ag_;//ARITHMETIC GEOMETRIC
+        std::string ff_;//FIXED FLOATED
+        std::string ag_;//ARI GEO
 };
 
 #endif
