@@ -33,7 +33,7 @@ tmp/testutl : test/UFtest.cpp src/Util.h $(OBJS)
 	$(CC) $(CPPFLAGS) $(TESTFLAG) tmp/testutl $(OBJS) test/UFtest.cpp
 
 tmp/testeuc : test/EUOtest.cpp src/EUOption.h src/EUOption.h $(OBJS)
-	$(CC) $(CPPFLAGS) $(TESTFLAG) tmp/testeuc $(OBJS) test/EUOption.cpp
+	$(CC) $(CPPFLAGS) $(TESTFLAG) tmp/testeuc $(OBJS) test/EUOtest.cpp
 
 tmp/testinp : test/INPtest.cpp src/Input.h $(OBJS)
 	$(CC) $(CPPFLAGS) $(TESTFLAG) tmp/testinp $(OBJS) test/INPtest.cpp

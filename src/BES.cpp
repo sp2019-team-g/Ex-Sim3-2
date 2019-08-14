@@ -125,7 +125,7 @@ namespace
         int magz
     )
     {
-        if(magz * k < 250)
+        if(magz * k < 200)
             return std::pow(z, k) * m;
         return std::pow(cpowmul(z, 0.5 * k, std::sqrt(m), (int)(magz * 0.5)), 2.0);
     }
@@ -150,8 +150,8 @@ namespace
         while(std::abs(pp) > tol)
         {
             std::complex<double> apk = CP0;
-            int magz = mag(a);
-            if(magz * k >= 250)
+            int magz = mag(z);
+            if(magz * k >= 200)
             {
                 apk = gammaP(a, k);
                 pp = cpowmul(z, k, apk, mag(z)) / std::tgamma(k + 1.0); 

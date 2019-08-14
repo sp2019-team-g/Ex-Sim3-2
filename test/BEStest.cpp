@@ -12,6 +12,5 @@ int main()
 
 
     cout<<"=============="<<endl;
-    cout<<BES::gammaP(complex<double>(125.552, 0.224), 60.0)<<endl;
 	return 0.0;
 }
