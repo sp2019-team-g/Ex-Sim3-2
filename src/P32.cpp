@@ -19,14 +19,15 @@ const double tol_eps = 0.0015707963267948966192313216916397514420985846996875529
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 //  P32::P32
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-P32::P32(
-        double r,
-        double rho,
-        double kappa,
-        double theta,
-        double epsilon,
-        double dt
-        ) : Process(dt)
+P32::P32
+(
+    double r,
+    double rho,
+    double kappa,
+    double theta,
+    double epsilon,
+    double dt
+) : Process(dt)
 {
     r_ = r;
     rho_ = rho;
@@ -138,7 +139,6 @@ double P32::simulate()
     double eps2 = eps2_;
     double duii = std::real(UF::I(std::abs(v), x));
     double dui = 1.0 / duii;
-
     std::function<std::complex<double>(double)> Phi = 
         [&, v, x, eps2, dui](double a) -> std::complex<double>
     {
@@ -175,7 +175,6 @@ double P32::simulate()
         while(std::abs(phidi) / i > tol_eps);
         return res + pidd2 * res2;
     };
-
 
     double L = UF::rvs(F, UF::uniRnd(0.0, 1.0), 1.0, 0.0, ueps, mu);
     double K = 1.0 / epsilon_ * (std::log(X0_ / XT) + (kappa_ + 0.5 * eps2_) * L - T * kappa_ * theta_);
@@ -214,7 +213,9 @@ Path * P32::simulatePath(Arguments& paras)
         paras.g_SET<double>("S0", new double(St));
         paras.g_SET<double>("V0", new double(Vt));
         para_load(paras);
+
         St = simulate();
+
         path.push_back(St);
         Vt = VT_;
         if((St != St) || (Vt != Vt)) throw PTHAbnormal_Exception();
@@ -222,7 +223,8 @@ Path * P32::simulatePath(Arguments& paras)
     paras.g_SET<double>("S0", new double(S0_backup));
     paras.g_SET<double>("V0", new double(V0_backup));
     paras.g_SET<double>("ST", new double(St));
-
+    S0_ = S0_backup;
+    V0_ = V0_backup;
     Path* path_ = new Path(0.0, dt, T, path);
     paras.g_SET<Path>("path", path_);
 

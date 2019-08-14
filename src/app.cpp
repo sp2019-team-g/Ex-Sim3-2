@@ -54,10 +54,10 @@ int main()
     fac.SET<double>("dt", new double(0.4));
     fac.SET<double>("S0", new double(1.0));
     fac.SET<double>("V0", new double(1.125));
-    fac.SET<size_t>("nos", new size_t(100));
-    fac.SET<double>("T", new double(1.0));
+    fac.SET<size_t>("nos", new size_t(1000));
+    fac.SET<double>("T", new double(3.0));
     fac.SET<double>("K", new double(1.0));
-    fac.SET<double>("barrier", new double(2.0));
+    fac.SET<double>("barrier", new double(1.3));
     fac.SET<bool>("verbose", new bool(true));
     ofstream* offs = new ofstream("dbg.log", ofstream::out);
 

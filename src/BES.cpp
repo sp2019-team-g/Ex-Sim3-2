@@ -154,7 +154,7 @@ namespace
             if(magz * k >= 200)
             {
                 apk = gammaP(a, k);
-                pp = cpowmul(z, k, apk, mag(z)) / std::tgamma(k + 1.0); 
+                pp = cpowmul(z, k, apk, magz) / std::tgamma(k + 1.0); 
             }
             else
             {
