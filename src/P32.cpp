@@ -101,6 +101,7 @@ double P32::simulate()
     double T = get_dt();
     double Z;
     size_t err_count = 0;
+    
     while(err_count < 100)
     {
         try
@@ -122,10 +123,10 @@ double P32::simulate()
     double x = p_ * std::sqrt(XT * X0_)/std::sinh(p_ * Delta_); //(x)
     double v = v_; //(x)
     double eps2 = eps2_; //(x)
-
-    std::function<std::complex<double>(double)> Phi = [&, v, x, eps2](double a) -> std::complex<double>
+    double rbivx = 1.0 / std::real(UF::I(std::abs(v), x));
+    std::function<std::complex<double>(double)> Phi = [&, v, x, eps2, rbivx](double a) -> std::complex<double>
     {
-        return UF::I(std::sqrt(std::complex<double>(v * v, - 8.0 * a / eps2)), x) / UF::I(std::abs(v), x);
+        return UF::I(std::sqrt(std::complex<double>(v * v, - 8.0 * a / eps2)), x) * rbivx;
     };
     double mu = std::real(std::complex<double>(0.0, -1.0) * UF::numericalDiff(Phi, 0.0, 0.01)); // (x)
     double sigma2 = std::real(-UF::numericalDiff2(Phi, 0.0, 0.01)) - mu * mu; // (x)
