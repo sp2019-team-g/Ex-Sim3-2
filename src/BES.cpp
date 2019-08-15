@@ -101,18 +101,6 @@ namespace
         }
     }
     //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-    //  mag
-    //      estimate the magnitude of a number
-    //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-    int mag(std::complex<double> z)
-    {
-        int magr = mag(std::real(z));
-        int magi = mag(std::imag(z));
-        if(abs(magr) > abs(magi))
-            return magr;
-        return magi;
-    }
-    //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
     //  cpowmul
     //      handel m * z^k where abs(m*z^k) < 1e300 but abs(z^k) is likely to be
     //          greater than 1e300 

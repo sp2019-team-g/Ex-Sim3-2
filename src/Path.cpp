@@ -53,13 +53,13 @@ double Path::geometricAvg()
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 bool Path::break_up(double level)
 {
-
-    double t = Path::min();
-    if(t>level)
-        return false;
-    for(std::vector<double>::iterator it = Path::path_.begin();it+1 != Path::path_.end();it++)
-        if(*it > level && *(it+1) < level)
-            return true;
+    for
+        (
+            std::vector<double>::iterator it = path_.begin();
+            it+1 != path_.end();
+            it++
+        )
+        if(*it > level && *(it+1) < level) return true;
     return false;
 }
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
@@ -67,12 +67,10 @@ bool Path::break_up(double level)
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 bool Path::break_down(double level)
 {
-
-    double t = Path::max();
     for
         (
-            std::vector<double>::iterator it = Path::path_.begin();
-            it+1 != Path::path_.end();
+            std::vector<double>::iterator it = path_.begin();
+            it+1 != path_.end();
             it++
         )
         if((*it < level) && (*(it+1) > level)) return true;
