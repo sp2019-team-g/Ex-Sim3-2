@@ -18,13 +18,13 @@ int main()
 
     string obv = "rho";
     string type = "CALL";
-    string optype = "AS";
-    string oth = "GEO";
-    string othh = "STRIKE";
-    string othhh = "0.8dt7.2T";
+    string optype = "B";
+    string oth = "UP";
+    string othh = "OUT";//"STRIKE";
+    string othhh = "0.8dt7.2T";//"0.8dt7.2T";
 
 
-    Factory<P32, McPricingEng, ASOption> fac = Factory<P32, McPricingEng, ASOption>();
+    Factory<P32, McPricingEng, BOption> fac = Factory<P32, McPricingEng, BOption>();
     fac.SET<string>("csv_name", new string("data/" + optype + type + obv + oth + othh + othhh + ".csv"));
     fac.SET<vector<string> >("csv_title", new vector<string>
         ({
@@ -35,8 +35,8 @@ int main()
     fac.SET<string>("obv", new string(obv));
 
     fac.SET<string>("CP", new string(type));
-    fac.SET<string>("AG", new string(oth));
-    fac.SET<string>("FF", new string(othh));
+    fac.SET<string>("UD", new string(oth));
+    fac.SET<string>("IO", new string(othh));
 
 
     fac.SET<double>("r", new double(0.05));
@@ -50,6 +50,7 @@ int main()
     fac.SET<size_t>("nos", new size_t(2560));
     fac.SET<double>("T", new double(7.2));
     fac.SET<double>("K", new double(1.0));
+    fac.SET<double>("B", new double(1.5));
     fac.SET<bool>("verbose", new bool(true));
 
 
