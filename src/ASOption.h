@@ -12,7 +12,7 @@
 class ASOption : public Option
 {
     public:
-        ASOption(double, double, std::string);
+        ASOption(double, double, std::string, std::string, std::string);
         ASOption(Arguments&);
         double payoff(Arguments&) override;
         static PLIST plist()
