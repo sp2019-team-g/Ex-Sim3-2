@@ -16,15 +16,15 @@ using namespace std;
 int main()
 {
 
-    string obv = "rho";
-    string type = "CALL";
-    string optype = "AS";
-    string oth = "ARI";
-    string othh = "STRIKE";
-    string othhh = "0.8dt7.2T";
+    string obv = "r";
+    string type = "PUT";
+    string optype = "EU";
+    string oth = "";//"ARI";
+    string othh = "";//"STRIKE";
+    string othhh = "";//"0.8dt7.2T";
 
 
-    Factory<P32, McPricingEng, ASOption> fac = Factory<P32, McPricingEng, ASOption>();
+    Factory<P32, McPricingEng, EUOption> fac = Factory<P32, McPricingEng, EUOption>();
     fac.SET<string>("csv_name", new string("data/" + optype + type + obv + oth + othh + othhh + ".csv"));
     fac.SET<vector<string> >("csv_title", new vector<string>
         ({
@@ -53,7 +53,7 @@ int main()
     fac.SET<bool>("verbose", new bool(true));
 
 
-    for(double x = -1.0; x <= 1.0; x += 0.05)
+    for(double x = 0.05; x <= 0.44; x += 0.01)
     {
         fac.SET<double>(obv, new double(x));
         fac.build();
