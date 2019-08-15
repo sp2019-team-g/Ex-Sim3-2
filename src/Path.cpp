@@ -39,7 +39,7 @@ double Path::arithmeticAvg()
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 //  Path::geometricAbg
 //XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-double Path::geometricAbg()
+double Path::geometricAvg()
 {
     double ant = 1.0;
     double cnt = Path::T_/Path::dt_;

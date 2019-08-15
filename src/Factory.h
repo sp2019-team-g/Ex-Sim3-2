@@ -9,6 +9,7 @@
 #include "PricingEng.h"
 #include "Option.h"
 #include "Input.h"
+#include "CSVLogger.h"
 #include "Exceptions.h"
 
 #include <vector>

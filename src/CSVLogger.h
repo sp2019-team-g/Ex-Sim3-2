@@ -1,0 +1,32 @@
+//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+//  CSVLogger.h
+//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+#ifndef CSVLOGGER_EX32_H
+#define CSVLOGGER_EX32_H
+
+
+#include <string>
+#include <fstream>
+#include <vector>
+
+class Arguments;
+
+class CSVLogger
+{
+	public:
+		CSVLogger(Arguments&);
+		~CSVLogger();
+		void add(std::vector<double>);
+		void add(double*);
+	private:
+		std::string fname_;
+		std::ofstream* ofs_;
+		size_t N_;
+		size_t cnt_;
+};
+
+
+#endif
+//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+// End
+//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
