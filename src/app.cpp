@@ -1,3 +1,6 @@
+//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+//  app.cpp
+//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 #include "Factory.h"
 #include "EUOption.h"
 #include "ASOption.h"
@@ -40,8 +43,6 @@ int main()
     fac.SET<double>("K", new double(1.0));
     fac.SET<bool>("verbose", new bool(true));
 
-    ofstream* offs = new ofstream("dbg.log", ofstream::out); 
-
     fac.build();
     cout << "Case : 2560 sims" << endl;
     fac.price();
@@ -56,35 +57,11 @@ int main()
     cout<<"Case : 40960 sims"<<endl;
     fac.price();
 
-    // Factory<P32, McPricingEng, BOption> fac = Factory<P32, McPricingEng, BOption>();
 
-    // fac.SET<double>("r", new double(0.05));
-    // fac.SET<double>("rho", new double(-0.5));
-    // fac.SET<double>("kappa", new double(2.0));
-    // fac.SET<double>("theta", new double(1.5));
-    // fac.SET<double>("epsilon", new double(0.2));
-    // fac.SET<double>("dt", new double(0.4));
-    // fac.SET<double>("S0", new double(1.0));
-    // fac.SET<double>("V0", new double(1.125));
-    // fac.SET<size_t>("nos", new size_t(1000));
-    // fac.SET<double>("T", new double(3.0));
-    // fac.SET<double>("K", new double(1.0));
-    // fac.SET<double>("B", new double(1.3));
-    // fac.SET<string>("CP", new string("CALL"));
-    // fac.SET<string>("IO", new string("IN"));
-    // fac.SET<string>("UD", new string("UP"));
-    // fac.SET<bool>("verbose", new bool(true));
-    // ofstream* offs = new ofstream("dbg.log", ofstream::out);
-
-    // fac.build();
-    // cout << "Case : 100 sims" << endl;
-    // fac.price();
-
-
-
-    offs -> close();
 	
     return 0;
 }
-
+//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+//  End
+//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 

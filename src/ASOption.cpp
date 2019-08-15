@@ -5,6 +5,9 @@
 #include "Path.h"
 #include "Util.h"
 #include "Exceptions.h"
+//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+//  ASOption::ASOption
+//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 ASOption::ASOption(Arguments& paras) : Option(paras)
 {
 	cp_ = paras.g_VAL<std::string>("CP");
@@ -12,7 +15,9 @@ ASOption::ASOption(Arguments& paras) : Option(paras)
 	ag_ = paras.g_VAL<std::string>("AG");
 
 }
-
+//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+//  ASOption::payoff
+//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 double ASOption::payoff(Arguments& paras)
 {
 	Path * pth = paras.g_PTR<Path>("path");
