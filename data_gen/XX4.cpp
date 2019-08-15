@@ -20,7 +20,7 @@ int main()
     string type = "PUT";
     string optype = "AS";
     string oth = "ARI";
-    string othh = "RATE";
+    string othh = "STRIKE";
     string othhh = "0.4dt7.2T";
 
 
@@ -44,7 +44,7 @@ int main()
     fac.SET<double>("kappa", new double(2.0));
     fac.SET<double>("theta", new double(1.5));
     fac.SET<double>("epsilon", new double(0.2));
-    fac.SET<double>("dt", new double(0.4));
+    fac.SET<double>("dt", new double(0.8));
     fac.SET<double>("S0", new double(1.0));
     fac.SET<double>("V0", new double(1.125));
     fac.SET<size_t>("nos", new size_t(2560));
