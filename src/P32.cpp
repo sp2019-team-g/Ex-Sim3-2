@@ -208,7 +208,7 @@ Path * P32::simulatePath(Arguments& paras)
     double T = paras.g_VAL<double>("T");
     path.push_back(St);
     double dt = get_dt();
-    for(double tt = 0.0; tt < T; tt += dt)
+    for(double tt = 0.0; tt <= T; tt += dt)
     {
         paras.g_SET<double>("S0", new double(St));
         paras.g_SET<double>("V0", new double(Vt));
