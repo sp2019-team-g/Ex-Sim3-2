@@ -17,7 +17,7 @@ int main()
 {
 
     string obv = "rho";
-    string type = "CALL";
+    string type = "PUT";
     string optype = "B";
     string oth = "DOWN";
     string othh = "OUT";//"STRIKE";
