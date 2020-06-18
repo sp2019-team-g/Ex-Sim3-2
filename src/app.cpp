@@ -1,16 +1,35 @@
+//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+//  app.cpp
+//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 #include "Factory.h"
-#include "EUCallOpt.h"
-#include "EUPutOpt.h"
+#include "EUOption.h"
+#include "ASOption.h"
+#include "BOption.h"
+
+
 #include "P32.h"
 #include "McPricingEng.h"
+#include "CSVLogger.h"
+
 
 #include <string>
 #include <iostream>
 #include <fstream>
+#include <vector>
 using namespace std;
 int main()
 {
-    Factory<P32, McPricingEng, EUCallOpt> fac = Factory<P32, McPricingEng, EUCallOpt>();
+
+    Factory<P32, McPricingEng, EUOption> fac = Factory<P32, McPricingEng, EUOption>();
+    fac.SET<string>("csv_name",new string("data/benchmark.csv"));
+
+    fac.SET<vector<string> >("csv_title", new vector<string>
+        ({
+            "simulations", "time_usage", "result", "std_err"
+        })
+    );
+    fac.SET<CSVLogger>("csv", new CSVLogger(fac.get_arg()));
+    fac.SET<string>("CP", new string("CALL"));
     fac.SET<double>("r", new double(0.05));
     fac.SET<double>("rho", new double(-0.5));
     fac.SET<double>("kappa", new double(2.0));
@@ -23,7 +42,6 @@ int main()
     fac.SET<double>("T", new double(1.0));
     fac.SET<double>("K", new double(1.0));
     fac.SET<bool>("verbose", new bool(true));
-    ofstream* offs = new ofstream("dbg.log", ofstream::out); 
 
     fac.build();
     cout << "Case : 2560 sims" << endl;
@@ -39,9 +57,11 @@ int main()
     cout<<"Case : 40960 sims"<<endl;
     fac.price();
 
-    offs -> close();
 
+	
     return 0;
 }
-
+//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+//  End
+//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 

@@ -5,8 +5,8 @@ TSTS1=tmp/testarg tmp/testp32 tmp/testproc tmp/testutl tmp/testopt tmp/testeuc t
 TSTS2=tmp/testbes tmp/testpth
 TSTS=$(TSTS1) $(TSTS2)
 OBJS1=obj/Arguments.o obj/Util.o obj/Process.o obj/Option.o obj/Input.o obj/Factory.o
-OBJS2=obj/PGBM.o obj/PricingEng.o obj/McPricingEng.o obj/EUCallOpt.o obj/EUPutOpt.o obj/P32.o
-OBJS3=obj/BES.o obj/Path.o
+OBJS2=obj/PGBM.o obj/PricingEng.o obj/McPricingEng.o obj/EUOption.o obj/P32.o
+OBJS3=obj/BES.o obj/Path.o obj/BOption.o obj/ASOption.o obj/CSVLogger.o
 OBJS=$(OBJS1) $(OBJS2) $(OBJS3)
 test : $(TSTS)
 clean :
@@ -16,6 +16,18 @@ clean :
 
 bin/app : src/app.cpp $(OBJS)
 	$(CC) $(CPPFLAGS) -Isrc -o bin/app src/app.cpp $(OBJS)
+
+bin/data_gen : data_gen/EUCgen.cpp $(OBJS)
+	$(CC) $(CPPFLAGS) -Isrc -o bin/data_gen data_gen/EUCgen.cpp $(OBJS)
+
+bin/data_genXX2 : data_gen/XX2.cpp $(OBJS)
+	$(CC) $(CPPFLAGS) -Isrc -o bin/data_genXX2 data_gen/XX2.cpp $(OBJS)
+
+bin/data_genXX3 : data_gen/XX3.cpp $(OBJS)
+	$(CC) $(CPPFLAGS) -Isrc -o bin/data_genXX3 data_gen/XX3.cpp $(OBJS)
+
+bin/data_genXX4 : data_gen/XX4.cpp $(OBJS)
+	$(CC) $(CPPFLAGS) -Isrc -o bin/data_genXX4 data_gen/XX4.cpp $(OBJS)
 
 tmp/testopt : test/OPTtest.cpp src/Option.h $(OBJS)
 	$(CC) $(CPPFLAGS) $(TESTFLAG) tmp/testopt $(OBJS) test/OPTtest.cpp
@@ -32,13 +44,13 @@ tmp/testproc : test/PStest.cpp $(OBJS)
 tmp/testutl : test/UFtest.cpp src/Util.h $(OBJS)
 	$(CC) $(CPPFLAGS) $(TESTFLAG) tmp/testutl $(OBJS) test/UFtest.cpp
 
-tmp/testeuc : test/EUOtest.cpp src/EUCallOpt.h src/EUPutOpt.h $(OBJS)
+tmp/testeuc : test/EUOtest.cpp src/EUOption.h src/EUOption.h $(OBJS)
 	$(CC) $(CPPFLAGS) $(TESTFLAG) tmp/testeuc $(OBJS) test/EUOtest.cpp
 
 tmp/testinp : test/INPtest.cpp src/Input.h $(OBJS)
 	$(CC) $(CPPFLAGS) $(TESTFLAG) tmp/testinp $(OBJS) test/INPtest.cpp
 
-tmp/testfac : test/FACtest.cpp src/Factory.h src/PGBM.h src/EUCallOpt.h src/McPricingEng.h $(OBJS)
+tmp/testfac : test/FACtest.cpp src/Factory.h src/PGBM.h src/EUOption.h src/McPricingEng.h $(OBJS)
 	$(CC) $(CPPFLAGS) $(TESTFLAG) tmp/testfac $(OBJS) test/FACtest.cpp
 
 tmp/testbsi : test/BSItest.cpp src/Besseli.h obj/Besseli.o
@@ -49,6 +61,9 @@ tmp/testbes : test/BEStest.cpp src/BES.h obj/BES.o
 
 tmp/testpth : test/PTHtest.cpp $(OBJS)
 	$(CC) $(CPPFLAGS) $(TESTFLAG) tmp/testpth $(OBJS) test/PTHtest.cpp
+
+obj/CSVLogger.o : src/CSVLogger.cpp src/CSVLogger.h
+	$(CC) $(CPPFLAGS) -c -o obj/CSVLogger.o src/CSVLogger.cpp
 
 obj/Arguments.o : src/Arguments.cpp src/Arguments.h
 	$(CC) $(CPPFLAGS) -c -o obj/Arguments.o src/Arguments.cpp
@@ -68,11 +83,14 @@ obj/P32.o : src/P32.cpp src/P32.h
 obj/Option.o : src/Option.cpp src/Option.h
 	$(CC) $(CPPFLAGS) -c -o obj/Option.o src/Option.cpp
 
-obj/EUCallOpt.o : src/EUCallOpt.cpp src/EUCallOpt.h
-	$(CC) $(CPPFLAGS) -c -o obj/EUCallOpt.o src/EUCallOpt.cpp
+obj/EUOption.o : src/EUOption.cpp src/EUOption.h
+	$(CC) $(CPPFLAGS) -c -o obj/EUOption.o src/EUOption.cpp
 
-obj/EUPutOpt.o : src/EUPutOpt.cpp src/EUPutOpt.h
-	$(CC) $(CPPFLAGS) -c -o obj/EUPutOpt.o src/EUPutOpt.cpp
+obj/ASOption.o : src/ASOption.cpp src/ASOption.h
+	$(CC) $(CPPFLAGS) -c -o obj/ASOption.o src/ASOption.cpp
+
+obj/BOption.o : src/BOption.cpp src/BOption.h
+	$(CC) $(CPPFLAGS) -c -o obj/BOption.o src/BOption.cpp
 
 obj/PricingEng.o : src/PricingEng.cpp src/PricingEng.h
 	$(CC) $(CPPFLAGS) -c -o obj/PricingEng.o src/PricingEng.cpp

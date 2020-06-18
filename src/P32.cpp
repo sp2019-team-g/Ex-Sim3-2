@@ -1,5 +1,8 @@
-
-
+//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+//  P32.h
+//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+#define _USE_MATH_DEFINES
+//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 #include "P32.h"
 #include "Util.h"
 #include "Exceptions.h"
@@ -12,17 +15,19 @@
 #include <iostream>
 #include <fstream>
 const double pidd2 = 0.63661977236758134307553505349005744813783858296182579499066937623;
-// const double tol_eps = 0.028274333882308139146163790449515525957774524594375952388;//0.009 * M_PI;
-// const double tol_eps = 0.00628318530717958647692528676655900576839433879875021164194988;
 const double tol_eps = 0.001570796326794896619231321691639751442098584699687552910487472296;
-P32::P32(
-        double r,
-        double rho,
-        double kappa,
-        double theta,
-        double epsilon,
-        double dt
-        ) : Process(dt)
+//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+//  P32::P32
+//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+P32::P32
+(
+    double r,
+    double rho,
+    double kappa,
+    double theta,
+    double epsilon,
+    double dt
+) : Process(dt)
 {
     r_ = r;
     rho_ = rho;
@@ -33,7 +38,9 @@ P32::P32(
     set_loaded(false);
     post_update();
 }
-
+//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+//  P32::P32
+//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 P32::P32(Arguments& paras) : Process(paras)
 {
     r_ = paras.g_VAL<double>("r");
@@ -54,7 +61,9 @@ P32::P32(Arguments& paras) : Process(paras)
     catch(...){set_loaded(false);}
     post_update();
 }
-
+//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+//  P32::para_validate
+//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 void P32::para_validate()
 {
     Process::para_validate();
@@ -66,7 +75,9 @@ void P32::para_validate()
     assert(epsilon_ > 0.0);
 }
 
-
+//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+//  P32::post_update
+//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 void P32::post_update()
 {
 
@@ -86,7 +97,9 @@ void P32::post_update()
     }
 
 }
-
+//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+//  P32::para_load
+//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 void P32::para_load(Arguments& paras)
 {
     S0_ = paras.g_VAL<double>("S0");
@@ -94,7 +107,9 @@ void P32::para_load(Arguments& paras)
     set_loaded(true);
     post_update();
 }
-
+//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+//  P32::simulate
+//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 double P32::simulate()
 {
     if((S0_ < 0.0) || (V0_ < 0.0)) throw PRONotLoaded_Exception();
@@ -116,24 +131,34 @@ double P32::simulate()
         err_count += 1;
     }
     
-    double XT = Z * zp_/ektT_; //(x)
-    VT_ = 1.0 / XT; //(x)
+    double XT = Z * zp_/ektT_;
+    VT_ = 1.0 / XT;
 
-    double x = p_ * std::sqrt(XT * X0_)/std::sinh(p_ * Delta_); //(x)
-    double v = v_; //(x)
-    double eps2 = eps2_; //(x)
-
-    std::function<std::complex<double>(double)> Phi = [&, v, x, eps2](double a) -> std::complex<double>
+    double x = p_ * std::sqrt(XT * X0_)/std::sinh(p_ * Delta_);
+    double v = v_;
+    double eps2 = eps2_;
+    double duii = std::real(UF::I(std::abs(v), x));
+    double dui = 1.0 / duii;
+    std::function<std::complex<double>(double)> Phi = 
+        [&, v, x, eps2, dui](double a) -> std::complex<double>
     {
-        return UF::I(std::sqrt(std::complex<double>(v * v, - 8.0 * a / eps2)), x) / UF::I(std::abs(v), x);
+        return UF::I
+        (
+            std::sqrt(std::complex<double>(v * v, - 8.0 * a / eps2)),
+            x
+        ) * dui;
     };
-    double mu = std::real(std::complex<double>(0.0, -1.0) * UF::numericalDiff(Phi, 0.0, 0.01)); // (x)
-    double sigma2 = std::real(-UF::numericalDiff2(Phi, 0.0, 0.01)) - mu * mu; // (x)
+    double mu = 
+    (
+        std::real(std::complex<double>(0.0, -1.0) * 
+        UF::numericalDiff(Phi, 0.0, 0.01))
+    );
+    double sigma2 = std::real(-UF::numericalDiff2(Phi, 0.0, 0.01)) - mu * mu;
 
 
-    double sigma = std::sqrt(sigma2); // (x)
-    double ueps = mu + 12.0 * sigma; // (x)
-    double h = M_PI / ueps; // (x)
+    double sigma = std::sqrt(sigma2);
+    double ueps = mu + 12.0 * sigma;
+    double h = M_PI / ueps;
 
     std::function<double(double)> F = [&, h, Phi](double x)->double
     {
@@ -151,7 +176,6 @@ double P32::simulate()
         return res + pidd2 * res2;
     };
 
-
     double L = UF::rvs(F, UF::uniRnd(0.0, 1.0), 1.0, 0.0, ueps, mu);
     double K = 1.0 / epsilon_ * (std::log(X0_ / XT) + (kappa_ + 0.5 * eps2_) * L - T * kappa_ * theta_);
 
@@ -161,7 +185,9 @@ double P32::simulate()
     double ZZ = UF::normalRnd(m, s);
     return std::exp(ZZ);
 }
-
+//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+//  P32::simulate
+//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 double P32::simulate(Arguments& paras)
 {
     para_load(paras);
@@ -169,7 +195,9 @@ double P32::simulate(Arguments& paras)
     paras.g_SET<double>("ST", res);
     return *res;
 }
-
+//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+//  P32::simulatePath
+//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 Path * P32::simulatePath(Arguments& paras)
 {
     std::vector<double> path;
@@ -180,22 +208,32 @@ Path * P32::simulatePath(Arguments& paras)
     double T = paras.g_VAL<double>("T");
     path.push_back(St);
     double dt = get_dt();
-    for(double tt = 0.0; tt < T; tt += dt)
+    for(double tt = 0.0; tt <= T; tt += dt)
     {
         paras.g_SET<double>("S0", new double(St));
         paras.g_SET<double>("V0", new double(Vt));
         para_load(paras);
+
         St = simulate();
+
         path.push_back(St);
         Vt = VT_;
         if((St != St) || (Vt != Vt)) throw PTHAbnormal_Exception();
     }
     paras.g_SET<double>("S0", new double(S0_backup));
     paras.g_SET<double>("V0", new double(V0_backup));
-    return new Path(0.0, dt, T, path);
+    paras.g_SET<double>("ST", new double(St));
+    S0_ = S0_backup;
+    V0_ = V0_backup;
+    Path* path_ = new Path(0.0, dt, T, path);
+    paras.g_SET<Path>("path", path_);
+
+    return path_;
 }
 
 
-//XXXXXXXXXXXXXXXXXXXXXXXXXX
+
+
+//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 //  End
-//XXXXXXXXXXXXXXXXXXXXXXXXXX
+//XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
